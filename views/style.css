@@ -47,3 +47,58 @@ div.header div:nth-child(4) button {
     height: 50px;
     width: 75%;
 }
+
+#container_title {
+    width: 80%;
+    margin: 50px auto;
+}
+
+#container_title h1 {
+	font-size: 25px;
+	color: rgb(7, 109, 134)
+}
+
+#container_box {
+    width: 90%;
+    margin: auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.post_index {
+    width: 26%;
+}
+
+.post_index img {
+    width: 100%;
+}
+
+.display_nb {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 35px;
+}
+
+.pagination {
+	display: flex;
+	width: 20%;
+	margin: auto;
+}
+  
+.pagination a {
+	color: black;
+	float: left;
+	padding: 8px 16px;
+	text-decoration: none;
+	transition: background-color .3s;
+}
+  
+.pagination a.active {
+	background-color: rgb(15, 129, 158);
+	color: white;
+}
+  
+.pagination a:hover:not(.active) {
+	background-color: #ddd;
+}
