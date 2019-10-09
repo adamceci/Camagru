@@ -14,15 +14,9 @@ class Model {
         }
     }
 
-    protected function execute_querry() {
-        $this->stmt = $this->pdo->prepare($query);
-        $this->stmt->execute();
-        $this->db_drop_connection();
-    }
-
-    protected function db_drop_connection() {
-        $this->stmt->closeCursor();
-        $this->stmt = null;
+    protected function db_drop_connection(&$stmt) {
+        $stmt->closeCursor();
+        $stmt = null;
         $this->pdo = null;
     }
 }
