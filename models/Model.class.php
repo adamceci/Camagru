@@ -14,9 +14,9 @@ class Model {
         }
     }
 
-    protected function db_drop_connection(&$stmt) {
-        $stmt->closeCursor();
-        $stmt = null;
+    protected function db_drop_connection() {
+        $this->stmt->closeCursor();
+        $this->stmt = null;
         $this->pdo = null;
     }
 }
