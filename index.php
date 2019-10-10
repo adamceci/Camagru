@@ -8,12 +8,13 @@ require("controllers/Route.class.php");
 Route::set("index", function() {
     require_once("views/header.module.php");
     require_once("views/index.view.php");
+    require_once("views/footer.module.php");
 });
 
 if (!in_array($_GET["url"], Route::$validRoutes)) {
     require_once("views/header.module.php");
     require_once("views/index.view.php");
+    require_once("views/footer.module.php");
 }
-// require_once("");
 
 ?>

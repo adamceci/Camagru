@@ -49,7 +49,7 @@ div.header div:nth-child(4) button {
 }
 
 #container_title {
-    width: 80%;
+    width: 83.2%;
     margin: 50px auto;
 }
 
@@ -72,6 +72,7 @@ div.header div:nth-child(4) button {
 
 .post_index img {
     width: 100%;
+    border: 3px solid rgb(15, 129, 158);
 }
 
 .display_nb {
@@ -101,4 +102,12 @@ div.header div:nth-child(4) button {
   
 .pagination a:hover:not(.active) {
 	background-color: #ddd;
+}
+
+#footer {
+    width: 90%;
+    margin: 50px auto 0 auto;
+    border-top: 1px solid rgb(15, 129, 158);
+    padding-top: 15px;
+    font-style: italic;
 }
