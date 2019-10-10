@@ -3,12 +3,12 @@
 namespace Camagru\Model\User;
 
 class User extends Model {
-    private function user_exist($login, $email) {
+    private function user_exist($email) {
         try {
             parent::db_connect();
-            $sql = "SELECT `login` FROM `users` WHERE `login`=? AND `email`=?";
+            $sql = "SELECT `login` FROM `users` WHERE `email`=?";
             $this->stmt = $this->pdo->prepare($sql);
-            $this->stmt->execute([$login, $email]);
+            $this->stmt->execute([$email]);
             $arr = $this->stmt->fetchAll(PDO::FETCH_ASSOC);
             parent::db_drop_connection();
             if (!$arr) {
@@ -23,7 +23,7 @@ class User extends Model {
 
     public function create_user(array $kwuser_info) {
         try {
-            if (!($this->user_exist($login))) {
+            if (!($this->user_exist($email))) {
                 parent::db_connect();
                 $sql = "INSERT INTO `users` (email, `login`, `password`, `profile_pic`) VALUES (?,?,?,?)";
                 $this->stmt = $this->pdo->prepare($sql);
