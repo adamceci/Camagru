@@ -6,7 +6,7 @@ class Model {
 
     protected function db_connect() {
         try {
-            require("password.php");
+            require("controllers/password.php");
             $this->pdo = new PDO($dsn, $user, $password);
         }
         catch (PDOException $e) {
