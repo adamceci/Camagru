@@ -1,9 +1,8 @@
 <?php
 
-require("controllers/Route.class.php");
+require("controllers/Route.controller.php");
+require_once("controllers/Controller.class.php");
 
-// var_dump($_GET);
-// var_dump(Route::$validRoutes);
 
 Route::set("index", function() {
     require_once("views/header.module.php");
@@ -11,7 +10,9 @@ Route::set("index", function() {
     require_once("views/footer.module.php");
 });
 
-Route::set()
+Route::set("sign_up", function() {
+    User::createView("create_user_form");
+});
 
 if (!in_array($_GET["url"], Route::$validRoutes)) {
     require_once("views/header.module.php");
