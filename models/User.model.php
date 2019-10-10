@@ -1,6 +1,6 @@
 <?php
 
-namespace Camagru\Model\User;
+namespace School19\Camagru\Model;
 
 class User extends Model {
     private function user_exist($email) {
