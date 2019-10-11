@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 require("controllers/Route.controller.php");
 require_once("controllers/Controller.class.php");
 require_once("controllers/UserController.controller.php");
@@ -15,7 +15,7 @@ Route::set("sign_up", function() {
 });
 
 if (isset($_POST) && array_key_exists("submit_create", $_POST)) {
-    UserController::create_user($_POST['login'], $_POST['email'], $_POST['password']);
+    UserController::create_user($_POST);
 }
 
 if (!in_array($_GET["url"], Route::$validRoutes)) {

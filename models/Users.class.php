@@ -2,7 +2,7 @@
 
 require_once("models/Model.class.php");
 
-class UserModel extends Model {
+class UsersModel extends Model {
     private function user_exist($email) {
         try {
             parent::db_connect();
