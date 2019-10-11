@@ -1,8 +1,8 @@
 <?php
 
-namespace School19\Camagru\Model;
+require_once("models/Model.class.php");
 
-class User extends Model {
+class UserModel extends Model {
     private function user_exist($email) {
         try {
             parent::db_connect();
@@ -23,7 +23,7 @@ class User extends Model {
 
     public function create_user(array $kwuser_info) {
         try {
-            if (!($this->user_exist($email))) {
+            if (!($this->user_exist($kwuser_info["email"]))) {
                 parent::db_connect();
                 $sql = "INSERT INTO `users` (email, `login`, `password`, `profile_pic`) VALUES (?,?,?,?)";
                 $this->stmt = $this->pdo->prepare($sql);

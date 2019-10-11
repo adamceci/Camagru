@@ -8,7 +8,7 @@
 
 <?php
 
-if ($logged_on_user && $logged_on_user != '') {
+if (isset($logged_on_user) && $logged_on_user != '') {
 
 ?>
 	<div class="header">
@@ -26,7 +26,7 @@ else {
 	<div class="header">
         <div><a href="index.php">CAMAGRU</a></div>
 		<div class="hidden"></div>
-		<div><a href="sign_up.php">Sign up</a></div>
+		<div><a href="sign_up">Sign up</a></div>
         <div><button type="button">Log in</button></div>
 	</div>
 <?php

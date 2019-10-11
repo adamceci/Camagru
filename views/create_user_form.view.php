@@ -9,7 +9,7 @@
 <form action="create" method="POST">
     email: <input type="email" name="email" value=""/><br>
     login: <input type="text" name="login" value=""/><br>
-    passwd: <input type="password" name="passwd" value=""/><br>
+    passwd: <input type="password" name="password" value=""/><br>
     <input type="submit" name="submit_create" value="OK">
 </form>
 
