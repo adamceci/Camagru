@@ -30,12 +30,18 @@ class UsersController extends Controller {
     private static function creation_user_response($return_val, $arr) {
         switch ($return_val) {
             case 0:
+                $_SESSION["logged_on_user"] = $arr["login"];
+                header("Location: index.php");
                 return "Success\n";
             case 1:
                 self::fill_session_error($arr);
+                $_GET["url"] = "sign_up";
+                UsersController::createView("create_user_form");
                 return "The email already exists\n";
             case 2:
                 self::fill_session_error($arr);
+                $_GET["url"] = "sign_up";
+                UsersController::createView("create_user_form");
                 return "The login already exists\n";
         }
     }
@@ -55,8 +61,6 @@ class UsersController extends Controller {
                     "profile_pic" => array_key_exists("profile_pic", $kwargs) ? $kwargs["profile_pic"] : ""
                 ];
                 if (self::email_valid($kwargs_model['email']) && self::login_valid($kwargs_model['login'])) {
-                    $_GET["url"] = "sign_up";
-                    UsersController::createView("create_user_form");
                     return self::creation_user_response($user->create_user($kwargs_model), $kwargs_model);
                 } else {
                     self::fill_session_error($kwargs);
