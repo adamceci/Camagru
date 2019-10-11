@@ -11,7 +11,7 @@ Route::set("index", function() {
     require_once("views/footer.module.php");
 });
 
-Route::set()
+// Route::set()
 
 if (!in_array($_GET["url"], Route::$validRoutes)) {
     require_once("views/header.module.php");
