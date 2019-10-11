@@ -6,7 +6,7 @@ class UsersModel extends Model {
     private function user_exist($email) {
         try {
             parent::db_connect();
-            $sql = "SELECT `login` FROM `users` WHERE `email`=?";
+            $sql = "SELECT `login` FROM `users` WHERE LOWER(`email`)=?";
             $this->stmt = $this->pdo->prepare($sql);
             $this->stmt->execute([$email]);
             $arr = $this->stmt->fetchAll(PDO::FETCH_ASSOC);
