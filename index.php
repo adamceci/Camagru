@@ -1,8 +1,8 @@
 <?php
 session_start();
-require("controllers/Route.controller.php");
+require("controllers/Routes.class.php");
 require_once("controllers/Controller.class.php");
-require_once("controllers/UserController.controller.php");
+require_once("controllers/Users.class.php");
 
 Route::set("index", function() {
     require_once("views/header.module.php");
@@ -11,11 +11,11 @@ Route::set("index", function() {
 });
 
 Route::set("sign_up", function() {
-    UserController::createView("create_user_form");
+    UsersController::createView("create_user_form");
 });
 
 if (isset($_POST) && array_key_exists("submit_create", $_POST)) {
-    UserController::create_user($_POST);
+    echo UsersController::create_user($_POST);
 }
 
 if (!in_array($_GET["url"], Route::$validRoutes)) {
