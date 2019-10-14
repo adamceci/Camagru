@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS users (
     `password` VARCHAR(255) NOT NULL,
     profile_pic VARCHAR(255) NOT NULL,
     verif_hash CHAR(32) NOT NULL,
-    active TINYINT(1) DEFAULT 0
+    active TINYINT(1) NOT NULL DEFAULT 0
 );
 
 -- Posts table creation
