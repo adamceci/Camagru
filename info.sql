@@ -2,13 +2,18 @@
 CREATE DATABASE IF NOT EXISTS db_camagru;
 USE db_camagru;
 
+-- Get errors when NOT NULL is not respected
+SET sql_mode = "strict_all_tables";
+
 -- Users table creation
 CREATE TABLE IF NOT EXISTS users (
     `user_id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     email VARCHAR(255) NOT NULL UNIQUE,
     `login` VARCHAR(26) NOT NULL UNIQUE,
-    passwd VARCHAR(255) NOT NULL,
-    profile_pic VARCHAR(255) NOT NULL
+    `password` VARCHAR(255) NOT NULL,
+    profile_pic VARCHAR(255) NOT NULL,
+    verif_hash CHAR(32) NOT NULL,
+    active TINYINT(1) DEFAULT 0
 );
 
 -- Posts table creation
