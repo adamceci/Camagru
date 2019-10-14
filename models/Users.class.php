@@ -30,9 +30,9 @@ class UsersModel extends Model {
             $return_user_exist = $this->user_exist($kwuser_info["email"], $kwuser_info["login"]);
             if ($return_user_exist == 0) {
                 parent::db_connect();
-                $sql = "INSERT INTO `users` (email, `login`, `password`, `profile_pic`) VALUES (?,?,?,?)";
+                $sql = "INSERT INTO `users` (email, `login`, `password`, `profile_pic`, `verif_hash`) VALUES (?,?,?,?,?)";
                 $this->stmt = $this->pdo->prepare($sql);
-                $this->stmt->execute([$kwuser_info['email'], $kwuser_info['login'], $kwuser_info['password'], $kwuser_info['profile_pic']]);
+                $this->stmt->execute([$kwuser_info['email'], $kwuser_info['login'], $kwuser_info['password'], $kwuser_info['profile_pic'], $kwuser_info['verif_hash']]);
                 parent::db_drop_connection();
                 return (0);
             } else {
