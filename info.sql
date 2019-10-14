@@ -11,6 +11,7 @@ CREATE TABLE IF NOT EXISTS users (
     email VARCHAR(255) NOT NULL UNIQUE,
     `login` VARCHAR(26) NOT NULL UNIQUE,
     `password` VARCHAR(255) NOT NULL,
+    -- should add default profile pic
     profile_pic VARCHAR(255) NOT NULL,
     verif_hash CHAR(32) NOT NULL,
     active TINYINT(1) NOT NULL DEFAULT 0
