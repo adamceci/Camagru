@@ -8,13 +8,13 @@
 
 <?php
 
-if (isset($logged_on_user) && $logged_on_user != '') {
+if (isset($_SESSION) && array_key_exists("current_user", $_SESSION)) {
 
 ?>
 	<div class="header">
         <div><a href="index.php">CAMAGRU</a></div>
         <div class="hidden"></div>
-        <div><a href="profile.php"><?=$logged_on_user?></a></div>
+        <div><a href="profile.php"><?=$_SESSION["current_user"]?></a></div>
         <div><button type="button">Log out</button></div>
     </div>
 <?php
