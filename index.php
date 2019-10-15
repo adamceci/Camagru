@@ -5,6 +5,10 @@ require("controllers/Routes.class.php");
 require_once("controllers/Controller.class.php");
 require_once("controllers/Users.class.php");
 
+if (array_key_exists("email", $_GET) && array_key_exists("hash", $_GET)) {
+    echo UsersController::activate_account($_GET["email"], $_GET["hash"]);
+}
+
 Route::set("index", function() {
     require_once("views/header.module.php");
     require_once("views/index.view.php");
@@ -24,3 +28,4 @@ if (!in_array($_GET["url"], Route::$validRoutes)) {
     require_once("views/index.view.php");
     require_once("views/footer.module.php");
 }
+

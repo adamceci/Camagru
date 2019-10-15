@@ -27,11 +27,19 @@ class UsersController extends Controller {
         return (TRUE);
     }
 
+
+    private static function fill_current_user_login($email) {
+        $_SESSION["current_user"] = $email;
+    }
+
     private static function creation_user_response($return_val, $arr) {
         switch ($return_val) {
             case 1:
-                self::send_verification_email($arr);
-                return "Your account has been made, <br /> please verify it by clicking the activation link that has been send to your email.<br />";
+                if (self::send_verification_email($arr)) {
+                    return "Your account has been made, <br /> please verify it by clicking the activation link that has been send to your email.<br />";
+                } else {
+                    return "The verification email wasn't sent\n";
+                }
             case EMAIL_EXISTS:
                 self::fill_session_error($arr, "sign_up");
                 UsersController::createView("create_user_form");
@@ -40,6 +48,17 @@ class UsersController extends Controller {
                 self::fill_session_error($arr, "sign_up");
                 UsersController::createView("create_user_form");
                 return "The login already exists\n";
+        }
+    }
+
+    private static function activation_user_response($return_val, $email) {
+        switch ($return_val) {
+            case 1:
+                self::fill_current_user_login($email);
+                return "The account has been activated. Welcome to the BDClub";
+            case USER_DONT_EXIST:
+                UsersController::createView("create_user_form");
+                return "The email already exists\n";
         }
     }
 
@@ -84,7 +103,7 @@ class UsersController extends Controller {
     send_verification_email($email, $hash) verify if the hash and the email sent by the user correspond to a verification email.
     Then, it'll send the user logged on the index.
     */
-    public static function send_verification_email($user_info) {
+    private static function send_verification_email($user_info) {
         if (self::email_valid($user_info["email"]) && self::md5_valid($user_info["verif_hash"])) {
             $to = "Gabriele_Virga@hotmail.com";
             $from = "gvirga@student.s19.be";
@@ -97,12 +116,23 @@ class UsersController extends Controller {
             $subject = "<h1 class='test'> Verification mail </h1>";
             $link = "http://localhost:8080/Camagru/index.php?email=" . $user_info['email'] . "&hash=" . $user_info["verif_hash"] . "";
             $message = '<a href="' . $link . '"> localhost:8080/Camgru/verif </a>';
-            mail($to, $subject, $message, $headers);
+            if (mail($to, $subject, $message, $headers)) {
+                return (1);
+            } else {
+                return (0);
+            }
         }
-        $_SESSION["logged_on_user"] = $user_info["login"];
     }
 
+    public static function activate_account($email, $hash) {
+        if (self::email_valid($email) && self::md5_valid($hash)) {
+            $user = new User;
+            $return_value = $user->activate_account($email, $hash);
+            return self::activation_user_response($return_value, $email);
+        }
+    } 
     
+
 	/*
 	email_valid($email) take an user input and verify if the input is a well-formatted email.
 	*/

@@ -81,7 +81,7 @@ class User extends Model {
             throw new Exception("Error create_user in User Model:" . $e->getMessage());
         }
     }
-
+    
     public function activate_account($email, $hash) {
         try {
             parent::db_connect();
