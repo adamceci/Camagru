@@ -16,11 +16,5 @@ class Controller {
 		require_once('./views/'.$moduleName.'.module.php');
 	}
 
-	/*
-	This function take an user input and verify if the input is a well-formatted email.
-	*/
-	public static function email_valid($email) {
-
-	}
 }
 

@@ -1,5 +1,6 @@
 <?php
 session_start();
+require_once("assets/macros/errors.php");
 require("controllers/Routes.class.php");
 require_once("controllers/Controller.class.php");
 require_once("controllers/Users.class.php");

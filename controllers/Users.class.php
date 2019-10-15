@@ -1,6 +1,6 @@
 <?php
 require_once("models/Model.class.php");
-require_once("models/Users.class.php");
+require_once("models/User.class.php");
 
 class UsersController extends Controller {
 
@@ -29,35 +29,39 @@ class UsersController extends Controller {
 
     private static function creation_user_response($return_val, $arr) {
         switch ($return_val) {
-            case 0:
-                $_SESSION["logged_on_user"] = $arr["login"];
-                return "Your account has been made, <br /> please verify it by clicking the activation link that has been send to your email.<br />";
             case 1:
+                self::send_verification_email($arr);
+                return "Your account has been made, <br /> please verify it by clicking the activation link that has been send to your email.<br />";
+            case EMAIL_EXISTS:
                 self::fill_session_error($arr, "sign_up");
                 UsersController::createView("create_user_form");
                 return "The email already exists\n";
-            case 2:
+            case LOGIN_EXISTS:
                 self::fill_session_error($arr, "sign_up");
                 UsersController::createView("create_user_form");
                 return "The login already exists\n";
         }
     }
 
+    /*
+    create_user(array $kwargs)
+    */
     public function create_user(array $kwargs) {
         try {
             $keys = ["password", "password2", "login", "email", "profile_pic"];
             if ((self::info_creation_exists($keys, $kwargs)) == FALSE) {
                 return "Error: empty inputs when creating an user\n";
             }
-            $user = new UsersModel;
+ 
             if ($kwargs["password"] == $kwargs["password_verif"]) {
                 $kwargs_model = [
                     "email" => array_key_exists("email", $kwargs) ? $kwargs["email"] : "",
                     "login" => array_key_exists("login", $kwargs) ? $kwargs["login"] : "",
                     "password" => array_key_exists("password", $kwargs) ? hash("whirlpool", $kwargs["password"]) : "",
-                    "profile_pic" => array_key_exists("profile_pic", $kwargs) ? $kwargs["profile_pic"] : "",
+                    "profile_pic" => array_key_exists("profile_pic", $kwargs) ? $kwargs["profile_pic"] : "assets",
                     "verif_hash" => md5(rand(9101994, 11021994))
                 ];
+                $user = new User;
                 if (self::email_valid($kwargs_model['email']) && self::login_valid($kwargs_model['login'])) {
                     return self::creation_user_response($user->create_user($kwargs_model), $kwargs_model);
                 } else {
@@ -76,19 +80,51 @@ class UsersController extends Controller {
         }
     }
 
+    /*
+    send_verification_email($email, $hash) verify if the hash and the email sent by the user correspond to a verification email.
+    Then, it'll send the user logged on the index.
+    */
+    public static function send_verification_email($user_info) {
+        if (self::email_valid($user_info["email"]) && self::md5_valid($user_info["verif_hash"])) {
+            $to = "Gabriele_Virga@hotmail.com";
+            $from = "gvirga@student.s19.be";
+            // Set content-type header for sending HTML email 
+            $headers = "MIME-Version: 1.0" . "\r\n"; 
+            $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n"; 
+            
+            // Additional headers 
+            $headers .= 'From: '.$from. "\r\n"; 
+            $subject = "<h1 class='test'> Verification mail </h1>";
+            $link = "http://localhost:8080/Camagru/index.php?email=" . $user_info['email'] . "&hash=" . $user_info["verif_hash"] . "";
+            $message = '<a href="' . $link . '"> localhost:8080/Camgru/verif </a>';
+            mail($to, $subject, $message, $headers);
+        }
+        $_SESSION["logged_on_user"] = $user_info["login"];
+    }
+
+    
 	/*
-	This function take an user input and verify if the input is a well-formatted email.
+	email_valid($email) take an user input and verify if the input is a well-formatted email.
 	*/
-	public static function email_valid($email) {
-        if (preg_match("/^(?!(?:(?:\x22?\x5C[\x00-\x7E]\x22?)|(?:\x22?[^\x5C\x22]\x22?)){255,})(?!(?:(?:\x22?\x5C[\x00-\x7E]\x22?)|(?:\x22?[^\x5C\x22]\x22?)){65,}@)(?:(?:[\x21\x23-\x27\x2A\x2B\x2D\x2F-\x39\x3D\x3F\x5E-\x7E]+)|(?:\x22(?:[\x01-\x08\x0B\x0C\x0E-\x1F\x21\x23-\x5B\x5D-\x7F]|(?:\x5C[\x00-\x7F]))*\x22))(?:\.(?:(?:[\x21\x23-\x27\x2A\x2B\x2D\x2F-\x39\x3D\x3F\x5E-\x7E]+)|(?:\x22(?:[\x01-\x08\x0B\x0C\x0E-\x1F\x21\x23-\x5B\x5D-\x7F]|(?:\x5C[\x00-\x7F]))*\x22)))*@(?:(?:(?!.*[^.]{64,})(?:(?:(?:xn--)?[a-z0-9]+(?:-[a-z0-9]+)*\.){1,126}){1,}(?:(?:[a-z][a-z0-9]*)|(?:(?:xn--)[a-z0-9]+))(?:-[a-z0-9]+)*)|(?:\[(?:(?:IPv6:(?:(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){7})|(?:(?!(?:.*[a-f0-9][:\]]){7,})(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,5})?::(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,5})?)))|(?:(?:IPv6:(?:(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){5}:)|(?:(?!(?:.*[a-f0-9]:){5,})(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,3})?::(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,3}:)?)))?(?:(?:25[0-5])|(?:2[0-4][0-9])|(?:1[0-9]{2})|(?:[1-9]?[0-9]))(?:\.(?:(?:25[0-5])|(?:2[0-4][0-9])|(?:1[0-9]{2})|(?:[1-9]?[0-9]))){3}))\]))$/iD",$email)) {
+	private static function email_valid($email) {
+        if (preg_match('/^(?!(?:(?:\x22?\x5C[\x00-\x7E]\x22?)|(?:\x22?[^\x5C\x22]\x22?)){255,})(?!(?:(?:\x22?\x5C[\x00-\x7E]\x22?)|(?:\x22?[^\x5C\x22]\x22?)){65,}@)(?:(?:[\x21\x23-\x27\x2A\x2B\x2D\x2F-\x39\x3D\x3F\x5E-\x7E]+)|(?:\x22(?:[\x01-\x08\x0B\x0C\x0E-\x1F\x21\x23-\x5B\x5D-\x7F]|(?:\x5C[\x00-\x7F]))*\x22))(?:\.(?:(?:[\x21\x23-\x27\x2A\x2B\x2D\x2F-\x39\x3D\x3F\x5E-\x7E]+)|(?:\x22(?:[\x01-\x08\x0B\x0C\x0E-\x1F\x21\x23-\x5B\x5D-\x7F]|(?:\x5C[\x00-\x7F]))*\x22)))*@(?:(?:(?!.*[^.]{64,})(?:(?:(?:xn--)?[a-z0-9]+(?:-[a-z0-9]+)*\.){1,126}){1,}(?:(?:[a-z][a-z0-9]*)|(?:(?:xn--)[a-z0-9]+))(?:-[a-z0-9]+)*)|(?:\[(?:(?:IPv6:(?:(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){7})|(?:(?!(?:.*[a-f0-9][:\]]){7,})(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,5})?::(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,5})?)))|(?:(?:IPv6:(?:(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){5}:)|(?:(?!(?:.*[a-f0-9]:){5,})(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,3})?::(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,3}:)?)))?(?:(?:25[0-5])|(?:2[0-4][0-9])|(?:1[0-9]{2})|(?:[1-9]?[0-9]))(?:\.(?:(?:25[0-5])|(?:2[0-4][0-9])|(?:1[0-9]{2})|(?:[1-9]?[0-9]))){3}))\]))$/iD',$email)) {
             return (1);
         }
         return (0);
     }
     /*
-	This function take an user input and verify if the input is a well-formatted login.
+    md5_valid($md5_hash) takes an hash and verify if it has only the char authorized for md5. 
+    */
+    public static function md5_valid($hash) {
+        if (preg_match('/^[0-9A-F]+$/iD', $hash)) {
+            return (1);
+        }
+        return (0);
+    }
+    /*
+    login_valid($login) take an user input and verify if the input is a well-formatted login.
 	*/
-	public static function login_valid($login) {
+	private static function login_valid($login) {
         if (preg_match("/^(?=.{5,26}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$/",$login)) {
             return (1);
         }
