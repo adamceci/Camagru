@@ -1,6 +1,6 @@
 <?php
 require_once("models/Model.class.php");
-require_once("models/UserModel.model.php");
+require_once("models/UsersModel.class.php");
 
 class UserController extends Controller {
     public function create_user($login, $email, $password) {

@@ -1,8 +1,8 @@
 <?php
 
-require("controllers/Route.controller.php");
+require("controllers/RouteController.class.php");
 require_once("controllers/Controller.class.php");
-require_once("controllers/UserController.controller.php");
+require_once("controllers/UserController.class.php");
 
 Route::set("index", function() {
     require_once("views/header.module.php");
@@ -17,6 +17,10 @@ Route::set("sign_up", function() {
 if (isset($_POST) && array_key_exists("submit_create", $_POST)) {
     UserController::create_user($_POST['login'], $_POST['email'], $_POST['password']);
 }
+
+Route::set("create_post", function() {
+    PostsController::create_post("assets/post_imgs/aze.png");
+});
 
 if (!in_array($_GET["url"], Route::$validRoutes)) {
     require_once("views/header.module.php");

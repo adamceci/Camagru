@@ -1,14 +1,14 @@
 <?php
 
-class PostsModel extends Model {
+class Post extends Model {
     // get table info
     // create line
-    public function create_post(array $test) {
+    public function create_post(array $kwargs) {
         try {
             parrent::db_connect();
             $sql = "INSERT INTO posts (`user_id`, `image`, creation_date) VALUES (?, ?, ?)";
             $this->stmt = $this->dbo->prepare($sql);
-            $this->stmt->execute(array($test['user_id'], $test['image'], $test['creation_date']));
+            $this->stmt->execute(array($kwargs['user_id'], $kwargs['image']));
             parent::db_drop_connection();
         }
         catch (Exception $e) {
