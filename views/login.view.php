@@ -1,8 +1,6 @@
 <?php
-if (isset($_SESSION) &&
-    (array_key_exists("last_email", $_SESSION)
-        || array_key_exists("last_login", $_SESSION))) {
-    $last_input = (!empty($_SESSION["last_login"])) ? $_SESSION["last_login"] : $_SESSION["last_email"];
+if (isset($_SESSION) && array_key_exists("last_login", $_SESSION)) {
+    $last_input = (!empty($_SESSION["last_login"])) ? $_SESSION["last_login"] : "";
 }
 ?>
 
@@ -15,7 +13,7 @@ if (isset($_SESSION) &&
 <body>
 
 <form action="login" method="POST">
-    email or login: <input type="email" name="email" value="<?php if(isset($last_input)) echo $last_input; ?>"/><br>
+    email or login: <input type="login" name="login" value="<?php if(isset($last_input)) echo $last_input; $last_input = ""; ?>"/><br>
     password: <input type="password" name="password" value=""/><br>
     <input type="submit" name="submit_login" value="OK">
 </form>

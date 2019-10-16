@@ -23,11 +23,15 @@ Route::set("login", function () {
     UsersController::createView("login");
 });
 
+Route::set("logout", function () {
+    UsersController::logout();
+});
+
 if (isset($_POST) && array_key_exists("submit_create", $_POST)) {
     echo UsersController::create_user($_POST);
 }
 
-if (isset($_POST) && array_key_exists("login", $_POST)) {
+if (isset($_POST) && array_key_exists("submit_login", $_POST)) {
     echo UsersController::login($_POST);
 }
 

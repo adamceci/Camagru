@@ -7,7 +7,6 @@
 <body>
 
 <?php
-
 if (isset($_SESSION) && array_key_exists("current_user", $_SESSION)) {
 
 ?>
