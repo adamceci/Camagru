@@ -114,8 +114,8 @@ class User extends Model {
             parent::db_connect();
             $sql = "SELECT `login`, `email`, `user_id`, `profile_pic` 
                     FROM `users` 
-                    WHERE LOWER(`email`)=? 
-                    OR LOWER(`login`)=?";
+                    WHERE (LOWER(`email`)=? OR LOWER(`login`)=?)
+                    AND `active`=1";
             $this->stmt = $this->pdo->prepare($sql);
             $email = $valid_field;
             $login = $valid_field;

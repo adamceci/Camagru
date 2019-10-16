@@ -19,8 +19,16 @@ Route::set("sign_up", function() {
     UsersController::createView("create_user_form");
 });
 
+Route::set("login", function () {
+    UsersController::createView("login");
+});
+
 if (isset($_POST) && array_key_exists("submit_create", $_POST)) {
     echo UsersController::create_user($_POST);
+}
+
+if (isset($_POST) && array_key_exists("login", $_POST)) {
+    echo UsersController::login($_POST);
 }
 
 if (!in_array($_GET["url"], Route::$validRoutes)) {

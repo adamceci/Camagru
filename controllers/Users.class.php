@@ -33,8 +33,9 @@ class UsersController extends Controller {
             $_SESSION["current_user_email"] = $content[0]["email"];
             $_SESSION["current_user_pic"] = $content[0]["profile_pic"];
             $_SESSION["current_user_user_id"] = $content[0]["user_id"];
+            return (1);
         }
-        return (1);
+        return (0);
     }
 
     private static function creation_user_response($return_val, $arr) {
@@ -70,7 +71,7 @@ class UsersController extends Controller {
     /*
     create_user(array $kwargs)
     */
-    public function create_user(array $kwargs) {
+    public static function create_user(array $kwargs) {
         try {
             $keys = ["password", "password2", "login", "email", "profile_pic"];
             if ((self::info_creation_exists($keys, $kwargs)) == FALSE) {
@@ -148,7 +149,7 @@ class UsersController extends Controller {
     /*
     md5_valid($md5_hash) takes an hash and verify if it has only the char authorized for md5. 
     */
-    public static function md5_valid($hash) {
+    private static function md5_valid($hash) {
         if (preg_match('/^[0-9A-F]+$/iD', $hash)) {
             return (1);
         }
@@ -167,18 +168,18 @@ class UsersController extends Controller {
 	private static function login_verif(array $kwargs) {
 	    $user = new User;
         if (array_key_exists("email", $kwargs) && !empty($kwargs["email"])) {
-            if (self::email_valid($kwargs["email"]) && $user->user_exists($kwargs)) {
+            if (self::email_valid($kwargs["email"])) {
                 return (self::fill_current_user_login($kwargs["email"]));
             }
         } else if (array_key_exists("login", $kwargs) && !empty($kwargs["login"])) {
-            if (self::login_valid($kwargs["login"]) && $user->user_exists($kwargs)) {
+            if (self::login_valid($kwargs["login"])) {
                 return (self::fill_current_user_login($kwargs["login"]));
             }
         }
         return (0);
     }
 
-	private static function login(array $kwargs) {
+	public static function login(array $kwargs) {
         if (array_key_exists("password", $kwargs) && !empty($kwargs["password"])) {
             if (self::login_verif($kwargs)) {
                 return ("Logged");
