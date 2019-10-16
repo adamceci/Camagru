@@ -7,7 +7,6 @@ class UsersController extends Controller {
     /*
     This function takes an array and fill the session 
     */
-
     private static function fill_session_error(array $arr, $url) {
         $_GET["url"] = $url;
         $_SESSION['last_email'] = (array_key_exists("email", $arr)) ? $arr["email"] : "";
@@ -20,16 +19,22 @@ class UsersController extends Controller {
     */
     private static function info_creation_exists(array $keys, array $arr) {
         if (!array_diff($keys, array_keys($arr))) {
-            self::fill_session_error($arr, "sign_up");
-            UsersController::createView("create_user_form");
             return (FALSE);
         }
         return (TRUE);
     }
 
 
-    private static function fill_current_user_login($email) {
-        $_SESSION["current_user"] = $email;
+    private static function fill_current_user_login($valid_field) {
+        $user = new User;
+        $content = $user->get_info($valid_field);
+        if ($content != FALSE) {
+            $_SESSION["current_user"] = $content[0]["login"];
+            $_SESSION["current_user_email"] = $content[0]["email"];
+            $_SESSION["current_user_pic"] = $content[0]["profile_pic"];
+            $_SESSION["current_user_user_id"] = $content[0]["user_id"];
+        }
+        return (1);
     }
 
     private static function creation_user_response($return_val, $arr) {
@@ -69,9 +74,10 @@ class UsersController extends Controller {
         try {
             $keys = ["password", "password2", "login", "email", "profile_pic"];
             if ((self::info_creation_exists($keys, $kwargs)) == FALSE) {
+                self::fill_session_error($kwargs, "sign_up");
+                UsersController::createView("create_user_form");
                 return "Error: empty inputs when creating an user\n";
             }
- 
             if ($kwargs["password"] == $kwargs["password_verif"]) {
                 $kwargs_model = [
                     "email" => array_key_exists("email", $kwargs) ? $kwargs["email"] : "",
@@ -107,11 +113,8 @@ class UsersController extends Controller {
         if (self::email_valid($user_info["email"]) && self::md5_valid($user_info["verif_hash"])) {
             $to = "Gabriele_Virga@hotmail.com";
             $from = "gvirga@student.s19.be";
-            // Set content-type header for sending HTML email 
             $headers = "MIME-Version: 1.0" . "\r\n"; 
-            $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n"; 
-            
-            // Additional headers 
+            $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
             $headers .= 'From: '.$from. "\r\n"; 
             $subject = "<h1 class='test'> Verification mail </h1>";
             $link = "http://localhost:8080/Camagru/index.php?email=" . $user_info['email'] . "&hash=" . $user_info["verif_hash"] . "";
@@ -160,4 +163,33 @@ class UsersController extends Controller {
         }
 		return (0);
 	}
+
+	private static function login_verif(array $kwargs) {
+	    $user = new User;
+        if (array_key_exists("email", $kwargs) && !empty($kwargs["email"])) {
+            if (self::email_valid($kwargs["email"]) && $user->user_exists($kwargs)) {
+                return (self::fill_current_user_login($kwargs["email"]));
+            }
+        } else if (array_key_exists("login", $kwargs) && !empty($kwargs["login"])) {
+            if (self::login_valid($kwargs["login"]) && $user->user_exists($kwargs)) {
+                return (self::fill_current_user_login($kwargs["login"]));
+            }
+        }
+        return (0);
+    }
+
+	private static function login(array $kwargs) {
+        if (array_key_exists("password", $kwargs) && !empty($kwargs["password"])) {
+            if (self::login_verif($kwargs)) {
+                return ("Logged");
+            } else {
+                self::fill_session_error($kwargs, "login");
+                UsersController::createView("login");
+                return ("Wrong login\n");
+            }
+        }
+        self::fill_session_error($kwargs, "login");
+        UsersController::createView("login");
+        return ("Empty password");
+    }
 }

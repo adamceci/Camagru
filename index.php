@@ -28,4 +28,3 @@ if (!in_array($_GET["url"], Route::$validRoutes)) {
     require_once("views/index.view.php");
     require_once("views/footer.module.php");
 }
-

@@ -3,11 +3,12 @@
 require_once("models/Model.class.php");
 
 class User extends Model {
-
     private function user_email_exist($email) {
         try {
             parent::db_connect();
-            $sql = "SELECT `email` FROM `users` WHERE LOWER(`email`)=?";
+            $sql = "SELECT `email` 
+                    FROM `users` 
+                    WHERE LOWER(`email`)=?";
             $this->stmt = $this->pdo->prepare($sql);
             $this->stmt->execute(array($email));
             $arr = $this->stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -25,7 +26,9 @@ class User extends Model {
     private function user_login_exist($login) {
         try {
             parent::db_connect();
-            $sql = "SELECT `login` FROM `users` WHERE LOWER(`login`)=?";
+            $sql = "SELECT `login` 
+                    FROM `users` 
+                    WHERE LOWER(`login`)=?";
             $this->stmt = $this->pdo->prepare($sql);
             $this->stmt->execute(array($login));
             $arr = $this->stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -43,7 +46,10 @@ class User extends Model {
     private function user_login_or_email_exist($email, $login) {
         try {
             parent::db_connect();
-            $sql = "SELECT `login`, `email` FROM `users` WHERE LOWER(`email`)=? OR LOWER(`login`)=?";
+            $sql = "SELECT `login`, `email` 
+                    FROM `users` 
+                    WHERE LOWER(`email`)=? 
+                    OR LOWER(`login`)=?";
             $this->stmt = $this->pdo->prepare($sql);
             $this->stmt->execute(array($email, $login));
             $arr = $this->stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -67,7 +73,8 @@ class User extends Model {
             $user_exist = $this->user_login_or_email_exist($kwuser_info["email"], $kwuser_info["login"]);
             if (!$user_exist) {
                 parent::db_connect();
-                $sql = "INSERT INTO `users` (email, `login`, `password`, `profile_pic`, `verif_hash`) VALUES (?,?,?,?,?)";
+                $sql = "INSERT INTO `users` (email, `login`, `password`, `profile_pic`, `verif_hash`) 
+                        VALUES (?,?,?,?,?)";
                 $this->stmt = $this->pdo->prepare($sql);
                 $this->stmt->execute(array($kwuser_info['email'], $kwuser_info['login'], $kwuser_info['password'], $kwuser_info['profile_pic'], $kwuser_info['verif_hash']));
                 parent::db_drop_connection();
@@ -85,7 +92,10 @@ class User extends Model {
     public function activate_account($email, $hash) {
         try {
             parent::db_connect();
-            $sql = "UPDATE `users` SET active=1 WHERE verif_hash=? AND email=?";
+            $sql = "UPDATE `users` 
+                    SET active=1
+                    WHERE verif_hash=? 
+                    AND email=?";
             $this->stmt = $this->pdo->prepare($sql);
             $return_value = $this->stmt->execute(array($hash, $email));
             parent::db_drop_connection();
@@ -96,6 +106,29 @@ class User extends Model {
             }
         } catch (Exception $e) {
             throw new Exception("Error create_user in User Model:" . $e->getMessage());
+        }
+    }
+
+    public function get_info($valid_field) {
+        try {
+            parent::db_connect();
+            $sql = "SELECT `login`, `email`, `user_id`, `profile_pic` 
+                    FROM `users` 
+                    WHERE LOWER(`email`)=? 
+                    OR LOWER(`login`)=?";
+            $this->stmt = $this->pdo->prepare($sql);
+            $email = $valid_field;
+            $login = $valid_field;
+            $this->stmt->execute(array($email, $login));
+            $arr = $this->stmt->fetchAll(PDO::FETCH_ASSOC);
+            parent::db_drop_connection();
+            if (!$arr) {
+                return (FALSE);
+            } else {
+                return ($arr);
+            }
+        } catch (Exception $e) {
+            throw new Exception("Error user_login_or_email_exist in User Model:" . $e->getMessage());
         }
     }
 }
