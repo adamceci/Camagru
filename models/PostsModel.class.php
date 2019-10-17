@@ -2,11 +2,11 @@
 
 class Post extends Model {
     // get table info
-    // create line
+    // create line into table
     public function create_post(array $kwargs) {
         try {
             parrent::db_connect();
-            $sql = "INSERT INTO posts (`user_id`, `image`, creation_date) VALUES (?, ?, ?)";
+            $sql = "INSERT INTO posts (`user_id`, `image`) VALUES (?, ?)";
             $this->stmt = $this->dbo->prepare($sql);
             $this->stmt->execute(array($kwargs['user_id'], $kwargs['image']));
             parent::db_drop_connection();
