@@ -5,7 +5,9 @@ class Controller {
 	A view is a part of a website that is used only once in the website (Ex: The login view)
 	*/
 	public static function createView($viewName){
+		require_once("views/header.module.php");
 		require_once('./views/'.$viewName.'.view.php');
+	    require_once("views/footer.module.php");
 	}
 	
 	/* 
