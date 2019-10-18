@@ -169,7 +169,8 @@ class UsersController extends Controller {
 	private static function login_verif(array $kwargs) {
 	    $user = new User;
         if (array_key_exists("login", $kwargs) && !empty($kwargs["login"])) {
-            if (self::login_valid($kwargs["login"]) || self::email_valid($kwargs["login"])) {
+            if (self::login_valid($kwargs["login"]) || self::email_valid($kwargs["login"]) 
+            && $user->auth_user($kwargs["login"], hash("whirlpool", $kwargs["password"]))) {
                 return (self::fill_current_user_login($kwargs["login"], "index"));
             }
         }
