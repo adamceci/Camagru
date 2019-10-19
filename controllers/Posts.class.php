@@ -1,19 +1,22 @@
 <?php
 
-session_start();
+require_once("models/Model.class.php");
+require_once("models/PostsModel.class.php");
+// session_start();
 
 class PostsController extends Controller {
     // display post
     // create post
-    public static function create_post($image) {
-        if(isset($image)) {
-            $kwargs = [
-                "user_id" => $_SESSION["current_user"]->$user_id,
-                "image" => $image
-            ];
+    public static function create_post($kwargs) {
+        if (array_key_exists("image", $kwargs)) {
+            $kwargs["user_id"] = $_SESSION["current_user"];
             Post::create_post($kwargs);
-        }
-        require_once(post_view.php);
+		}
+		else {
+			echo "Please select an image";
+		}
+		// if filter doesn't exist ? -> todo
+        // require_once(post_view.php);
     }
     // delete post
 }

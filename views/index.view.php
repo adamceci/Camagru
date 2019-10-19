@@ -7,7 +7,7 @@
 <body>
     <div id="container_title">
         <h1>GALLERY</h1>
-        <a href="montage.php">Create a new post</a>
+        <a href="montage">Create a new post</a>
     </div>
     <div id="container_box">
         <div class="post_index">

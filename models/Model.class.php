@@ -8,6 +8,7 @@ class Model {
         try {
             require("controllers/password.php");
             $this->pdo = new PDO($dsn, $user, $password);
+            echo "ca fonctionne la ?";
         }
         catch (PDOException $e) {
             throw new Exception ("Connection to database failed in Model");

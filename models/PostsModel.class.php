@@ -5,7 +5,10 @@ class Post extends Model {
     // create line into table
     public function create_post(array $kwargs) {
         try {
-            parrent::db_connect();
+            echo "salutations\n";
+            echo "ENCORE DES TESTS\n";
+            parent::db_connect();
+			echo "QUE SE PASSE T IL\n";
             $sql = "INSERT INTO posts (`user_id`, `image`) VALUES (?, ?)";
             $this->stmt = $this->dbo->prepare($sql);
             $this->stmt->execute(array($kwargs['user_id'], $kwargs['image']));
