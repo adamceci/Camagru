@@ -10,14 +10,37 @@
         <a href="montage">Create a new post</a>
     </div>
     <div id="container_box">
-        <div class="post_index">
+    <?php
+    var_dump($array);
+        if (isset($array)) {
+            echo "ok";
+        }
+        else {
+            echo "not ok";
+        }
+        // $i = 0;
+        // while ($i < 6) {
+            
+            ?>
+            <!-- <img src="assets/post_imgs/aze.png" alt="">
+            <div class="display_nb">
+                <p><?=$nb_comments?>X Comment(s)</p>
+                <p><?=$nb_likes?>X Like(s)</p>
+            </div> -->
+            <?php
+
+        //     $i++;
+        // }
+
+    ?>
+        <!-- <div class="post_index">
 			<img src="assets/post_imgs/aze.png" alt="">
             <div class="display_nb">
                 <p><?=$nb_comments?>X Comment(s)</p>
                 <p><?=$nb_likes?>X Like(s)</p>
             </div>
-        </div>
-        <div class="post_index">
+        </div> -->
+        <!-- <div class="post_index">
 			<img src="assets/post_imgs/aze.png" alt="">
             <div class="display_nb">
                 <p><?=$nb_comments?>X Comment(s)</p>
@@ -51,7 +74,7 @@
                 <p><?=$nb_comments?>X Comment(s)</p>
                 <p><?=$nb_likes?>X Like(s)</p>
             </div>
-        </div>
+        </div> -->
     </div>
     <div class="pagination">
         <a href="#">&laquo;</a>

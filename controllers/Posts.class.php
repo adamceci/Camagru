@@ -5,12 +5,21 @@ require_once("models/PostsModel.class.php");
 // session_start();
 
 class PostsController extends Controller {
-    // display post
+	// display post
+	public static function display_posts() {
+		$post = new Post;
+		$limit = 6;
+		$offset = 4;
+		$array = $post->get_posts($limit, $offset);
+		var_dump($array);
+		parent::createView("index");
+	}
     // create post
     public static function create_post($kwargs) {
         if (array_key_exists("image", $kwargs)) {
-            $kwargs["user_id"] = $_SESSION["current_user"];
-            Post::create_post($kwargs);
+			$post = new Post;
+			$kwargs["user_id"] = $_SESSION["current_user_user_id"];
+            $post->create_post($kwargs);
 		}
 		else {
 			echo "Please select an image";

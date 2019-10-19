@@ -11,7 +11,7 @@ if (array_key_exists("email", $_GET) && array_key_exists("hash", $_GET)) {
 }
 
 Route::set("index", function() {
-    Controller::createView("index");
+    PostsController::display_posts();
 });
 
 Route::set("sign_up", function() {
@@ -42,11 +42,9 @@ if (isset($_POST) && array_key_exists("submit_create", $_POST)) {
 }
 
 if (isset($_POST) && array_key_exists("submit_create_post", $_POST)) {
-    var_dump($_POST);
-    // echo "hebensalut\n";
     PostsController::create_post($_POST);
 }
 
 if (!in_array($_GET["url"], Route::$validRoutes)) {
-    Controller::createView("index");
+    PostsController::display_posts();
 }
