@@ -24,6 +24,27 @@ class User extends Model {
         }
     }
 
+    private function delete_user($login, $hash_password) {
+        try {
+            parent::db_connect();
+            $sql = "DELETE
+                    FROM `users` 
+                    WHERE (LOWER(`email`)=? OR `login`=?)
+                    AND `password`=?";
+            $this->stmt = $this->pdo->prepare($sql);
+            $this->stmt->execute(array($login, $login, $hash_password));
+            $arr = $this->stmt->fetchAll(PDO::FETCH_ASSOC);
+            parent::db_drop_connection();
+            if (!$arr) {
+                return (0);
+            } else {
+                return (1);
+            }
+        } catch (Exception $e) {
+            throw new Exception("Error delete_user in User Model:" . $e->getMessage());
+        }
+    }
+
     private function user_email_exist($email) {
         try {
             parent::db_connect();

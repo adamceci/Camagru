@@ -105,7 +105,8 @@ class UsersController extends Controller {
                 if (self::email_valid($kwargs_model['email']) && self::login_valid($kwargs_model['login'])) {
                     return self::creation_user_response($user->create_user($kwargs_model), $kwargs_model);
                 } else {
-                    self::fill_session_error($kwargs, "sign_up "Email or login are not well formatted\n";
+                    self::fill_session_error($kwargs, "sign_up ")
+                    echo "Email or login are not well formatted\n";
                 }
             } else {
                 self::fill_session_error($kwargs, "sign_up");
@@ -130,7 +131,7 @@ class UsersController extends Controller {
             $headers .= 'From: '.$from. "\r\n"; 
             $subject = "<h1 class='test'> Verification mail </h1>";
             $link = "http://localhost:8080/Camagru/index.php?email=" . $user_info['email'] . "&hash=" . $user_info["verif_hash"] . "";
-            $message = '<a href="' . $link . '"> localhost:8080/Camgru/verif </a>';
+            $message = '<a href="' . $link . '"> localhost:8080/Camagru/verif </a>';
             if (mail($to, $subject, $message, $headers)) {
                 return (1);
             } else {
