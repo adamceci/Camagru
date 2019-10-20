@@ -1,9 +1,9 @@
 <?php
 session_start();
 require_once("assets/macros/errors.php");
-require("controllers/Routes.class.php");
-require_once("controllers/Controller.class.php");
+require("controllers/Controller.class.php");
 require_once("controllers/Users.class.php");
+require("controllers/Routes.class.php");
 
 if (array_key_exists("email", $_GET) && array_key_exists("hash", $_GET)) {
     echo UsersController::activate_account($_GET["email"], $_GET["hash"]);

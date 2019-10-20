@@ -4,6 +4,16 @@ require_once("models/User.class.php");
 
 class UsersController extends Controller {
 
+    public static function template_sign_up() {
+        self::createView("create_user_form");
+    }
+
+    public static function template_login() {
+        self::createView("login");
+    }
+
+
+
     /*
     This function takes an array and fill the session 
     */
@@ -11,15 +21,8 @@ class UsersController extends Controller {
         $_SESSION['last_email'] = (array_key_exists("email", $arr)) ? $arr["email"] : "";
         $_SESSION['last_login'] = (array_key_exists("login", $arr)) ? $arr["login"] : "";
         $_GET['url'] = $url;
+        UsersController::template_sign_up();
         Route::redirect($url, "UsersController");
-    }
-
-    public static function template_sign_up() {
-        parent::createView("create_user_form");
-    }
-
-    public static function template_login() {
-        parent::createView("login");
     }
 
     /*
@@ -56,7 +59,11 @@ class UsersController extends Controller {
                     return "Your account has been made, <br /> please verify it by clicking the activation link that has been send to your email.<br />";
                 } else {
                     $user = new User;
-                    $user->delete_user($arr['login'], $arr['password']);
+                    try {
+                        $user->delete_user($arr['login'], $arr['password']);
+                    } catch (Exception $e) {
+                        echo "Error creation_user_response for deleting user" . $e->getMessage();
+                    }
                     return "The verification email wasn't sent\n";
                 }
             case EMAIL_EXISTS:
@@ -105,7 +112,7 @@ class UsersController extends Controller {
                 if (self::email_valid($kwargs_model['email']) && self::login_valid($kwargs_model['login'])) {
                     return self::creation_user_response($user->create_user($kwargs_model), $kwargs_model);
                 } else {
-                    self::fill_session_error($kwargs, "sign_up ")
+                    self::fill_session_error($kwargs, "sign_up");
                     echo "Email or login are not well formatted\n";
                 }
             } else {

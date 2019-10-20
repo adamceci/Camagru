@@ -3,7 +3,7 @@
 require_once("models/Model.class.php");
 
 class User extends Model {
-    private function auth_user($login, $hash_password) {
+    public function auth_user($login, $hash_password) {
         try {
             parent::db_connect();
             $sql = "SELECT `email` 
@@ -24,7 +24,7 @@ class User extends Model {
         }
     }
 
-    private function delete_user($login, $hash_password) {
+    public function delete_user($login, $hash_password) {
         try {
             parent::db_connect();
             $sql = "DELETE

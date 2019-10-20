@@ -1,4 +1,6 @@
 <?php
+
+
 class Route {
 	public static $validRoutes = [];
 
@@ -9,8 +11,8 @@ class Route {
 		}
 	}
 
-	public static function redirect($route, $controller) {
-        $action = "template_" . $route;
+    public static function redirect($route, $controller) {
+        $action = 'template_' . $route;
         $controller::$action();
     }
 }
