@@ -8,8 +8,11 @@ class Post extends Model {
             $sql = "SELECT * FROM posts LIMIT ? OFFSET ?";
             $this->stmt = $this->pdo->prepare($sql);
             $this->stmt->execute(array($limit, $offset));
-            var_dump($this->stmt);
+            $arr = $this->stmt->fetchAll(PDO::FETCH_ASSOC);
+            echo "arr = ";
+            var_dump($arr);
             parent::db_drop_connection();
+            return $arr;
         }
         catch (Exception $e) {
             throw new Exception("Error while getting the posts in model" . $e->getMessage());

@@ -11,13 +11,13 @@
     </div>
     <div id="container_box">
     <?php
-    var_dump($array);
-        if (isset($array)) {
-            echo "ok";
-        }
-        else {
-            echo "not ok";
-        }
+    // var_dump($array);
+        // if (isset($array)) {
+            // echo "ok";
+        // }
+        // else {
+            // echo "not ok";
+        // }
         // $i = 0;
         // while ($i < 6) {
             

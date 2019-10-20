@@ -11,8 +11,9 @@ class PostsController extends Controller {
 		$limit = 6;
 		$offset = 4;
 		$array = $post->get_posts($limit, $offset);
-		var_dump($array);
+		// var_dump($array);
 		parent::createView("index");
+		// require_once("views/index.view.php");
 	}
     // create post
     public static function create_post($kwargs) {
