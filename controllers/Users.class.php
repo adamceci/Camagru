@@ -7,10 +7,19 @@ class UsersController extends Controller {
     /*
     This function takes an array and fill the session 
     */
-    private static function fill_session_error(array $arr, $url, $view_name) {
+    private static function fill_session_error(array $arr, $url) {
         $_SESSION['last_email'] = (array_key_exists("email", $arr)) ? $arr["email"] : "";
         $_SESSION['last_login'] = (array_key_exists("login", $arr)) ? $arr["login"] : "";
-        header("Location: " . $url);
+        $_GET['url'] = $url;
+        Route::redirect($url, "UsersController");
+    }
+
+    public static function template_sign_up() {
+        parent::createView("create_user_form");
+    }
+
+    public static function template_login() {
+        parent::createView("login");
     }
 
     /*
@@ -46,13 +55,15 @@ class UsersController extends Controller {
                 if (self::send_verification_email($arr)) {
                     return "Your account has been made, <br /> please verify it by clicking the activation link that has been send to your email.<br />";
                 } else {
+                    $user = new User;
+                    $user->delete_user($arr['login'], $arr['password']);
                     return "The verification email wasn't sent\n";
                 }
             case EMAIL_EXISTS:
-                self::fill_session_error($arr, "sign_up", "create_user_form");
+                self::fill_session_error($arr, "sign_up");
                 return "The email already exists\n";
             case LOGIN_EXISTS:
-                self::fill_session_error($arr, "sign_up", "create_user_form");
+                self::fill_session_error($arr, "sign_up");
                 return "The login already exists\n";
         }
     }
@@ -79,7 +90,7 @@ class UsersController extends Controller {
         try {
             $keys = ["password", "password2", "login", "email", "profile_pic"];
             if ((self::info_creation_exists($keys, $kwargs)) == FALSE) {
-                self::fill_session_error($kwargs, "sign_up", "create_user_form");
+                self::fill_session_error($kwargs, "sign_up");
                 return "Error: empty inputs when creating an user\n";
             }
             if ($kwargs["password"] == $kwargs["password_verif"]) {
@@ -94,11 +105,10 @@ class UsersController extends Controller {
                 if (self::email_valid($kwargs_model['email']) && self::login_valid($kwargs_model['login'])) {
                     return self::creation_user_response($user->create_user($kwargs_model), $kwargs_model);
                 } else {
-                    self::fill_session_error($kwargs, "sign_up");
-                    return "Email or login are not well formatted\n";
+                    self::fill_session_error($kwargs, "sign_up "Email or login are not well formatted\n";
                 }
             } else {
-                self::fill_session_error($kwargs, "sign_up", "create_user_form");
+                self::fill_session_error($kwargs, "sign_up");
                 return "Password verification and password are not the same";
             }
         }
@@ -182,11 +192,11 @@ class UsersController extends Controller {
             if (self::login_verif($kwargs)) {
                 return ("Logged");
             } else {
-                self::fill_session_error($kwargs, "login", "login");
+                self::fill_session_error($kwargs, "login");
                 return ("Wrong login\n");
             }
         }
-        self::fill_session_error($kwargs, "login", "login");
+        self::fill_session_error($kwargs, "login");
         return ("Empty password");
     }
 
