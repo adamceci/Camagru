@@ -16,5 +16,6 @@ class Controller {
 		require_once('./views/'.$moduleName.'.module.php');
 	}
 
+
 }
 

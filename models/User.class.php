@@ -3,7 +3,7 @@
 require_once("models/Model.class.php");
 
 class User extends Model {
-    private function auth_user($login, $hash_password) {
+    public function auth_user($login, $hash_password) {
         try {
             parent::db_connect();
             $sql = "SELECT `email` 
@@ -21,6 +21,27 @@ class User extends Model {
             }
         } catch (Exception $e) {
             throw new Exception("Error auth_exist in User Model:" . $e->getMessage());
+        }
+    }
+
+    public function delete_user($login, $hash_password) {
+        try {
+            parent::db_connect();
+            $sql = "DELETE
+                    FROM `users` 
+                    WHERE (LOWER(`email`)=? OR `login`=?)
+                    AND `password`=?";
+            $this->stmt = $this->pdo->prepare($sql);
+            $this->stmt->execute(array($login, $login, $hash_password));
+            $arr = $this->stmt->fetchAll(PDO::FETCH_ASSOC);
+            parent::db_drop_connection();
+            if (!$arr) {
+                return (0);
+            } else {
+                return (1);
+            }
+        } catch (Exception $e) {
+            throw new Exception("Error delete_user in User Model:" . $e->getMessage());
         }
     }
 

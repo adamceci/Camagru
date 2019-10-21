@@ -7,6 +7,10 @@
     line-height: 70px;
 }
 
+.clickeable {
+    cursor: pointer;
+}
+
 div.header a {
     text-decoration: none;
 }
@@ -111,4 +115,327 @@ div.header div:nth-child(4) button {
     border-top: 1px solid rgb(15, 129, 158);
     padding-top: 15px;
     font-style: italic;
+}
+
+/*
+    Create user form css start
+ */
+
+.create_user_body {
+    background-color: #fff;
+}
+
+.create_user_absolute_title {
+    width: 100%;
+    padding-left: 16px;
+    position: absolute;
+    text-align: initial;
+    margin-left: 32%;
+}
+
+.create_user_title {
+    display:block;
+    font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji;
+    color: rgb(10, 86, 104);
+    position: relative;
+    left: 12%;
+    font-size: 15px;
+    top: 15px;
+}
+
+.create_user_join {
+    font-size: 15px;
+    color: rgb(15, 129, 158);
+    font-family: SFMono-Regular,Consolas,Liberation Mono,Menlo,monospace;
+    position: relative;
+    left: 10%;
+    top: 15px;
+}
+
+.create_user_absolute_form {
+    position: absolute;
+    width: 30%;
+    min-width: 300px;
+    max-width: 400px;
+    padding-right: 30px;
+    padding-left: 16px;
+    top: 80px;
+    margin-left: 36%;
+}
+
+.asterix_obligatory {
+    color: darkred;
+    font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji;
+}
+
+.create_user_inputs{
+    width: 100%;
+    border-radius: 5px;
+    font-size: 12px;
+    background-color: #fafbfc;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    padding-left: 8px;
+    border: 1px solid rgb(15, 129, 158);
+}
+
+.create_user_file_input {
+    color: rgb(15, 129, 158);
+    margin-bottom: 12px;
+}
+
+.input_text {
+    font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji;
+    margin-bottom: 2px;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.create_user_submit {
+    width:100%;
+    background: linear-gradient(rgb(15, 129, 158), rgb(45, 159, 188));
+    border: 1px solid rgb(15, 129, 158);
+    border-radius: 4px;
+    font-size: 12px;
+    color:#fff;
+    margin-left: 4px;
+}
+
+.create_user_submit:hover {
+    background: linear-gradient(rgb(45, 159, 188), rgb(15, 129, 158));
+}
+
+.create_user_error_msg {
+    background-color: red;
+    margin-bottom:10px;
+}
+
+@media screen and (max-width: 780px) {
+    .create_user_body {
+        background-color: #fff;
+    }
+
+    .create_user_absolute_title {
+        width: 100%;
+        padding-left: 16px;
+        position: absolute;
+        text-align: center;
+        margin-left: 0%;
+    }
+
+    .create_user_title {
+        display:none;
+        font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji;
+    }
+
+    .create_user_join {
+        font-size: 19px;
+        color: rgb(15, 129, 158);
+        font-family: SFMono-Regular,Consolas,Liberation Mono,Menlo,monospace;
+        left: 0%;
+    }
+
+    .create_user_absolute_form {
+        position: absolute;
+        width: 100%;
+        max-width: 100%;
+        padding-right: 30px;
+        padding-left: 16px;
+        margin-left: 0%;
+    }
+
+    .asterix_obligatory {
+        color: darkred;
+        font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji;
+    }
+
+    .create_user_inputs{
+        width: 100%;
+        border-radius: 5px;
+        font-size: 22px;
+        background-color: #fafbfc;
+        padding-top: 4px;
+        padding-bottom: 4px;
+        padding-left: 8px;
+        border: 1px solid rgb(15, 129, 158);
+    }
+
+    .create_user_file_input {
+        color: rgb(15, 129, 158);
+        margin-bottom: 12px;
+    }
+
+    .input_text {
+        font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji;
+        margin-bottom: 2px;
+        font-size: 20px;
+        font-weight: 500;
+    }
+
+    .create_user_submit {
+        width:100%;
+        background: linear-gradient(rgb(15, 129, 158), rgb(45, 159, 188));
+        border: 1px solid rgb(15, 129, 158);
+        border-radius: 4px;
+        font-size: 22px;
+        color:#fff;
+        margin-left: 4px;
+    }
+
+    .create_user_submit:hover {
+        background: linear-gradient(rgb(45, 159, 188), rgb(15, 129, 158));
+    }
+
+    .create_user_error_msg {
+        background-color: red;
+        margin-bottom:10px;
+    }
+}
+
+/*
+Create user form css end
+ */
+
+/*
+Login view css start
+ */
+
+.sign_in_body {
+    background-color: #f9f9f9;
+}
+
+.sign_in_absolute_title {
+    width: 100%;
+    padding-left: 16px;
+    position: absolute;
+    text-align: initial;
+    margin-left: 32%;
+}
+
+.sign_in_title {
+    display: block;
+    font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji;
+    color: rgb(10, 86, 104);
+    position: relative;
+    left: 12%;
+    font-size: 18px;
+    top: 15px;
+    font-weight: 300;
+}
+
+.sign_in_absolute_form {
+    position: absolute;
+    width: 30%;
+    min-width: 300px;
+    max-width: 400px;
+    padding-right: 30px;
+    padding-left: 16px;
+    top: 80px;
+    margin-left: 36%;
+}
+
+
+.sign_in_inputs{
+    width: 100%;
+    border-radius: 5px;
+    font-size: 13px;
+    background-color: #fff;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    padding-left: 8px;
+    border: 1px solid rgb(15, 129, 158);
+}
+
+.sign_in_submit {
+    width: 100%;
+    background: linear-gradient(rgb(15, 129, 158), rgb(45, 159, 188));
+    border: 1px solid rgb(15, 129, 158);
+    border-radius: 4px;
+    font-size: 15px;
+    color: #fff;
+    margin-top: 20px;
+    margin-left: 4px;
+}
+
+.sign_in_submit:hover {
+    background: linear-gradient(rgb(45, 159, 188), rgb(15, 129, 158));
+}
+
+.sign_in_error_msg {
+    background-color: red;
+    margin-bottom:10px;
+}
+
+.sign_in_form {
+    padding: 20px;
+    padding-right: 30px;
+    border: 1px dotted rgb(15, 129, 158);
+    border-radius: 5px;
+    background-color: #fff;
+}
+
+@media screen and (max-width: 780px) {
+
+    .sign_in_absolute_title {
+        width: 100%;
+        padding-left: 16px;
+        position: absolute;
+        text-align: center;
+        margin-left: 0%;
+    }
+
+    .sign_in_title {
+        font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji;
+        font-size: 22px;
+        font-weight: 300;
+        left: 0;
+    }
+
+    .sign_in_absolute_form {
+        position: absolute;
+        width: 100%;
+        max-width: 100%;
+        padding-right: 16px;
+        padding-left: 16px;
+        margin-left: 0%;
+    }
+
+    .sign_in_form {
+        padding: 20px;
+        padding-right: 30px;
+        border: 1px dotted blue;
+        border-radius: 5px;
+        background-color: #fff;
+    }
+
+    .sign_in_inputs{
+        width: 100%;
+        border-radius: 5px;
+        font-size: 22px;
+        background-color: #fff;
+        padding-top: 4px;
+        padding-bottom: 4px;
+        padding-left: 8px;
+        border: 1px solid rgb(15, 129, 158);
+    }
+
+    .sign_in_submit {
+        width: 100%;
+        background: linear-gradient(rgb(15, 129, 158), rgb(45, 159, 188));
+        border: 1px solid rgb(15, 129, 158);
+        border-radius: 4px;
+        font-size: 22px;
+        color: #fff;
+        margin-left: 4px;
+        margin-top: 30px;
+    }
+
+    .sign_in_submit:hover {
+        background: linear-gradient(rgb(45, 159, 188), rgb(15, 129, 158));
+    }
+
+    .sign_in_error_msg {
+        background-color: red;
+        margin-bottom:10px;
+    }
 }
