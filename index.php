@@ -3,6 +3,7 @@ session_start();
 require_once("assets/macros/errors.php");
 require("controllers/Controller.class.php");
 require_once("controllers/Users.class.php");
+require_once("controllers/Webcam.class.php");
 require("controllers/Routes.class.php");
 
 if (array_key_exists("email", $_GET) && array_key_exists("hash", $_GET)) {
@@ -27,6 +28,10 @@ Route::set("logout", function () {
     UsersController::logout();
 });
 
+Route::set("webcam", function () {
+   Webcam::createView("webcam");
+});
+
 if (isset($_POST) && array_key_exists("submit_create", $_POST)) {
     echo UsersController::create_user($_POST);
 }
@@ -35,8 +40,8 @@ if (isset($_POST) && array_key_exists("submit_login", $_POST)) {
     echo UsersController::login($_POST);
 }
 
-if (!in_array($_GET["url"], Route::$validRoutes)) {
+/*if (!in_array($_GET["url"], Route::$validRoutes)) {
     require_once("views/header.module.php");
     require_once("views/index.view.php");
     require_once("views/footer.module.php");
-}
+}*/
