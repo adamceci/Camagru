@@ -11,26 +11,22 @@
     </div>
     <div id="container_box">
     <?php
-    // var_dump($array);
-        // if (isset($array)) {
-            // echo "ok";
-        // }
-        // else {
-            // echo "not ok";
-        // }
-        // $i = 0;
-        // while ($i < 6) {
-            
-            ?>
-            <!-- <img src="assets/post_imgs/aze.png" alt="">
-            <div class="display_nb">
-                <p><?=$nb_comments?>X Comment(s)</p>
-                <p><?=$nb_likes?>X Like(s)</p>
-            </div> -->
-            <?php
 
-        //     $i++;
-        // }
+        // var_dump($_SESSION["index_posts"]);
+        if (isset($_SESSION["index_posts"])) {
+            foreach($_SESSION["index_posts"] as $post) {
+                // var_dump($post);
+                // var_dump($post["image"]);
+                ?>
+                <div class="post_index">            
+                    <img src="assets/post_imgs/<?php $post["image"] ?>" alt="">
+                </div>
+                <?php
+            }
+        }
+        else {
+            echo "There are no posts to show"; // faire une balise html !
+        }
 
     ?>
         <!-- <div class="post_index">

@@ -1,21 +1,24 @@
 <?php
 
+require_once("Model.class.php");
+
 class Post extends Model {
     // get table info
     public function get_posts($limit, $offset) {
         try {
             parent::db_connect();
             $sql = "SELECT * FROM posts LIMIT ? OFFSET ?";
+            $this->pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
             $this->stmt = $this->pdo->prepare($sql);
-            $this->stmt->execute(array($limit, $offset));
+            $this->stmt->execute(array((int)$limit, (int)$offset));
             $arr = $this->stmt->fetchAll(PDO::FETCH_ASSOC);
-            echo "arr = ";
-            var_dump($arr);
+            // echo "array = ";
+            // var_dump($arr);
             parent::db_drop_connection();
             return $arr;
         }
         catch (Exception $e) {
-            throw new Exception("Error while getting the posts in model" . $e->getMessage());
+            throw new Exception("Error while getting the posts in model " . $e->getMessage());
         }
     }
     // create line into table

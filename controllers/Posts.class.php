@@ -6,14 +6,19 @@ require_once("models/PostsModel.class.php");
 
 class PostsController extends Controller {
 	// display post
-	public static function display_posts() {
-		$post = new Post;
-		$limit = 6;
-		$offset = 4;
-		$array = $post->get_posts($limit, $offset);
-		// var_dump($array);
-		parent::createView("index");
-		// require_once("views/index.view.php");
+	public static function display_posts($page) {
+		try {
+			if (!isset($page))
+				$page = 1;
+			$post = new Post;
+			$limit = 6;
+			$offset = 6 * ($page - 1);
+			$_SESSION["index_posts"] = $post->get_posts($limit, $offset);
+			parent::createView("index");
+		}
+		catch (Exception $e) {
+			throw new Exception("Error while getting the posts in PostsController " . $e->getMessage());
+		}
 	}
     // create post
     public static function create_post($kwargs) {
@@ -23,6 +28,7 @@ class PostsController extends Controller {
             $post->create_post($kwargs);
 		}
 		else {
+			// var_dump($kwargs);
 			echo "Please select an image";
 		}
 		// if filter doesn't exist ? -> todo
