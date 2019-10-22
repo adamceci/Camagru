@@ -57,6 +57,10 @@
     <!-- webcam or picture -->
     <!-- filters -->
     <!-- submit_create_post -->
+    <!-- <div class="container" width="500px" height="500px"> -->
+        <!-- <div class="webcam" width="200px" height="200px" background="black"> -->
+        <!-- </div> -->
+    <!-- </div> -->
     Picture: <input type="file" name="image" value="test"/><br>
     <input type="submit" name="submit_create_post" value="OK">
 </form>

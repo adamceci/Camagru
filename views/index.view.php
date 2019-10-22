@@ -19,7 +19,7 @@
                 // var_dump($post["image"]);
                 ?>
                 <div class="post_index">            
-                    <img src="assets/post_imgs/<?php $post["image"] ?>" alt="">
+                    <img src="assets/post_imgs/<?= $post["image"]; ?>" alt="">
                 </div>
                 <?php
             }

@@ -7,7 +7,7 @@ class Post extends Model {
     public function get_posts($limit, $offset) {
         try {
             parent::db_connect();
-            $sql = "SELECT * FROM posts LIMIT ? OFFSET ?";
+            $sql = "SELECT * FROM posts ORDER BY post_id DESC LIMIT ? OFFSET ?";
             $this->pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
             $this->stmt = $this->pdo->prepare($sql);
             $this->stmt->execute(array((int)$limit, (int)$offset));
