@@ -40,8 +40,8 @@ if (isset($_POST) && array_key_exists("submit_login", $_POST)) {
     echo UsersController::login($_POST);
 }
 
-/*if (!in_array($_GET["url"], Route::$validRoutes)) {
+if (!in_array($_GET["url"], Route::$validRoutes)) {
     require_once("views/header.module.php");
     require_once("views/index.view.php");
     require_once("views/footer.module.php");
-}*/
+}
