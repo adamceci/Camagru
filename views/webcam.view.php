@@ -66,9 +66,8 @@
             navigator.mediaDevices.getUserMedia({ video: true, audio: true })
                 .then(function (stream) {
                     video.srcObject = stream;
-                    ctx_filter.drawImage(filter,0, 0, canvas_filter.width, canvas_height.height);
                 })
-                .catch(function (err0r) {
+                .catch(function (error) {
                     console.log("Something went wrong!");
                 });
         }
@@ -82,7 +81,24 @@
             ctx.drawImage(filter,0, 0, canvas.width, canvas.height);
             let dataURI = canvas.toDataURL('image/png'); // can also use 'image/png'
             snap.src = dataURI;
-            console.log(dataURI);
+            let xmlhttp = new XMLHttpRequest();
+
+            xmlhttp.onreadystatechange = function() {
+                if (xmlhttp.readyState === XMLHttpRequest.DONE) {   // XMLHttpRequest.DONE == 4
+                    if (xmlhttp.status === 200) {
+                        console.log("Réponse reçue: %s", this.responseText);
+                    }
+                    else if (xmlhttp.status === 400) {
+                        alert('There was an error 400');
+                    }
+                    else {
+                        alert('something else other than 200 was returned');
+                    }
+                }
+            };
+
+            xmlhttp.open("GET", "ajax_info.txt", true);
+            xmlhttp.send();
         });
 
         function main() {

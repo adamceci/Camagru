@@ -23,3 +23,9 @@ CREATE TABLE IF NOT EXISTS posts (
     `image` VARCHAR(255) NOT NULL,
     creation_date DATETIME NOT NULL
 )
+
+CREATE TABLE IF NOT EXISTS filters {
+    filter_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `name` VARCHAR(255) NOT NULL,
+    `image_src` VARCHAR(255) NOT NULL
+}
