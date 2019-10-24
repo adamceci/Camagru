@@ -42,6 +42,15 @@
     //         echo "Sorry, there was an error uploading your file.";
     //     }
     // }
+    
+    // Current working directory ("/Camagru-MVC-/")
+    $directory_self = str_replace(basename($_SERVER['PHP_SELF']), '', $_SERVER['PHP_SELF']);
+
+    // Upload handler script location
+    $upload_handler = 'http://' . $_SERVER['HTTP_HOST'] . $directory_self . 'upload';
+
+    // max file size for the html upload form
+    $max_file_size = 30000; // size in bytes
 
 ?>
 
@@ -53,7 +62,7 @@
 </head> 
 <body>
 
-<form action="montage" method="post">
+<form id="upload" enctype="multipart/form-data" action="<?=$upload_handler;?>" method="post">
     <!-- webcam or picture -->
     <!-- filters -->
     <!-- submit_create_post -->
@@ -61,7 +70,8 @@
         <!-- <div class="webcam" width="200px" height="200px" background="black"> -->
         <!-- </div> -->
     <!-- </div> -->
-    Picture: <input type="file" name="image" value="test"/><br>
+    <input type="hidden" name="MAX_FILE_SIZE" value="<?=$max_file_size;?>" />
+    Picture: <input id="file" type="file" name="image" value="test"/><br>
     <input type="submit" name="submit_create_post" value="OK">
 </form>
 

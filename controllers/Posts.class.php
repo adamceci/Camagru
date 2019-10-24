@@ -28,7 +28,6 @@ class PostsController extends Controller {
             $post->create_post($kwargs);
 		}
 		else {
-			// var_dump($kwargs);
 			echo "Please select an image";
 		}
 		// if filter doesn't exist ? -> todo

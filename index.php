@@ -7,6 +7,7 @@ require_once("controllers/Users.class.php");
 require_once("controllers/Posts.class.php");
 
 $_SESSION["index_page"] = 1;
+$_SESSION["nb_pages"] = 1;
 
 if (array_key_exists("email", $_GET) && array_key_exists("hash", $_GET)) {
     echo UsersController::activate_account($_GET["email"], $_GET["hash"]);
@@ -32,6 +33,10 @@ Route::set("montage", function() {
     Controller::createView("montage");
 });
 
+Route::set("upload", function() {
+    include_once("upload.php");
+});
+
 if (isset($_POST) && array_key_exists("submit_create", $_POST)) {
     echo UsersController::create_user($_POST);
 }
@@ -44,9 +49,8 @@ if (isset($_POST) && array_key_exists("submit_create", $_POST)) {
 }
 
 if (isset($_POST) && array_key_exists("submit_create_post", $_POST)) {
-    var_dump($_POST);
-    echo "\n";
-    PostsController::create_post($_POST);
+    // PostsController::create_post($_POST);
+    echo "OK";
 }
 
 if (!in_array($_GET["url"], Route::$validRoutes)) {

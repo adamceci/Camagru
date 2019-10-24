@@ -12,8 +12,6 @@ class Post extends Model {
             $this->stmt = $this->pdo->prepare($sql);
             $this->stmt->execute(array((int)$limit, (int)$offset));
             $arr = $this->stmt->fetchAll(PDO::FETCH_ASSOC);
-            // echo "array = ";
-            // var_dump($arr);
             parent::db_drop_connection();
             return $arr;
         }
