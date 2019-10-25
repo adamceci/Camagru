@@ -1,4 +1,5 @@
 <?php
+
 session_start();
 require_once("assets/macros/errors.php");
 require("controllers/Routes.class.php");
@@ -30,7 +31,10 @@ Route::set("logout", function () {
 });
 
 Route::set("montage", function() {
-    Controller::createView("montage");
+    if (!isset($_SESSION["current_user"]))
+        Controller::createView("only_to_members");
+    else
+        Controller::createView("montage");
 });
 
 Route::set("upload", function() {
@@ -44,13 +48,9 @@ if (isset($_POST) && array_key_exists("submit_create", $_POST)) {
 if (isset($_POST) && array_key_exists("submit_login", $_POST)) {
     echo UsersController::login($_POST);
 }
-if (isset($_POST) && array_key_exists("submit_create", $_POST)) {
-    echo UsersController::create_user($_POST);
-}
 
 if (isset($_POST) && array_key_exists("submit_create_post", $_POST)) {
-    // PostsController::create_post($_POST);
-    echo "OK";
+    PostsController::create_post($_POST);
 }
 
 if (!in_array($_GET["url"], Route::$validRoutes)) {
