@@ -25,6 +25,7 @@ class Post extends Model {
             parent::db_connect();
             $sql = "INSERT INTO posts (`user_id`, `image`) VALUES (?, ?)";
             $this->stmt = $this->pdo->prepare($sql);
+            // var_dump($kwargs);
             $this->stmt->execute(array($kwargs['user_id'], $kwargs['image']));
             parent::db_drop_connection();
         }
