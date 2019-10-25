@@ -26,6 +26,7 @@ class PostsController extends Controller {
 
 	// error handling for post creation
 	private function error_post($error, $location, $seconds = 5) {
+		echo "ET ICI";
 		header("Refresh: $seconds; URL=$location");
 		echo '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"'.
 		'"http://www.w3.org/TR/html4/strict.dtd">'.
@@ -80,8 +81,12 @@ class PostsController extends Controller {
 			// return (0);
 		}
 		// check for PHP's built-in uploading errors
-		if ($_FILES[$fieldname]['error'] !== 0)
+		var_dump($_FILES);
+		if ($_FILES[$fieldname]['error'] !== 0) {
+			echo "passage";
 			error($errors[$_FILES[$fieldname]['error']], $upload_form);
+			echo "ontest";
+		}
 		// check that the file we are working on really was the subject of an HTTP upload
 		if (!is_uploaded_file($_FILES[$fieldname]['tmp_name']))
 			error('not an HTTP upload', $upload_form);
