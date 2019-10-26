@@ -6,6 +6,8 @@ require_once("controllers/Users.class.php");
 require_once("controllers/Webcam.class.php");
 require("controllers/Routes.class.php");
 
+
+
 if (array_key_exists("email", $_GET) && array_key_exists("hash", $_GET)) {
     echo UsersController::activate_account($_GET["email"], $_GET["hash"]);
 }
@@ -14,6 +16,10 @@ Route::set("index", function() {
     require_once("views/header.module.php");
     require_once("views/index.view.php");
     require_once("views/footer.module.php");
+});
+
+Route::set("profile", function () {
+    UsersController::template_profile($_GET);
 });
 
 Route::set("sign_up", function() {

@@ -3,6 +3,7 @@
 require_once("models/Model.class.php");
 
 class User extends Model {
+
     public function auth_user($login, $hash_password) {
         try {
             parent::db_connect();
@@ -115,10 +116,13 @@ class User extends Model {
             $user_exist = $this->user_login_or_email_exist($kwuser_info["email"], $kwuser_info["login"]);
             if (!$user_exist) {
                 parent::db_connect();
-                $sql = "INSERT INTO `users` (email, `login`, `password`, `profile_pic`, `verif_hash`) 
-                        VALUES (?,?,?,?,?)";
+                $sql = "INSERT 
+                        INTO `users` (`email`, `login`, `password`, `profile_pic`, `verif_hash`, `notification_email`) 
+                        VALUES (?,?,?,?,?,?)";
                 $this->stmt = $this->pdo->prepare($sql);
-                $this->stmt->execute(array($kwuser_info['email'], $kwuser_info['login'], $kwuser_info['password'], $kwuser_info['profile_pic'], $kwuser_info['verif_hash']));
+                if ($this->stmt->execute(array($kwuser_info['email'], $kwuser_info['login'], $kwuser_info['password'], $kwuser_info['profile_pic'], $kwuser_info['verif_hash'], $kwuser_info['email'])) == FALSE) {
+                    throw new Exception("Error, couldn't insert into users in create_user");
+                }
                 parent::db_drop_connection();
                 return (1);
             } else if ($user_exist == 1) {
@@ -126,7 +130,7 @@ class User extends Model {
             } else {
                 return (LOGIN_EXISTS);
             }
-        } catch (Exception $e) {
+        } catch (PDOException $e) {
             throw new Exception("Error create_user in User Model:" . $e->getMessage());
         }
     }
@@ -137,7 +141,7 @@ class User extends Model {
             $sql = "UPDATE `users` 
                     SET active=1
                     WHERE verif_hash=? 
-                    AND email=?";
+                    AND LOWER(email)=?";
             $this->stmt = $this->pdo->prepare($sql);
             $return_value = $this->stmt->execute(array($hash, $email));
             parent::db_drop_connection();
@@ -154,10 +158,32 @@ class User extends Model {
     public function get_info($valid_field) {
         try {
             parent::db_connect();
-            $sql = "SELECT `login`, `email`, `user_id`, `profile_pic` 
+            $sql = "SELECT `login`, `email`, `user_id`, `profile_pic`, `notification_email`
                     FROM `users` 
                     WHERE (LOWER(`email`)=? OR LOWER(`login`)=?)
                     AND `active`=1";
+            $this->stmt = $this->pdo->prepare($sql);
+            $email = $valid_field;
+            $login = $valid_field;
+            $this->stmt->execute(array($email, $login));
+            $arr = $this->stmt->fetchAll(PDO::FETCH_ASSOC);
+            parent::db_drop_connection();
+            if (!$arr) {
+                return (FALSE);
+            } else {
+                return ($arr);
+            }
+        } catch (Exception $e) {
+            throw new Exception("Error user_login_or_email_exist in User Model:" . $e->getMessage());
+        }
+    }
+
+    public function get_verif_time($valid_field) {
+        try {
+            parent::db_connect();
+            $sql = "SELECT `verif_time` 
+                    FROM `users` 
+                    WHERE (LOWER(`email`)=? AND LOWER(`hash`)=?)";
             $this->stmt = $this->pdo->prepare($sql);
             $email = $valid_field;
             $login = $valid_field;
