@@ -8,14 +8,12 @@
 
 	<?php
 
-	header("Refresh: 5; URL=index");
+	header("Refresh: 5; URL=montage");
 	
 	?>
-
 	<div class="wrapper">
-		<p>This page is accessible only to members.</p>
-		<p>Please, log in or create an account</p>
-		<p>Redirecting to home page</p>
+		<p>Your post has been successfully uploaded !</p>
+		<p>Redirecting you to your montage page</p>
 	</div>
 
 </body>

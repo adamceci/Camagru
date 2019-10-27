@@ -19,14 +19,16 @@
 </head> 
 <body>
 
-<form enctype="multipart/form-data" action="montage" method="post">
-    <!-- webcam or picture -->
-    <!-- filters -->
-    <!-- submit_create_post -->
-    <input type="hidden" name="MAX_FILE_SIZE" value="<?=$max_file_size;?>" />
-    Picture: <input type="file" name="image" value="upload_pic" /><br />
-    <input type="submit" name="submit_create_post" value="OK" />
-</form>
+    <div class="wrapper">
+        <form enctype="multipart/form-data" action="success_upload" method="post">
+			<!-- webcam or picture -->
+			<!-- filters -->
+			<!-- submit_create_post -->
+			<input type="hidden" name="MAX_FILE_SIZE" value="<?=$max_file_size;?>" />
+			Picture: <input type="file" name="image" value="upload_pic" /><br />
+        	<input type="submit" name="submit_create_post" value="OK" />
+    	</form>
+    </div>
 
 </body>
 </html>

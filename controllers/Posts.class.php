@@ -26,7 +26,6 @@ class PostsController extends Controller {
 
 	// error handling for post creation
 	private function error_post($error, $location, $seconds = 5) {
-		echo "ET ICI";
 		header("Refresh: $seconds; URL=$location");
 		echo '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"'.
 		'"http://www.w3.org/TR/html4/strict.dtd">'.
@@ -75,26 +74,23 @@ class PostsController extends Controller {
 		if (!(isset($kwargs) && array_key_exists("submit_create_post", $kwargs))) {
     		// check if user is logged in
     		if (isset($_SESSION["current_user"]))
-        		error('the upload form is neaded', $upload_form);
+        		self::error_post('the upload form is neaded', $upload_form);
     		else
-				error('log in before accessing this page', $index_page);
+				self::error_post('log in before accessing this page', $index_page);
 			// return (0);
 		}
 		// check for PHP's built-in uploading errors
-		var_dump($_FILES);
 		if ($_FILES[$fieldname]['error'] !== 0) {
-			echo "passage";
-			error($errors[$_FILES[$fieldname]['error']], $upload_form);
-			echo "ontest";
+			self::error_post($errors[$_FILES[$fieldname]['error']], $upload_form);
 		}
 		// check that the file we are working on really was the subject of an HTTP upload
 		if (!is_uploaded_file($_FILES[$fieldname]['tmp_name']))
-			error('not an HTTP upload', $upload_form);
+			self::error_post('not an HTTP upload', $upload_form);
 		// validation... since this is an image upload script we should run a check
 		// to make sure the uploaded file is in fact an image. Here is a simple check:
 		// getimagesize() returns false if the file tested is not an image.
 		if (!(getimagesize($_FILES[$fieldname]['tmp_name'])))
-			error('only image uploads are allowed', $upload_form);
+			self::error_post('only image uploads are allowed', $upload_form);
 		// make a unique filename for the uploaded file and check it is not already
 		// taken... if it is already taken keep trying until we find a vacant one
 		// sample filename: 1140732936-filename.jpg
@@ -123,24 +119,29 @@ class PostsController extends Controller {
 					$post->create_post($kwargs);
 				}
 				else
-					echo "Please select an image";
+					self::error_post("Please select an image", "montage");
 				// if filter doesn't exist ? -> todo
         		// require_once(post_view.php);
 			}
 			else
-				echo "Log in before posting";
-			// if (array_key_exists("image", $kwargs))
-			// 	function upload
-			// if upload OK
-			// 	call to post model
-
-			// if (array_key_exists("image", $kwargs)) {
-			// 	self::upload_post($kwargs);
-			// }
+				self::error_post("Log in before posting", "montage");
 		}
 		catch (Exception $e) {
             throw new Exception("Error while creating the post in controller " . $e->getMessage());
         }
-    }
+	}
+	
     // delete post
+// 	private static function delete_post($kwargs) {
+// 		try {
+// 			if (isset($_SESSION["current_user"])) {
+// 				if (isset($kwargs[""])) {
+
+// 				}
+// 			}
+// 		}
+// 		catch (Exception $e) {
+// 			throw new Exception("Error while deleting the post in controller " . $e->getMessage());
+// 		}
+// 	}
 }

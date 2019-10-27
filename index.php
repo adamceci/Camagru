@@ -30,6 +30,10 @@ Route::set("logout", function () {
     UsersController::logout();
 });
 
+// Route::set("only_to_members", function() {
+    // Controller::createView("")
+// });
+
 Route::set("montage", function() {
     if (!isset($_SESSION["current_user"]))
         Controller::createView("only_to_members");
@@ -37,8 +41,11 @@ Route::set("montage", function() {
         Controller::createView("montage");
 });
 
-Route::set("upload", function() {
-    include_once("upload.php");
+Route::set("success_upload", function() {
+    if (!isset($_SESSION["current_user"]))
+        Controller::createView("only_to_members");
+    else
+        Controller::createView("success_upload");
 });
 
 if (isset($_POST) && array_key_exists("submit_create", $_POST)) {
@@ -55,5 +62,4 @@ if (isset($_POST) && array_key_exists("submit_create_post", $_POST)) {
 
 if (!in_array($_GET["url"], Route::$validRoutes)) {
     PostsController::display_posts($_SESSION["index_page"]);
-    // PostsController::display_posts();
 }

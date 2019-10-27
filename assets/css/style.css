@@ -113,3 +113,8 @@ div.header div:nth-child(4) button {
     padding-top: 15px;
     font-style: italic;
 }
+
+.wrapper {
+    width: 80%;
+    margin: auto;
+}
