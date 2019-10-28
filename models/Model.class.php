@@ -11,7 +11,7 @@ class Model {
             $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         }
         catch (PDOException $e) {
-            throw new Exception ("Connection to database failed in Model");
+            throw new Exception ('Connection to database failed in Model:' . $e->getMessage() . '<br/>');
         }
     }
 
