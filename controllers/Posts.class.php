@@ -9,8 +9,8 @@ class PostsController extends Controller {
 	private static $limit = 6;
 	private static $offset;
 
-	// display post
-	public static function display_posts($page) {
+	// display posts in index
+	public static function display_index_posts($page) {
 		try {
 			if (!isset($page))
 				$page = 1;
@@ -20,7 +20,21 @@ class PostsController extends Controller {
 			parent::createView("index");
 		}
 		catch (Exception $e) {
-			throw new Exception("Error while getting the posts in PostsController " . $e->getMessage());
+			throw new Exception("Error while getting the index posts in PostsController " . $e->getMessage());
+		}
+	}
+
+	// display posts in montage page
+	public static function display_user_posts() {
+		try {
+			if (isset($_SESSION["current_user"])) {
+				$post = new Post;
+				$_SESSION["user_posts"] = $post->get_posts($post->number_user_posts(), 0);
+				parent::CreateView("montage");
+			}
+		}
+		catch (Exception $e) {
+			throw new Exception("Error while getting the user posts in PostsController") . $e->getMessage();
 		}
 	}
 

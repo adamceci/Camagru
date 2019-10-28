@@ -3,6 +3,7 @@
 require_once("Model.class.php");
 
 class Post extends Model {
+
     // get table info
     public function get_posts($limit, $offset) {
         try {
@@ -16,9 +17,26 @@ class Post extends Model {
             return $arr;
         }
         catch (Exception $e) {
-            throw new Exception("Error while getting the posts in model " . $e->getMessage());
+            throw new Exception("Error while getting the index posts in model " . $e->getMessage());
         }
     }
+
+    // get number of posts of a certain user
+    public function number_user_posts() {
+        try {
+            parent::db_connect();
+            $sql = "SELECT count(*) FROM posts WHERE user_id = ? ORDER BY post_id DESC";
+            $this->stmt = $this->pdo->prepare($sql);
+            $this->stmt->execute(array((int)$_SESSION["current_user_user_id"]));
+            $ret = (int)$this->stmt->fetchAll(PDO::FETCH_ASSOC);
+            var_dump($ret);
+            return (0);
+        }
+        catch (Exception $e) {
+            throw new Exception("Error while getting the user posts in model " . $e->getMessage());
+        }
+    }
+
     // create line into table
     public function create_post(array $kwargs) {
         try {

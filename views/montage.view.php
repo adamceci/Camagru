@@ -28,6 +28,24 @@
 			Picture: <input type="file" name="image" value="upload_pic" /><br />
         	<input type="submit" name="submit_create_post" value="OK" />
     	</form>
+		<?php
+		if (isset($_SESSION["user_posts"])) {
+            foreach($_SESSION["user_posts"] as $post) {
+                ?>
+                <div class="post_user">            
+                    <img src="assets/post_imgs/<?= $post["image"]; ?>" alt="">
+                    <!-- <div class="display_nb">
+                        <p><?=$nb_comments?>X Comment(s)</p>
+                        <p><?=$nb_likes?>X Like(s)</p> -->
+                    </div>
+                </div>
+                <?php
+            }
+        }
+        else {
+            echo "There are no posts to show"; // faire une balise html !
+		}
+		?>
     </div>
 
 </body>

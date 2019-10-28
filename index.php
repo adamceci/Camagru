@@ -15,7 +15,7 @@ if (array_key_exists("email", $_GET) && array_key_exists("hash", $_GET)) {
 }
 
 Route::set("index", function() {
-    PostsController::display_posts($_SESSION["index_page"]);
+    PostsController::display_index_posts($_SESSION["index_page"]);
 });
 
 Route::set("sign_up", function() {
@@ -38,7 +38,8 @@ Route::set("montage", function() {
     if (!isset($_SESSION["current_user"]))
         Controller::createView("only_to_members");
     else
-        Controller::createView("montage");
+        PostsController::display_user_posts();
+        // Controller::createView("montage");
 });
 
 Route::set("success_upload", function() {
@@ -61,5 +62,5 @@ if (isset($_POST) && array_key_exists("submit_create_post", $_POST)) {
 }
 
 if (!in_array($_GET["url"], Route::$validRoutes)) {
-    PostsController::display_posts($_SESSION["index_page"]);
+    PostsController::display_index_posts($_SESSION["index_page"]);
 }
