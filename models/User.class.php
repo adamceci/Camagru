@@ -66,7 +66,7 @@ class User extends Model {
         }
     }
 
-    private function user_login_exist($login) {
+    public function get_user_login($login) {
         try {
             parent::db_connect();
             $sql = "SELECT `login` 
@@ -178,25 +178,22 @@ class User extends Model {
         }
     }
 
-    public function get_verif_time($valid_field) {
+    public function update_login($new_login, $old_login) {
         try {
             parent::db_connect();
-            $sql = "SELECT `verif_time` 
-                    FROM `users` 
-                    WHERE (LOWER(`email`)=? AND LOWER(`hash`)=?)";
+            $sql = "UPDATE `users` 
+                    SET login=?
+                    WHERE LOWER(login)=?";
             $this->stmt = $this->pdo->prepare($sql);
-            $email = $valid_field;
-            $login = $valid_field;
-            $this->stmt->execute(array($email, $login));
-            $arr = $this->stmt->fetchAll(PDO::FETCH_ASSOC);
+            $return_value = $this->stmt->execute(array($new_login, $old_login));
             parent::db_drop_connection();
-            if (!$arr) {
-                return (FALSE);
+            if ($return_value == FALSE) {
+                return (USER_DONT_EXIST);
             } else {
-                return ($arr);
+                return (1);
             }
         } catch (Exception $e) {
-            throw new Exception("Error user_login_or_email_exist in User Model:" . $e->getMessage());
+            throw new Exception("Error create_user in User Model:" . $e->getMessage());
         }
     }
 }

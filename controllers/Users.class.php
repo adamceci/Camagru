@@ -12,11 +12,11 @@ class UsersController extends Controller {
         self::createView("login");
     }
 
-    public static function template_profile($module_to_choose) {
+    public static function template_profile() {
         self::createModule("header");
         self::createView("profile");
-        if (array_key_exists("update", $module_to_choose)) {
-            if ($module_to_choose["update"] == "login") {
+        if (array_key_exists("update", $_GET) && !empty($_GET['update'])) {
+            if ($_GET["update"] == "login") {
                 UsersController::createModule("update_login");
             }
         }
@@ -54,7 +54,7 @@ class UsersController extends Controller {
             $_SESSION["current_user_pic"] = $content[0]["profile_pic"];
             $_SESSION["current_user_user_id"] = $content[0]["user_id"];
             // Change to createTemplate
-            header("Location: index");
+            Route::redirect($url, "UsersController");
             return (1);
         }
         return (0);
@@ -224,7 +224,39 @@ class UsersController extends Controller {
         header("Location: index");
     }
 
-    public static function update_user($column_name, $old_value, $new_value) {
-
+    public static function update_user($column) {
+        if (array_key_exists("new_login", $column)) {
+            $user = new User;
+            if (self::login_valid($column['new_login'])) {
+                try {
+                    if ($user->update_login($column['new_login'], $_SESSION['current_user'])) {
+                        $_GET['update'] = "";
+                        self::fill_current_user_login($column['new_login'], "profile");
+                    } else {
+                        self::fill_session_error(array(), 'profile');
+                    }
+                } catch (Exception $e) {
+                    echo "FATAL ERROR:" . $e->getMessage();
+                }
+            } else {
+                echo "Login not well formatted";
+            }
+        } else if (array_key_exists("new_password", $column) && array_key_exists("old_password", $column)) {
+                $user = new User;
+                if (self::login_valid($column['new_login'])) {
+                    try {
+                        if ($user->update_login($column['new_login'], $_SESSION['current_user'])) {
+                            $_GET['update'] = "";
+                            self::fill_current_user_login($column['new_login'], "profile");
+                        } else {
+                            self::fill_session_error(array(), 'profile');
+                        }
+                    } catch (Exception $e) {
+                        echo "FATAL ERROR:" . $e->getMessage();
+                    }
+                } else {
+                    echo "Login not well formatted";
+                }
+            }
 	}
 }

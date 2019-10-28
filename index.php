@@ -19,7 +19,10 @@ Route::set("index", function() {
 });
 
 Route::set("profile", function () {
-    UsersController::template_profile($_GET);
+    UsersController::template_profile();
+    if (isset($_POST)) {
+        UsersController::update_user($_POST);
+    }
 });
 
 Route::set("sign_up", function() {
@@ -36,6 +39,10 @@ Route::set("logout", function () {
 
 Route::set("webcam", function () {
    Webcam::createView("webcam");
+});
+
+Route::set("update", function() {
+
 });
 
 if (isset($_POST) && array_key_exists("submit_create", $_POST)) {
