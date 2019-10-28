@@ -31,6 +31,7 @@
                 </form>
             </div>
             <div id="side">
+                <h2>My uploads</h2>
                 <?php
                 if (isset($_SESSION["user_posts"])) {
                     foreach($_SESSION["user_posts"] as $post) {

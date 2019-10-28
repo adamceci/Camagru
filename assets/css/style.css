@@ -49,6 +49,7 @@ div.header div:nth-child(4) button {
     font-size: 15px;
     height: 50px;
     width: 75%;
+    cursor: pointer;
 }
 
 /* Index page */
@@ -56,10 +57,12 @@ div.header div:nth-child(4) button {
 #container_title {
     width: 85%;
     margin: 50px auto;
+    text-align: center;
 }
 
 #container_title h1 {
-	font-size: 25px;
+    /* margin: auto; */
+	font-size: 30px;
 	color: rgb(7, 109, 134)
 }
 
@@ -131,16 +134,6 @@ div.header div:nth-child(4) button {
 
 /* Montage page */
 
-#container_title {
-    width: 85%;
-    margin: 50px auto;
-}
-
-#container_title h1 {
-	font-size: 25px;
-	color: rgb(7, 109, 134)
-}
-
 #container {
     height: 1000px;
     margin-top: 40px;
@@ -153,7 +146,7 @@ div.header div:nth-child(4) button {
 
 #side {
     width: 20%;
-    /* border: 1px solid black; */
+    /* border: 1px solid rgb(15, 129, 158); */
     /* margin: auto; */
     display: flex;
     flex-direction: column;
@@ -162,14 +155,33 @@ div.header div:nth-child(4) button {
     justify-content: flex-start;
 }
 
+#side h2 {
+    color: rgb(15, 129, 158);
+    font-weight: bold;
+    text-decoration: underline;
+}
+
 .user_posts {
-    width: 100%;
+    max-width: 100%;
     margin-bottom: 1px;
     display: flex;
 }
 
 .user_posts img {
     width: 100%;
-    border: 3px solid rgb(15, 129, 158);
+    /* border: 3px solid rgb(15, 129, 158); */
     max-height: 160px;
+}
+
+/* Plus button */
+
+.buttonplus {
+    border: none;
+    padding: 8px 16px;
+    cursor: pointer;
+    white-space: nowrap;
+    font-size: 24px!important;
+    border-radius: 50%;
+    color: #fff!important;
+    background-color: rgb(15, 129, 158)!important;
 }
