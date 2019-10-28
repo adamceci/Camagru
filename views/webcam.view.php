@@ -63,7 +63,7 @@
         let canvas_filter = document.querySelector("#test");
         let ctx_filter = canvas_filter.getContext('2d');
         if (navigator.mediaDevices.getUserMedia) {
-            navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+            navigator.mediaDevices.getUserMedia({ video: true })
                 .then(function (stream) {
                     video.srcObject = stream;
                 })
@@ -81,6 +81,7 @@
             ctx.drawImage(filter,0, 0, canvas.width, canvas.height);
             let dataURI = canvas.toDataURL('image/png'); // can also use 'image/png'
             snap.src = dataURI;
+            console.log(dataURI);
             let xmlhttp = new XMLHttpRequest();
 
             xmlhttp.onreadystatechange = function() {

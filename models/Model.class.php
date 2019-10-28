@@ -8,6 +8,7 @@ class Model {
         try {
             require("models/password.php");
             $this->pdo = new PDO($dsn, $user, $password);
+            $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         }
         catch (PDOException $e) {
             throw new Exception ("Connection to database failed in Model");

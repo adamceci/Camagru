@@ -53,6 +53,8 @@ class UsersController extends Controller {
             $_SESSION["current_user_email"] = $content[0]["email"];
             $_SESSION["current_user_pic"] = $content[0]["profile_pic"];
             $_SESSION["current_user_user_id"] = $content[0]["user_id"];
+            $_SESSION["current_user_notification_email"] = $content[0]["notification_email"];
+            $_SESSION["current_user_date_of_creation"] = $content[0]["date_of_creation"];
             // Change to createTemplate
             header("Location: index");
             return (1);
@@ -63,8 +65,8 @@ class UsersController extends Controller {
     private static function creation_user_response($return_val, $arr) {
         switch ($return_val) {
             case 1:
-                return "Your account has been made, <br /> please verify it by clicking the activation link that has been send to your email.<br />";
-/*                if (self::send_verification_email($arr)) {
+                if (self::send_verification_email($arr)) {
+                    return "<p>Your account has been made," ."<br />" ."please verify it by clicking the activation link that has been sent to your email.<br /></p>";
                 } else {
                    $user = new User;
                     try {
@@ -73,13 +75,16 @@ class UsersController extends Controller {
                         echo "Error creation_user_response for deleting user" . $e->getMessage();
                     }
                     return "The verification email wasn't sent\n";
-                }*/
+                }
             case EMAIL_EXISTS:
                 self::fill_session_error($arr, "sign_up");
                 return "The email already exists\n";
             case LOGIN_EXISTS:
                 self::fill_session_error($arr, "sign_up");
                 return "The login already exists\n";
+            case EMAIL_EXISTS | LOGIN_EXISTS:
+                self::fill_session_error($arr, "sign_up");
+                return "The login and email already exists\n";
         }
     }
 
@@ -91,10 +96,8 @@ class UsersController extends Controller {
             case USER_DONT_EXIST:
                 $_GET["url"] = "index";
                 // Change to createTemplate
-                require_once("views/header.module.php");
-                require_once("views/index.view.php");
-                require_once("views/footer.module.php");
-                return "The email already exists\n";
+                self::template_index();
+                return "The email or the hash doesn't exist\n";
         }
     }
 
@@ -145,9 +148,12 @@ class UsersController extends Controller {
             $headers = "MIME-Version: 1.0" . "\r\n"; 
             $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
             $headers .= 'From: '.$from. "\r\n"; 
-            $subject = "<h1 class='test'> Verification mail </h1>";
+            $subject = "Verification mail Camagru";
             $link = "http://localhost:8080/Camagru/index.php?email=" . $user_info['email'] . "&hash=" . $user_info["verif_hash"] . "";
-            $message = '<a href="' . $link . '"> localhost:8080/Camagru/verif </a>';
+            $message = '<h1>Welcome in Camagru</h1>
+                        <p>Account: ' . $user_info['login'] . '</p>
+                        <p>Email: ' . $user_info['email'] . '</p>
+                <a href="' . $link . '"> localhost:8080/Camagru/verif </a>';
             if (mail($to, $subject, $message, $headers)) {
                 return (1);
             } else {
@@ -196,7 +202,7 @@ class UsersController extends Controller {
 	private static function login_verif(array $kwargs) {
 	    $user = new User;
         if (array_key_exists("login", $kwargs) && !empty($kwargs["login"])) {
-            if (self::login_valid($kwargs["login"]) || self::email_valid($kwargs["login"]) 
+            if ((self::login_valid($kwargs["login"]) || self::email_valid($kwargs["login"]))
             && $user->auth_user($kwargs["login"], hash("whirlpool", $kwargs["password"]))) {
                 return (self::fill_current_user_login($kwargs["login"], "index"));
             }
