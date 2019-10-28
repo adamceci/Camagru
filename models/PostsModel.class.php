@@ -4,6 +4,20 @@ require_once("Model.class.php");
 
 class Post extends Model {
 
+    // get number of posts
+    public function get_nb_pages() {
+        try {
+            parent::db_connect();
+            $sql = "SELECT count(*) FROM posts WHERE posted = 1";
+            $nb_posts = $this->pdo->query($sql)->fetchAll();
+            $nb_posts = (int)$nb_posts[0]["count(*)"];
+            return (ceil($nb_posts / 6));
+        }
+        catch (Exception $e) {
+            throw new Exception("Error while counting the number of pages in post model " . $e->getMessage());
+        }
+    }
+
     // get 6 by 6 posts
     public function get_index_posts($limit, $offset) {
         try {

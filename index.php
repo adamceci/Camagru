@@ -7,7 +7,7 @@ require_once("controllers/Controller.class.php");
 require_once("controllers/Users.class.php");
 require_once("controllers/Posts.class.php");
 
-$_SESSION["index_page"] = 1;
+$_SESSION["current_page"] = 1;
 $_SESSION["nb_pages"] = 1;
 
 if (array_key_exists("email", $_GET) && array_key_exists("hash", $_GET)) {
@@ -15,7 +15,7 @@ if (array_key_exists("email", $_GET) && array_key_exists("hash", $_GET)) {
 }
 
 Route::set("index", function() {
-    PostsController::display_index_posts($_SESSION["index_page"]);
+    PostsController::display_index_posts($_SESSION["current_page"]);
 });
 
 Route::set("sign_up", function() {
@@ -62,5 +62,5 @@ if (isset($_POST) && array_key_exists("submit_create_post", $_POST)) {
 }
 
 if (!in_array($_GET["url"], Route::$validRoutes)) {
-    PostsController::display_index_posts($_SESSION["index_page"]);
+    PostsController::display_index_posts($_SESSION["current_page"]);
 }

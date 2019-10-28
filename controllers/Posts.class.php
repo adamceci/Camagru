@@ -15,6 +15,7 @@ class PostsController extends Controller {
 			if (!isset($page))
 				$page = 1;
 			$post = new Post;
+			$_SESSION["nb_pages"] = (int)$post->get_nb_pages();
 			self::$offset = 6 * ($page - 1);
 			$_SESSION["index_posts"] = $post->get_index_posts(self::$limit, self::$offset);
 			parent::createView("index");

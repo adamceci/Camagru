@@ -1,14 +1,10 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="utf-8">
-    <link rel="stylesheet" href="assets/css/style.css?rnd=132" type="text/css">
-</head> 
 <body>
     <div id="container_title">
         <h1>GALLERY</h1>
         <!-- <a href="montage">Create a new post</a> -->
-        <button class="buttonplus">+</button>
+        <a href="montage"><button class="buttonplus">+</button></a>
     </div>
     <div id="container_box">
     <?php
@@ -32,18 +28,33 @@
 
     ?>
     </div>
-    <?php
-        
-    ?>
     <div class="pagination">
-        <a href="#">&laquo;</a>
-        <a href="#">1</a>
-        <a href="#" class="active">2</a>
-        <a href="#">3</a>
-        <a href="#">4</a>
-        <a href="#">5</a>
-        <a href="#">6</a>
-        <a href="#">&raquo;</a>
+        <?php
+            if ($_SESSION["current_page"] > 1) {
+            ?>
+                <a href="#">&laquo;</a>
+            <?php
+
+            }
+                for ($i = 1; $i <= $_SESSION["nb_pages"]; $i++) {
+                    if ($_SESSION["current_page"] == $i) {
+                    ?>
+                        <p><a href="#" class="active"><?= $i; ?></a></p>
+                    <?php
+                    }
+                    else {
+                    ?>
+                        <p><a href="#"><?= $i; ?></a></p>
+                    <?php
+                    }
+                }
+                if ($_SESSION["current_page"] != $_SESSION["nb_pages"] && $_SESSION["nb_pages"] > 1) {
+                    ?>
+                    <p><a href="#">&raquo;</a></p>
+                    <?php
+                }
+
+        ?>
     </div>
         <!-- <div class="post_index">
 			<img src="assets/post_imgs/aze.png" alt="">

@@ -95,7 +95,8 @@ div.header div:nth-child(4) button {
 .pagination {
 	display: flex;
 	width: 20%;
-	margin: auto;
+    margin: auto;
+    justify-content: center;
 }
   
 .pagination a {
@@ -184,4 +185,5 @@ div.header div:nth-child(4) button {
     border-radius: 50%;
     color: #fff!important;
     background-color: rgb(15, 129, 158)!important;
+    outline: none;
 }
