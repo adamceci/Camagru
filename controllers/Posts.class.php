@@ -16,7 +16,7 @@ class PostsController extends Controller {
 				$page = 1;
 			$post = new Post;
 			self::$offset = 6 * ($page - 1);
-			$_SESSION["index_posts"] = $post->get_posts(self::$limit, self::$offset);
+			$_SESSION["index_posts"] = $post->get_index_posts(self::$limit, self::$offset);
 			parent::createView("index");
 		}
 		catch (Exception $e) {
@@ -29,7 +29,7 @@ class PostsController extends Controller {
 		try {
 			if (isset($_SESSION["current_user"])) {
 				$post = new Post;
-				$_SESSION["user_posts"] = $post->get_posts($post->number_user_posts(), 0);
+				$_SESSION["user_posts"] = $post->get_user_uploads();
 				parent::CreateView("montage");
 			}
 		}

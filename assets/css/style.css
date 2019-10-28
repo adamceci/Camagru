@@ -1,3 +1,5 @@
+/* Header */
+
 .header {
     width: 90%;
     margin: auto;
@@ -49,8 +51,10 @@ div.header div:nth-child(4) button {
     width: 75%;
 }
 
+/* Index page */
+
 #container_title {
-    width: 83.2%;
+    width: 85%;
     margin: 50px auto;
 }
 
@@ -60,7 +64,7 @@ div.header div:nth-child(4) button {
 }
 
 #container_box {
-    width: 90%;
+    width: 85%;
     margin: auto;
     display: flex;
     flex-wrap: wrap;
@@ -82,6 +86,8 @@ div.header div:nth-child(4) button {
     justify-content: space-around;
     margin-bottom: 35px;
 }
+
+/* Pagination */
 
 .pagination {
 	display: flex;
@@ -106,6 +112,8 @@ div.header div:nth-child(4) button {
 	background-color: #ddd;
 }
 
+/* Footer */
+
 #footer {
     width: 90%;
     margin: 50px auto 0 auto;
@@ -114,7 +122,54 @@ div.header div:nth-child(4) button {
     font-style: italic;
 }
 
-.wrapper {
+/* Container for almost every page */
+
+#wrapper {
     width: 80%;
     margin: auto;
+}
+
+/* Montage page */
+
+#container_title {
+    width: 85%;
+    margin: 50px auto;
+}
+
+#container_title h1 {
+	font-size: 25px;
+	color: rgb(7, 109, 134)
+}
+
+#container {
+    height: 1000px;
+    margin-top: 40px;
+    display: flex;
+}
+
+#main {
+    width: 80%;
+}
+
+#side {
+    width: 20%;
+    /* border: 1px solid black; */
+    /* margin: auto; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* flex-wrap: wrap; */
+    justify-content: flex-start;
+}
+
+.user_posts {
+    width: 100%;
+    margin-bottom: 1px;
+    display: flex;
+}
+
+.user_posts img {
+    width: 100%;
+    border: 3px solid rgb(15, 129, 158);
+    max-height: 160px;
 }

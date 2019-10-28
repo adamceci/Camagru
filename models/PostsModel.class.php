@@ -4,11 +4,11 @@ require_once("Model.class.php");
 
 class Post extends Model {
 
-    // get table info
-    public function get_posts($limit, $offset) {
+    // get 6 by 6 posts
+    public function get_index_posts($limit, $offset) {
         try {
             parent::db_connect();
-            $sql = "SELECT * FROM posts ORDER BY post_id DESC LIMIT ? OFFSET ?";
+            $sql = "SELECT * FROM posts WHERE posted = 1 ORDER BY post_id DESC LIMIT ? OFFSET ?";
             $this->pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
             $this->stmt = $this->pdo->prepare($sql);
             $this->stmt->execute(array((int)$limit, (int)$offset));
@@ -21,19 +21,20 @@ class Post extends Model {
         }
     }
 
-    // get number of posts of a certain user
-    public function number_user_posts() {
+    // get 6 by 6 posts of certain user
+    public function get_user_uploads() {
         try {
             parent::db_connect();
-            $sql = "SELECT count(*) FROM posts WHERE user_id = ? ORDER BY post_id DESC";
+            $sql = "SELECT * FROM posts WHERE `user_id` = ? ORDER BY post_id DESC LIMIT 6 OFFSET 0";
+            $this->pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
             $this->stmt = $this->pdo->prepare($sql);
             $this->stmt->execute(array((int)$_SESSION["current_user_user_id"]));
-            $ret = (int)$this->stmt->fetchAll(PDO::FETCH_ASSOC);
-            var_dump($ret);
-            return (0);
+            $arr = $this->stmt->fetchAll(PDO::FETCH_ASSOC);
+            parent::db_drop_connection();
+            return $arr;
         }
         catch (Exception $e) {
-            throw new Exception("Error while getting the user posts in model " . $e->getMessage());
+            throw new Exception("Error while getting the index posts in model " . $e->getMessage());
         }
     }
 
@@ -51,5 +52,6 @@ class Post extends Model {
             throw new Exception("Error create_post in Posts Model : " . $e->getMessage());
         }
     }
+
     // delete line
 }
