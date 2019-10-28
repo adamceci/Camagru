@@ -16,6 +16,11 @@ class Controller {
 		require_once('./views/'.$moduleName.'.module.php');
 	}
 
+	public static function template_index(){
+        require_once("views/header.module.php");
+        require_once("views/index.view.php");
+        require_once("views/footer.module.php");
+    }
 
 }
 

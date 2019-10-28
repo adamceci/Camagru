@@ -12,7 +12,16 @@ class UsersController extends Controller {
         self::createView("login");
     }
 
-
+    public static function template_profile() {
+        self::createModule("header");
+        self::createView("profile");
+        if (array_key_exists("update", $_GET) && !empty($_GET['update'])) {
+            if ($_GET["update"] == "login") {
+                UsersController::createModule("update_login");
+            }
+        }
+        self::createModule("footer");
+    }
 
     /*
     This function takes an array and fill the session 
@@ -21,7 +30,6 @@ class UsersController extends Controller {
         $_SESSION['last_email'] = (array_key_exists("email", $arr)) ? $arr["email"] : "";
         $_SESSION['last_login'] = (array_key_exists("login", $arr)) ? $arr["login"] : "";
         $_GET['url'] = $url;
-        UsersController::template_sign_up();
         Route::redirect($url, "UsersController");
     }
 
@@ -45,8 +53,10 @@ class UsersController extends Controller {
             $_SESSION["current_user_email"] = $content[0]["email"];
             $_SESSION["current_user_pic"] = $content[0]["profile_pic"];
             $_SESSION["current_user_user_id"] = $content[0]["user_id"];
+            $_SESSION["current_user_notification_email"] = $content[0]["notification_email"];
+            $_SESSION["current_user_date_of_creation"] = $content[0]["date_of_creation"];
             // Change to createTemplate
-            header("Location: index");
+            Route::redirect($url, "UsersController");
             return (1);
         }
         return (0);
@@ -56,9 +66,9 @@ class UsersController extends Controller {
         switch ($return_val) {
             case 1:
                 if (self::send_verification_email($arr)) {
-                    return "Your account has been made, <br /> please verify it by clicking the activation link that has been send to your email.<br />";
+                    return "<p>Your account has been made," ."<br />" ."please verify it by clicking the activation link that has been sent to your email.<br /></p>";
                 } else {
-                    $user = new User;
+                   $user = new User;
                     try {
                         $user->delete_user($arr['login'], $arr['password']);
                     } catch (Exception $e) {
@@ -72,6 +82,9 @@ class UsersController extends Controller {
             case LOGIN_EXISTS:
                 self::fill_session_error($arr, "sign_up");
                 return "The login already exists\n";
+            case EMAIL_EXISTS | LOGIN_EXISTS:
+                self::fill_session_error($arr, "sign_up");
+                return "The login and email already exists\n";
         }
     }
 
@@ -83,10 +96,8 @@ class UsersController extends Controller {
             case USER_DONT_EXIST:
                 $_GET["url"] = "index";
                 // Change to createTemplate
-                require_once("views/header.module.php");
-                require_once("views/index.view.php");
-                require_once("views/footer.module.php");
-                return "The email already exists\n";
+                self::template_index();
+                return "The email or the hash doesn't exist\n";
         }
     }
 
@@ -110,7 +121,8 @@ class UsersController extends Controller {
                 ];
                 $user = new User;
                 if (self::email_valid($kwargs_model['email']) && self::login_valid($kwargs_model['login'])) {
-                    return self::creation_user_response($user->create_user($kwargs_model), $kwargs_model);
+                    $return_value = $user->create_user($kwargs_model);
+                    return self::creation_user_response($return_value, $kwargs_model);
                 } else {
                     self::fill_session_error($kwargs, "sign_up");
                     echo "Email or login are not well formatted\n";
@@ -136,9 +148,12 @@ class UsersController extends Controller {
             $headers = "MIME-Version: 1.0" . "\r\n"; 
             $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
             $headers .= 'From: '.$from. "\r\n"; 
-            $subject = "<h1 class='test'> Verification mail </h1>";
+            $subject = "Verification mail Camagru";
             $link = "http://localhost:8080/Camagru/index.php?email=" . $user_info['email'] . "&hash=" . $user_info["verif_hash"] . "";
-            $message = '<a href="' . $link . '"> localhost:8080/Camagru/verif </a>';
+            $message = '<h1>Welcome in Camagru</h1>
+                        <p>Account: ' . $user_info['login'] . '</p>
+                        <p>Email: ' . $user_info['email'] . '</p>
+                <a href="' . $link . '"> localhost:8080/Camagru/verif </a>';
             if (mail($to, $subject, $message, $headers)) {
                 return (1);
             } else {
@@ -187,7 +202,7 @@ class UsersController extends Controller {
 	private static function login_verif(array $kwargs) {
 	    $user = new User;
         if (array_key_exists("login", $kwargs) && !empty($kwargs["login"])) {
-            if (self::login_valid($kwargs["login"]) || self::email_valid($kwargs["login"]) 
+            if ((self::login_valid($kwargs["login"]) || self::email_valid($kwargs["login"]))
             && $user->auth_user($kwargs["login"], hash("whirlpool", $kwargs["password"]))) {
                 return (self::fill_current_user_login($kwargs["login"], "index"));
             }
@@ -201,7 +216,7 @@ class UsersController extends Controller {
                 return ("Logged");
             } else {
                 self::fill_session_error($kwargs, "login");
-                return ("Wrong login\n");
+                return ("Wrong login or password\n");
             }
         }
         self::fill_session_error($kwargs, "login");
@@ -214,4 +229,40 @@ class UsersController extends Controller {
         // Change to createTemplate
         header("Location: index");
     }
+
+    public static function update_user($column) {
+        if (array_key_exists("new_login", $column)) {
+            $user = new User;
+            if (self::login_valid($column['new_login'])) {
+                try {
+                    if ($user->update_login($column['new_login'], $_SESSION['current_user'])) {
+                        $_GET['update'] = "";
+                        self::fill_current_user_login($column['new_login'], "profile");
+                    } else {
+                        self::fill_session_error(array(), 'profile');
+                    }
+                } catch (Exception $e) {
+                    echo "FATAL ERROR:" . $e->getMessage();
+                }
+            } else {
+                echo "Login not well formatted";
+            }
+        } else if (array_key_exists("new_password", $column) && array_key_exists("old_password", $column)) {
+            $user = new User;
+            if (self::login_valid($column['new_login'])) {
+                try {
+                    if ($user->update_login($column['new_login'], $_SESSION['current_user'])) {
+                        $_GET['update'] = "";
+                        self::fill_current_user_login($column['new_login'], "profile");
+                    } else {
+                        self::fill_session_error(array(), 'profile');
+                    }
+                } catch (Exception $e) {
+                    echo "FATAL ERROR:" . $e->getMessage();
+                }
+            } else {
+                echo "Login not well formatted";
+            }
+        }
+	}
 }

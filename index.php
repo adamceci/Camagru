@@ -3,7 +3,10 @@ session_start();
 require_once("assets/macros/errors.php");
 require("controllers/Controller.class.php");
 require_once("controllers/Users.class.php");
+require_once("controllers/Webcam.class.php");
 require("controllers/Routes.class.php");
+
+
 
 if (array_key_exists("email", $_GET) && array_key_exists("hash", $_GET)) {
     echo UsersController::activate_account($_GET["email"], $_GET["hash"]);
@@ -13,6 +16,13 @@ Route::set("index", function() {
     require_once("views/header.module.php");
     require_once("views/index.view.php");
     require_once("views/footer.module.php");
+});
+
+Route::set("profile", function () {
+    UsersController::template_profile();
+    if (isset($_POST)) {
+        UsersController::update_user($_POST);
+    }
 });
 
 Route::set("sign_up", function() {
@@ -25,6 +35,14 @@ Route::set("login", function () {
 
 Route::set("logout", function () {
     UsersController::logout();
+});
+
+Route::set("webcam", function () {
+   Webcam::createView("webcam");
+});
+
+Route::set("update", function() {
+
 });
 
 if (isset($_POST) && array_key_exists("submit_create", $_POST)) {
