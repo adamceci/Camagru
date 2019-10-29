@@ -14,7 +14,6 @@
 <!DOCTYPE html>
 <html>
 <body>
-
     <div id="container_title">
         <h1>MONTAGE</h1>
     </div>
@@ -33,11 +32,18 @@
             <div id="side">
                 <h2>My uploads</h2>
                 <?php
+                $i = 0;
                 if (isset($_SESSION["user_posts"])) {
                     foreach($_SESSION["user_posts"] as $post) {
                         ?>
                         <div class="user_posts">
-                            <img src="assets/post_imgs/<?= $post["image"]; ?>" alt="">
+                            <div class="hidden remove">
+                                <button>-</button>
+                            </div>
+                            <div class="hidden post">
+                                <button>POST</button>
+                            </div>
+                            <img id="<?= $i++; ?>" src="assets/post_imgs/<?= $post["image"]; ?>" alt="">
                         </div>
                         <?php
                     }
@@ -49,6 +55,6 @@
             </div>
         </div>
     </div>
-
+    <script src="scripts/post.js"></script>
 </body>
 </html>

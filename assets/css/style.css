@@ -166,6 +166,7 @@ div.header div:nth-child(4) button {
     max-width: 100%;
     margin-bottom: 1px;
     display: flex;
+    position: relative;
 }
 
 .user_posts img {
@@ -186,4 +187,23 @@ div.header div:nth-child(4) button {
     color: #fff!important;
     background-color: rgb(15, 129, 158)!important;
     outline: none;
+}
+
+.hidden {
+    display: none;
+}
+
+.user_posts:hover .hidden {
+    display: block;
+}
+
+.remove {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    width: 25px;
+}
+
+.post {
+    position: absolute;
 }
