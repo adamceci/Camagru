@@ -12,7 +12,7 @@
     <p class="profile_texts">login: <?php echo htmlspecialchars($_SESSION['current_user']); ?></p>
     <p class="profile_texts">email: <?php echo htmlspecialchars($_SESSION['current_user_email']); ?></p>
     <p class="profile_texts">profile_pic: <?php echo htmlspecialchars($_SESSION['current_user_pic']); ?></p>
-    <button class="profile_change_buttons">Change password</button>
+    <a href="profile&update=password"><button class="profile_change_buttons">Change password</button></a>
     <a href="profile&update=login"><button class="profile_change_buttons">Change login</button></a>
     <button class="profile_change_buttons">Change email</button>
     <button class="profile_change_notification">Change notification mail</button>

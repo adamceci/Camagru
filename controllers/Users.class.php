@@ -16,8 +16,10 @@ class UsersController extends Controller {
         self::createModule("header");
         self::createView("profile");
         if (array_key_exists("update", $_GET) && !empty($_GET['update'])) {
-            if ($_GET["update"] == "login") {
+            if ($_GET['update'] == 'login') {
                 UsersController::createModule("update_login");
+            } else if ($_GET['update'] == 'password') {
+                UsersController::createModule('update_password');
             }
         }
         self::createModule("footer");
@@ -236,7 +238,7 @@ class UsersController extends Controller {
             if (self::login_valid($column['new_login'])) {
                 try {
                     if ($user->update_login($column['new_login'], $_SESSION['current_user'])) {
-                        $_GET['update'] = "";
+                        $_SESSION['refresh'] = "profile&update=login";
                         self::fill_current_user_login($column['new_login'], "profile");
                     } else {
                         self::fill_session_error(array(), 'profile');
@@ -246,23 +248,26 @@ class UsersController extends Controller {
                 }
             } else {
                 echo "Login not well formatted";
+                self::fill_session_error(array("login"=>$column['new_login']), "profile");
             }
         } else if (array_key_exists("new_password", $column) && array_key_exists("old_password", $column)) {
             $user = new User;
-            if (self::login_valid($column['new_login'])) {
+            // Change to password_valid
+//            if (self::login_valid($column['new_login'])) {
                 try {
-                    if ($user->update_login($column['new_login'], $_SESSION['current_user'])) {
-                        $_GET['update'] = "";
-                        self::fill_current_user_login($column['new_login'], "profile");
+                    var_dump($user->update_password(hash("whirlpool", $column['new_password']), hash("whirlpool", $column['old_password']), $_SESSION['current_user']));
+                    if (1 == 1) {
+                        echo "password changed";
+                        return (1);
                     } else {
                         self::fill_session_error(array(), 'profile');
                     }
                 } catch (Exception $e) {
                     echo "FATAL ERROR:" . $e->getMessage();
                 }
-            } else {
-                echo "Login not well formatted";
-            }
+//            } else {
+//                echo "Login not well formatted";
+//            }
         }
 	}
 }

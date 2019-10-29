@@ -223,7 +223,7 @@ class User extends Model {
     public function update_login($new_login, $old_login) {
         try {
             parent::db_connect();
-            $sql = "UPDATE `users` 
+            $sql = "UPDATE `users`
                     SET login=?
                     WHERE LOWER(login)=?";
             $this->stmt = $this->pdo->prepare($sql);
@@ -234,8 +234,28 @@ class User extends Model {
             } else {
                 return (1);
             }
-        } catch (Exception $e) {
-            throw new Exception("Error create_user in User Model:" . $e->getMessage());
+        } catch (PDOException $e) {
+            throw new Exception("Error update_login in User Model:<br/>" . $e->getMessage());
         }
     }
+
+    public function update_password($new_password, $old_password, $login) {
+        try {
+            parent::db_connect();
+            $sql = "UPDATE `users`
+                    SET `password`=?
+                    WHERE (`password`=? AND LOWER(`login`)=?)";
+            $this->stmt = $this->pdo->prepare($sql);
+            $return_value = $this->stmt->execute(array($new_password, $old_password, $login));
+            parent::db_drop_connection();
+            if ($return_value == FALSE) {
+                return (USER_DONT_EXIST);
+            } else {
+                return (1);
+            }
+        } catch (PDOException $e) {
+            throw new Exception("Error update_login in User Model:<br/>" . $e->getMessage());
+        }
+    }
+
 }
