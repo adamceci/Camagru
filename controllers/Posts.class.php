@@ -62,7 +62,7 @@ class PostsController extends Controller {
 	}
 
 	// upload post into /assets/post_imgs
-	private function upload_post($kwargs) {
+	private function upload_post(array $kwargs) {
 
 		// Current working directory ("/Camagru-MVC-/")
 		$directory_self = str_replace(basename($_SERVER['PHP_SELF']), '', $_SERVER['PHP_SELF']);
@@ -86,7 +86,7 @@ class PostsController extends Controller {
 			4 => 'no file was attached'
 		);
 		// check the upload form was actually submitted else print the form 
-		if (!(isset($kwargs) && array_key_exists("submit_create_post", $kwargs))) {
+		if (!(isset($kwargs) && (array_key_exists("submit_create_post", $kwargs) || array_key_exists("save", $kwargs)))) {
     		// check if user is logged in
     		if (isset($_SESSION["current_user"]))
         		self::error_post('the upload form is neaded', $upload_form);
@@ -124,7 +124,7 @@ class PostsController extends Controller {
 	}
 
     // create post
-    public static function create_post($kwargs) {
+    public static function create_post(array $kwargs) {
 		try {
 			if (isset($_SESSION["current_user"])) {
 				$kwargs["image"] = self::upload_post($kwargs);
@@ -136,7 +136,11 @@ class PostsController extends Controller {
 				else
 					self::error_post("Please select an image", "montage");
 				// if filter doesn't exist ? -> todo
-        		// require_once(post_view.php);
+				// require_once(post_view.php);
+				if (isset($kwargs["submit_create_post"])) {
+					$kwargs["toPubSrc"] = $kwargs["image"];
+					$post->publish_post($kwargs);
+				}
 			}
 			else
 				self::error_post("Log in before posting", "montage");
@@ -145,18 +149,35 @@ class PostsController extends Controller {
             throw new Exception("Error while creating the post in controller " . $e->getMessage());
         }
 	}
-	
-    // delete post
-// 	private static function delete_post($kwargs) {
-// 		try {
-// 			if (isset($_SESSION["current_user"])) {
-// 				if (isset($kwargs[""])) {
 
-// 				}
-// 			}
-// 		}
-// 		catch (Exception $e) {
-// 			throw new Exception("Error while deleting the post in controller " . $e->getMessage());
-// 		}
-// 	}
+	public static function publish_post(array $kwargs) {
+		try {
+			if (isset($_SESSION["current_user"])) {
+				if (isset($kwargs["toPubSrc"])) {
+					$post = new Post;
+					$post->publish_post($kwargs);
+				}
+			}
+			
+		}
+		catch (Exception $e) {
+			throw new Exception("Error while deleting the post in controller " . $e->getMessage());
+		}
+	}
+
+    // delete post
+	public static function delete_post(array $kwargs) {
+		try {
+			if (isset($_SESSION["current_user"])) {
+				if (isset($kwargs["toDelSrc"])) {
+					$post = new Post;
+					$post->delete_post($kwargs);
+				}
+			}
+			
+		}
+		catch (Exception $e) {
+			throw new Exception("Error while deleting the post in controller " . $e->getMessage());
+		}
+	}
 }

@@ -58,7 +58,6 @@ class Post extends Model {
             parent::db_connect();
             $sql = "INSERT INTO posts (`user_id`, `image`) VALUES (?, ?)";
             $this->stmt = $this->pdo->prepare($sql);
-            // var_dump($kwargs);
             $this->stmt->execute(array($kwargs['user_id'], $kwargs['image']));
             parent::db_drop_connection();
         }
@@ -67,5 +66,31 @@ class Post extends Model {
         }
     }
 
+    // change 'posted' to be true
+    public function publish_post(array $kwargs) {
+        try {
+			parent::db_connect();
+            $sql = "UPDATE posts SET posted = 1 WHERE `image` = ?";
+            $this->stmt = $this->pdo->prepare($sql);
+            $this->stmt->execute(array(basename($kwargs["toPubSrc"])));
+            parent::db_drop_connection();
+        }
+        catch (Exception $e) {
+            throw new Exception("Error while publishing the post in Posts Model" . $e->getMessage());
+        }
+    }
+
     // delete line
+    public function delete_post($kwargs) {
+        try {
+            parent::db_connect();
+            $sql = "DELETE FROM posts WHERE `image` = ?";
+            $this->stmt = $this->pdo->prepare($sql);
+            $this->stmt->execute(array(basename($kwargs["toDelSrc"])));
+            parent::db_drop_connection();
+        }
+        catch (Exception $e) {
+            throw new Ecxeption("Error while deleting post in Post Model : " . $e->getMessage());
+        }
+    }
 }

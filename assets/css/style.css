@@ -175,21 +175,7 @@ div.header div:nth-child(4) button {
     max-height: 160px;
 }
 
-/* Plus button */
-
-.buttonplus {
-    border: none;
-    padding: 8px 16px;
-    cursor: pointer;
-    white-space: nowrap;
-    font-size: 24px!important;
-    border-radius: 50%;
-    color: #fff!important;
-    background-color: rgb(15, 129, 158)!important;
-    outline: none;
-}
-
-.hidden {
+.user_posts .hidden {
     display: none;
 }
 
@@ -206,4 +192,18 @@ div.header div:nth-child(4) button {
 
 .post {
     position: absolute;
+}
+
+/* Plus button */
+
+.buttonplus {
+    border: none;
+    padding: 8px 16px;
+    cursor: pointer;
+    white-space: nowrap;
+    font-size: 24px!important;
+    border-radius: 50%;
+    color: #fff!important;
+    background-color: rgb(15, 129, 158)!important;
+    outline: none;
 }

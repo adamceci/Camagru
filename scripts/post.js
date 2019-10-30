@@ -1,34 +1,47 @@
-function displayButtons(data) {
-	// let str = i;
-	// let concat = "img".concat(str);
-	// console.log(concat);
-	// let img = document.querySelector("img");
-
-	// let remove = document.createElement('div');
-	// let post = document.createElement('div');
-	// remove.className = "remove_button";
-	// post.className = "post_button";
-	// remove.innerHTML = "";
-	// console.log(data["path"][0]);
-	// data["path"][0].appendChild(remove);
-	// console.log(data["path"][0]);
+function removeImage(data) {
+	let divToRemove = data["path"][2];
+	let imageToRemove = divToRemove.querySelector("img").getAttribute("src");
+	let xhttp = new XMLHttpRequest();
 	
-	// data["path"][0].appendChild();
-	// console.log(data["path"][0]);
-	// img.style.border = "thick solid #0000FF";
-    // document.querySelectorAll("img").style.border = "thick solid #0000FF";
-    // document.getElementById("").style.border = "thick solid #0000FF";
+	if (confirm("Are you sure you want to delete this image ?")) {
+		xhttp.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200)
+				divToRemove.remove();
+		};
+		xhttp.open("GET", "index.php?toDelSrc=" + imageToRemove, true);
+		xhttp.send();
+	}
 }
 
-function hideButtons() {
-	// let img = document.querySelector("img");
-	// console.log(img);
-	// img.style.border = "none";
-    // document.getElementById("img"i).style.border = "none";
+function publishImage(data) {
+	let buttonToRemove = data["path"][1];
+	let imageToPublish = data["path"][2]["children"][2]["src"];
+	let xhttp = new XMLHttpRequest();
+
+	if (confirm("Are you sure you want to post this image ?")) {
+		xhttp.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200)
+				buttonToRemove.remove();
+		};
+		console.log(imageToPublish);
+		xhttp.open("GET", "index.php?toPubSrc=" + imageToPublish, true);
+		xhttp.send();
+	}
 }
 
-let images = document.querySelectorAll("img");
-for (let image of images) {
-    image.addEventListener("mouseover", displayButtons);
-    image.addEventListener("mouseout", hideButtons);
+let removeButtons;
+let postButtons;
+
+removeButtons = document.querySelectorAll(".remove");
+postButtons = document.querySelectorAll(".post");
+
+for (let removeButton of removeButtons) {
+	removeButton.addEventListener("click", removeImage);
 }
+for (let postButton of postButtons) {
+	postButton.addEventListener("click", publishImage);
+}
+
+// xhttp.open("POST", "index.php", true);
+// console.log(xhttp);
+// xhttp.send();

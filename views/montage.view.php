@@ -26,7 +26,8 @@
                     <!-- submit_create_post -->
                     <input type="hidden" name="MAX_FILE_SIZE" value="<?=$max_file_size;?>" />
                     Picture: <input type="file" name="image" value="upload_pic" /><br />
-                    <input type="submit" name="submit_create_post" value="OK" />
+                    <input type="submit" name="submit_create_post" value="Post" />
+                    <input type="submit" name="save" value="Save" />
                 </form>
             </div>
             <div id="side">
@@ -40,9 +41,15 @@
                             <div class="hidden remove">
                                 <button>-</button>
                             </div>
-                            <div class="hidden post">
-                                <button>POST</button>
-                            </div>
+                            <?php
+                                if ($post["posted"] == 0) {
+                                    ?>
+                                    <div class="hidden post">
+                                        <button>POST</button>
+                                    </div>
+                                    <?php
+                                }
+                            ?>
                             <img id="<?= $i++; ?>" src="assets/post_imgs/<?= $post["image"]; ?>" alt="">
                         </div>
                         <?php
