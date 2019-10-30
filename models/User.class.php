@@ -247,11 +247,15 @@ class User extends Model {
                     WHERE (`password`=? AND LOWER(`login`)=?)";
             $this->stmt = $this->pdo->prepare($sql);
             $return_value = $this->stmt->execute(array($new_password, $old_password, $login));
-            parent::db_drop_connection();
-            if ($return_value == FALSE) {
-                return (USER_DONT_EXIST);
-            } else {
-                return (1);
+            if ($return_value) {
+                $affected_rows = $this->stmt->rowCount();
+                if ($affected_rows == 0) {
+                    parent::db_drop_connection();
+                    return (USER_DONT_EXIST);
+                } else {
+                    parent::db_drop_connection();
+                    return (1);
+                }
             }
         } catch (PDOException $e) {
             throw new Exception("Error update_login in User Model:<br/>" . $e->getMessage());
