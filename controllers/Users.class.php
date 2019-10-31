@@ -22,6 +22,9 @@ class UsersController extends Controller {
         self::createModule("footer");
     }
 
+    private static function create_error() {
+
+    }
     /*
     This function takes an array and fill the session 
     */
