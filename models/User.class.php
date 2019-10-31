@@ -258,8 +258,53 @@ class User extends Model {
                 }
             }
         } catch (PDOException $e) {
+            throw new Exception("Error update_email in User Model:<br/>" . $e->getMessage());
+        }
+    }
+
+    public function update_email($new_email, $old_email, $current_user) {
+        try {
+            parent::db_connect();
+            $sql = "UPDATE `users`
+                    SET `email`=?
+                    WHERE (LOWER(`email`)=? AND LOWER(`login`)=?)";
+            $this->stmt = $this->pdo->prepare($sql);
+            $return_value = $this->stmt->execute(array($new_email, $old_email, $current_user));
+            if ($return_value) {
+                $affected_rows = $this->stmt->rowCount();
+                if ($affected_rows == 0) {
+                    parent::db_drop_connection();
+                    return (USER_DONT_EXIST);
+                } else {
+                    parent::db_drop_connection();
+                    return (1);
+                }
+            }
+        } catch (PDOException $e) {
             throw new Exception("Error update_login in User Model:<br/>" . $e->getMessage());
         }
     }
 
+    public function update_notification_email($new_email, $old_email, $current_user) {
+        try {
+            parent::db_connect();
+            $sql = "UPDATE `users`
+                    SET `notification_email`=?
+                    WHERE (LOWER(`notification_email`)=? AND LOWER(`login`)=?)";
+            $this->stmt = $this->pdo->prepare($sql);
+            $return_value = $this->stmt->execute(array($new_email, $old_email, $current_user));
+            if ($return_value) {
+                $affected_rows = $this->stmt->rowCount();
+                if ($affected_rows == 0) {
+                    parent::db_drop_connection();
+                    return (USER_DONT_EXIST);
+                } else {
+                    parent::db_drop_connection();
+                    return (1);
+                }
+            }
+        } catch (PDOException $e) {
+            throw new Exception("Error update_login in User Model:<br/>" . $e->getMessage());
+        }
+    }
 }

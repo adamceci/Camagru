@@ -16,23 +16,22 @@ class UsersController extends Controller {
         self::createModule("header");
         self::createView("profile");
         if (array_key_exists("update", $_GET) && !empty($_GET['update'])) {
-            if ($_GET['update'] == 'login') {
-                UsersController::createModule("update_login");
-            } else if ($_GET['update'] == 'password') {
-                UsersController::createModule('update_password');
-            }
+            if ($_GET['update'] == 'login' || $_GET['update'] == 'email' || $_GET['update'] == 'password' || $_GET['update'] == 'notification_email')
+            UsersController::createModule('update_' . $_GET['update']);
         }
         self::createModule("footer");
     }
 
+    private static function create_error() {
+
+    }
     /*
     This function takes an array and fill the session 
     */
     private static function fill_session_error(array $arr, $url) {
         $_SESSION['last_email'] = (array_key_exists("email", $arr)) ? $arr["email"] : "";
         $_SESSION['last_login'] = (array_key_exists("login", $arr)) ? $arr["login"] : "";
-        $_GET['url'] = $url;
-        Route::redirect($url, "UsersController");
+        header("Location: $url");
     }
 
     /*
@@ -58,7 +57,7 @@ class UsersController extends Controller {
             $_SESSION["current_user_notification_email"] = $content[0]["notification_email"];
             $_SESSION["current_user_date_of_creation"] = $content[0]["date_of_creation"];
             // Change to createTemplate
-            header("Location: index");
+            header("Location: $url");
             return (1);
         }
         return (0);
@@ -249,6 +248,7 @@ class UsersController extends Controller {
                     return (1);
                 } else {
                     echo "Wrong password";
+                    $_SESSION['refresh'] = "profile&update=password";
                     self::fill_session_error(array(), 'profile');
                 }
             } catch (Exception $e) {
@@ -264,17 +264,54 @@ class UsersController extends Controller {
         if (self::login_valid($user_info['new_login'])) {
             try {
                 if ($user->update_login($user_info['new_login'], $_SESSION['current_user'])) {
-                    $_SESSION['refresh'] = "profile&update=login";
                     self::fill_current_user_login($user_info['new_login'], "profile");
                 } else {
-                    self::fill_session_error(array(), 'profile');
+                    $_SESSION['refresh'] = "profile&update=login";
+                    self::fill_session_error(array('login' => $user_info['new_login']), 'profile');
                 }
             } catch (Exception $e) {
                 echo "FATAL ERROR:" . $e->getMessage();
             }
         } else {
             echo "Login not well formatted";
-            self::fill_session_error(array("login"=>$user_info['new_login']), "profile");
+            self::fill_session_error(array('login' => $user_info['new_login']), "profile");
+        }
+    }
+
+    private static function update_email($user_info) {
+        $user = new User;
+        if (self::email_valid($user_info['new_email'])) {
+            try {
+                if ($user->update_email($user_info['new_email'], $_SESSION["current_user_email"], $_SESSION['current_user']) != USER_DONT_EXIST) {
+                    self::fill_current_user_login($user_info['new_email'], "profile");
+                } else {
+                    $_SESSION['refresh'] = "profile&update=email";
+                    self::fill_session_error(array('email' => $user_info['new_email']), 'profile');
+                }
+            } catch (Exception $e) {
+                echo "FATAL ERROR:" . $e->getMessage();
+            }
+        } else {
+            echo "Email not well formatted";
+            self::fill_session_error(array('email' => $user_info['new_email']), "profile");
+        }
+    }
+
+    private static function update_notification_email($user_info) {
+        $user = new User;
+        if (self::email_valid($user_info['new_notification_email'])) {
+            try {
+                if ($user->update_notification_email($user_info['new_notification_email'], $_SESSION["current_user_notification_email"], $_SESSION['current_user']) != USER_DONT_EXIST) {
+                    self::fill_current_user_login($_SESSION['current_user'], "profile");
+                } else {
+                    self::fill_session_error(array('email' => $user_info['new_notification_email']), 'profile&update=notification_email');
+                }
+            } catch (Exception $e) {
+                echo "FATAL ERROR:" . $e->getMessage();
+            }
+        } else {
+            echo "Email not well formatted";
+            self::fill_session_error(array('email' => $user_info['new_notification_email']), "profile");
         }
     }
 
@@ -283,6 +320,10 @@ class UsersController extends Controller {
             self::update_login($column);
         } else if (array_key_exists("new_password", $column) && array_key_exists("old_password", $column)) {
             self::update_password($column);
+        } else if (array_key_exists("new_email", $column)) {
+            self::update_email($column);
+        } else if (array_key_exists("new_notification_email", $column)) {
+            self::update_notification_email($column);
         }
 	}
 }
