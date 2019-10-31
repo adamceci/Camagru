@@ -8,7 +8,7 @@ function removeImage(data) {
 			if (this.readyState == 4 && this.status == 200 && this.response == "OK")
 				divToRemove.remove();
 		};
-		xhttp.open("GET", "index.php?toDelSrc=" + imageToRemove, true);
+		xhttp.open("GET", "assets/ajax_responses/responses.php?toDelSrc=" + imageToRemove, true);
 		xhttp.send();
 	}
 }
@@ -20,11 +20,11 @@ function publishImage(data) {
 
 	if (confirm("Are you sure you want to post this image ?")) {
 		xhttp.onreadystatechange = function() {
-			if (this.readyState == 4 && this.status == 200)
+			if (this.readyState == 4 && this.status == 200 && this.response == "OK")
 				buttonToRemove.remove();
 		};
 		console.log(imageToPublish);
-		xhttp.open("GET", "index.php?toPubSrc=" + imageToPublish, true);
+		xhttp.open("GET", "assets/ajax_responses/responses.php?toPubSrc=" + imageToPublish, true);
 		xhttp.send();
 	}
 }

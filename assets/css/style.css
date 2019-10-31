@@ -9,6 +9,10 @@
     line-height: 70px;
 }
 
+.text_center {
+    text-align: center;
+}
+
 .clickeable {
     cursor: pointer;
 }
