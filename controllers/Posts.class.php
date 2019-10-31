@@ -3,6 +3,8 @@
 require_once("models/Model.class.php");
 require_once("models/PostsModel.class.php");
 // session_start();
+date_default_timezone_set("Europe/Brussels");
+
 
 class PostsController extends Controller {
 
@@ -139,6 +141,7 @@ class PostsController extends Controller {
 				// require_once(post_view.php);
 				if (isset($kwargs["submit_create_post"])) {
 					$kwargs["toPubSrc"] = $kwargs["image"];
+					$kwargs["posted_time"] = date("Y-m-d H:i:s");
 					$post->publish_post($kwargs);
 				}
 			}
@@ -154,11 +157,15 @@ class PostsController extends Controller {
 		try {
 			if (isset($_SESSION["current_user"])) {
 				if (isset($kwargs["toPubSrc"])) {
+					$kwargs["posted_time"] = date("Y-m-d H:i:s");
 					$post = new Post;
 					$post->publish_post($kwargs);
 				}
+				else
+					echo "Missing source of the image to be published";
 			}
-			
+			else
+				echo "Need to connect before publishing a post";
 		}
 		catch (Exception $e) {
 			throw new Exception("Error while deleting the post in controller " . $e->getMessage());
@@ -174,7 +181,8 @@ class PostsController extends Controller {
 					$post->delete_post($kwargs);
 				}
 			}
-			
+			else
+				echo "Need to connect before publishing a post";
 		}
 		catch (Exception $e) {
 			throw new Exception("Error while deleting the post in controller " . $e->getMessage());

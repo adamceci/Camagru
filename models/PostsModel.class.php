@@ -22,7 +22,7 @@ class Post extends Model {
     public function get_index_posts($limit, $offset) {
         try {
             parent::db_connect();
-            $sql = "SELECT * FROM posts WHERE posted = 1 ORDER BY post_id DESC LIMIT ? OFFSET ?";
+            $sql = "SELECT * FROM posts WHERE posted = 1 ORDER BY posted_date DESC LIMIT ? OFFSET ?";
             $this->pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
             $this->stmt = $this->pdo->prepare($sql);
             $this->stmt->execute(array((int)$limit, (int)$offset));
@@ -70,9 +70,9 @@ class Post extends Model {
     public function publish_post(array $kwargs) {
         try {
 			parent::db_connect();
-            $sql = "UPDATE posts SET posted = 1 WHERE `image` = ?";
+            $sql = "UPDATE posts SET posted = 1, posted_date = ? WHERE `image` = ?";
             $this->stmt = $this->pdo->prepare($sql);
-            $this->stmt->execute(array(basename($kwargs["toPubSrc"])));
+            $this->stmt->execute(array($kwargs["posted_time"], basename($kwargs["toPubSrc"])));
             parent::db_drop_connection();
         }
         catch (Exception $e) {
