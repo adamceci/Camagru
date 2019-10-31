@@ -1,4 +1,6 @@
 <?php
+
+
 class Route {
 	public static $validRoutes = [];
 
@@ -7,5 +9,10 @@ class Route {
 		if($_GET['url'] == $route){
 			$function->__invoke();
 		}
-	} 
+	}
+
+    public static function redirect($route, $controller) {
+        $action = 'template_' . $route;
+        $controller::$action();
+    }
 }

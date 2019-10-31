@@ -14,8 +14,8 @@ if (isset($_SESSION) && array_key_exists("current_user", $_SESSION)) {
 	<div class="header">
         <div><a href="index">CAMAGRU</a></div>
         <div class="hidden"></div>
-        <div><a href="profile"><?=strtoupper($_SESSION["current_user"])?></a></div>
-        <div><a href="logout"><button type="button">Log out</button></a></div>
+        <div><a href="profile"><?=$_SESSION["current_user"]; ?></a></div>
+        <div><a href="logout"><button class="clickeable" type="button">Log out</button></a></div>
     </div>
 <?php
 
@@ -27,7 +27,7 @@ else {
         <div><a href="index">CAMAGRU</a></div>
 		<div class="hidden"></div>
 		<div><a href="sign_up">Sign up</a></div>
-        <div><a href="login"><button type="button">Log in</button></a></div>
+        <div><a href="login"><button class="clickeable" type="button">Log in</button></a></div>
 	</div>
 <?php
 
