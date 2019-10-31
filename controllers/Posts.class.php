@@ -37,7 +37,7 @@ class PostsController extends Controller {
 			}
 		}
 		catch (Exception $e) {
-			throw new Exception("Error while getting the user posts in PostsController") . $e->getMessage();
+			throw new Exception("Error while getting the user posts in PostsController" . $e->getMessage());
 		}
 	}
 
@@ -177,7 +177,7 @@ class PostsController extends Controller {
     // delete post
 	public static function delete_post(array $kwargs) {
 		try {
-			if (isset($_SESSION["current_user"])) {
+			if (isset($_SESSION["current_user"]) && $_SESSION["current_user_user_id"]) {
 				if (isset($kwargs["toDelSrc"])) {
 					$post = new Post;
 					$post->delete_post($kwargs);

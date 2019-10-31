@@ -19,7 +19,7 @@
     <?php
 
         if (file_exists($uploads_directory) && isset($_SESSION["index_posts"])) {
-            var_dump($_SESSION);
+            // var_dump($_SESSION);
             foreach($_SESSION["index_posts"] as $post) {
                 ?>
                 <div class="post_index">
@@ -27,7 +27,6 @@
                         echo $uploads_directory . $post["image"];
                         ?>
                         <img src="assets/post_imgs/<?= $post["image"]; ?>" alt="">
-                        <!-- <img src="$uploads_directory . $post["image"]; ?>" alt=""> -->
                         <div class="display_nb">
                             <p><?=$nb_comments?>X Comment(s)</p>
                             <p><?=$nb_likes?>X Like(s)</p>
