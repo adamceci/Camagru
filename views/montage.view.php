@@ -36,6 +36,7 @@
                 $i = 0;
                 if (isset($_SESSION["user_posts"])) {
                     foreach($_SESSION["user_posts"] as $post) {
+                        var_dump($_SESSION["user_posts"]);
                         ?>
                         <div class="user_posts">
                             <div class="hidden remove">

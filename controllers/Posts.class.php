@@ -111,6 +111,8 @@ class PostsController extends Controller {
 		// make a unique filename for the uploaded file and check it is not already
 		// taken... if it is already taken keep trying until we find a vacant one
 		// sample filename: 1140732936-filename.jpg
+		if (!file_exists($uploads_directory))
+			mkdir($uploads_directory, 0755, true);
 		$now = time();
 		while(file_exists($uploadFilename = $uploads_directory.$now.'-'.$_FILES[$fieldname]['name']))
 			$now++;
@@ -179,6 +181,8 @@ class PostsController extends Controller {
 				if (isset($kwargs["toDelSrc"])) {
 					$post = new Post;
 					$post->delete_post($kwargs);
+					// if (posted = 1)
+					// 	$_SESSION["index_posts"] = "";
 				}
 			}
 			else

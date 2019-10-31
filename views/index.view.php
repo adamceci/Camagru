@@ -1,3 +1,12 @@
+<?php
+
+    // Current working directory ("/Camagru-MVC-/")
+    $directory_self = str_replace(basename($_SERVER['PHP_SELF']), '', $_SERVER['PHP_SELF']);
+    // Directory that will receive uploaded files
+    $uploads_directory = $_SERVER['DOCUMENT_ROOT'] . $directory_self . 'assets/post_imgs/';
+
+?>
+
 <!DOCTYPE html>
 <html>
 <body>
@@ -9,21 +18,29 @@
     <div id="container_box">
     <?php
 
-        if (isset($_SESSION["index_posts"])) {
+        if (file_exists($uploads_directory) && isset($_SESSION["index_posts"])) {
+            var_dump($_SESSION);
             foreach($_SESSION["index_posts"] as $post) {
                 ?>
-                <div class="post_index">            
-                    <img src="assets/post_imgs/<?= $post["image"]; ?>" alt="">
-                    <div class="display_nb">
-                        <p><?=$nb_comments?>X Comment(s)</p>
-                        <p><?=$nb_likes?>X Like(s)</p>
-                    </div>
+                <div class="post_index">
+                    <?php if (file_exists($uploads_directory . $post["image"])) {
+                        echo $uploads_directory . $post["image"];
+                        ?>
+                        <img src="assets/post_imgs/<?= $post["image"]; ?>" alt="">
+                        <!-- <img src="$uploads_directory . $post["image"]; ?>" alt=""> -->
+                        <div class="display_nb">
+                            <p><?=$nb_comments?>X Comment(s)</p>
+                            <p><?=$nb_likes?>X Like(s)</p>
+                        </div>
+                    <?php
+                    }
+                    ?>
                 </div>
                 <?php
             }
         }
         else {
-            echo "There are no posts to show"; // faire une balise html !
+            echo "<h1>There are currently no posts to show</h1>"; // make a better html tag. !
         }
 
     ?>

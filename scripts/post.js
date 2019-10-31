@@ -5,7 +5,7 @@ function removeImage(data) {
 	
 	if (confirm("Are you sure you want to delete this image ?")) {
 		xhttp.onreadystatechange = function() {
-			if (this.readyState == 4 && this.status == 200)
+			if (this.readyState == 4 && this.status == 200 && this.response == "OK")
 				divToRemove.remove();
 		};
 		xhttp.open("GET", "index.php?toDelSrc=" + imageToRemove, true);

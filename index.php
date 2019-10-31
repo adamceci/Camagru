@@ -63,9 +63,3 @@ if (isset($_POST) && (array_key_exists("submit_create_post", $_POST) || array_ke
 if (!in_array($_GET["url"], Route::$validRoutes)) {
     PostsController::display_index_posts($_SESSION["current_page"]);
 }
-
-if (isset($_GET) && array_key_exists("toDelSrc", $_GET))
-    PostsController::delete_post($_GET);
-
-if (isset($_GET) && array_key_exists("toPubSrc", $_GET))
-    PostsController::publish_post(($_GET));

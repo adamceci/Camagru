@@ -94,3 +94,5 @@ class Post extends Model {
         }
     }
 }
+
+?>
