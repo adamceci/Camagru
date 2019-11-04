@@ -69,7 +69,6 @@ class PostsController extends Controller {
 		// Current working directory ("/Camagru-MVC-/")
 		$directory_self = str_replace(basename($_SERVER['PHP_SELF']), '', $_SERVER['PHP_SELF']);
 		// Directory that will receive uploaded files
-        if (isset($kwargs) && array_key_exists(""))
 		$uploads_directory = $_SERVER['DOCUMENT_ROOT'] . $directory_self . 'assets/post_imgs/';
 		// Location of index page
 		$index_page = "http://" . $_SERVER["HTTP_HOST"] . $directory_self;
