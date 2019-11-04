@@ -22,8 +22,13 @@ class UsersController extends Controller {
         self::createModule("footer");
     }
 
-    private static function create_error() {
-
+    private static function show_errors() {
+        $errors = self::get_errors();
+        echo "<div class=\"errors_box\">";
+        foreach ($errors as $error) {
+            echo "<p class=\"error\">". $error . "</p>";
+        }
+        echo "</div>";
     }
     /*
     This function takes an array and fill the session 

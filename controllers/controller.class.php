@@ -31,8 +31,7 @@ class Controller {
     public static function get_errors() {
 	    $all_errors = self::$errors;
 	    self::$errors = [];
-        foreach ($all_errors as $error)
-    	    echo $error;
+        return ($all_errors);
     }
 
 }
