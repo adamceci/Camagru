@@ -19,12 +19,10 @@
     <?php
 
         if (file_exists($uploads_directory) && isset($_SESSION["index_posts"])) {
-            // var_dump($_SESSION);
             foreach($_SESSION["index_posts"] as $post) {
                 ?>
                 <div class="post_index">
                     <?php if (file_exists($uploads_directory . $post["image"])) {
-                        echo $uploads_directory . $post["image"];
                         ?>
                         <img src="assets/post_imgs/<?= $post["image"]; ?>" alt="">
                         <div class="display_nb">

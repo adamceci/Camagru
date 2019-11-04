@@ -15,6 +15,10 @@ if (array_key_exists("email", $_GET) && array_key_exists("hash", $_GET)) {
     echo UsersController::activate_account($_GET["email"], $_GET["hash"]);
 }
 
+Route::set("responses", function () {
+    require_once("assets/ajax_responses/responses.php");
+});
+
 Route::set("index", function() {
     PostsController::display_index_posts($_SESSION["current_page"]);
 });

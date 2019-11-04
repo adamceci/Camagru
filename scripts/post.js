@@ -8,7 +8,7 @@ function removeImage(data) {
 			if (this.readyState == 4 && this.status == 200 && this.response == "OK")
 				divToRemove.remove();
 		};
-		xhttp.open("GET", "assets/ajax_responses/responses.php?toDelSrc=" + imageToRemove, true);
+		xhttp.open("GET", "responses?toDelSrc=" + imageToRemove, true);
 		xhttp.send();
 	}
 }
@@ -23,8 +23,7 @@ function publishImage(data) {
 			if (this.readyState == 4 && this.status == 200 && this.response == "OK")
 				buttonToRemove.remove();
 		};
-		console.log(imageToPublish);
-		xhttp.open("GET", "assets/ajax_responses/responses.php?toPubSrc=" + imageToPublish, true);
+		xhttp.open("GET", "responses?toPubSrc=" + imageToPublish, true);
 		xhttp.send();
 	}
 }

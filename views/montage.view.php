@@ -24,6 +24,7 @@
                     <!-- webcam or picture -->
                     <!-- filters -->
                     <!-- submit_create_post -->
+                    <video autoplay></video>
                     <input type="hidden" name="MAX_FILE_SIZE" value="<?=$max_file_size;?>" />
                     Picture: <input type="file" name="image" value="upload_pic" /><br />
                     <input type="submit" name="submit_create_post" value="Post" />
@@ -36,7 +37,7 @@
                 $i = 0;
                 if (isset($_SESSION["user_posts"])) {
                     foreach($_SESSION["user_posts"] as $post) {
-                        var_dump($_SESSION["user_posts"]);
+                        // var_dump($_SESSION["user_posts"]);
                         ?>
                         <div class="user_posts">
                             <div class="hidden remove">
@@ -64,5 +65,6 @@
         </div>
     </div>
     <script src="scripts/post.js"></script>
+    <script src="scripts/webcam.js"></script>
 </body>
 </html>

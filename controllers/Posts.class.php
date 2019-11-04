@@ -97,6 +97,7 @@ class PostsController extends Controller {
 			// return (0);
 		}
 		// check for PHP's built-in uploading errors
+		var_dump($_FILES[$fieldname]);
 		if ($_FILES[$fieldname]['error'] !== 0) {
 			self::error_post($errors[$_FILES[$fieldname]['error']], $upload_form);
 		}
