@@ -4,6 +4,8 @@ if (isset($_SESSION) && array_key_exists("last_login", $_SESSION) && !empty($_SE
         $last_login = $_SESSION["last_login"];
         $last_email = $_SESSION["last_email"];
     }
+    $max_file_size = 400000;
+
 ?>
 
 <!DOCTYPE html>
@@ -21,12 +23,13 @@ if (isset($_SESSION) && array_key_exists("last_login", $_SESSION) && !empty($_SE
     </div>
 
     <div class="create_user_absolute_form">
-        <form action="create" method="POST">
+        <form action="#" method="POST" enctype="multipart/form-data">
             <p class="input_text">Email <span class="asterix_obligatory">*</span></p><input class="create_user_inputs" type="email" name="email" value="<?php if(isset($last_email)) echo $last_email; ?>"/><br>
             <p class="input_text">Username <span class="asterix_obligatory">*</span></p> <input class="create_user_inputs" type="text" name="login" value="<?php if(isset($last_login)) echo $last_login; ?>"/><br>
             <p class="input_text">Password <span class="asterix_obligatory">*</span></p> <input class="create_user_inputs" type="password" name="password" value=""/><br>
             <p class="input_text">Password confirmation <span class="asterix_obligatory">*</span></p> <input class="create_user_inputs" type="password" name="password_verif" value=""/><br>
-            <p class="input_text">Profile picture: </p><input class="create_user_file_input" type="file" name="profile_pic" value="/assets/img_pic/"/><br>
+            <input type="hidden" name="MAX_FILE_SIZE" value="<?=$max_file_size;?>" />
+            <p class="input_text">Profile picture: </p><input class="create_user_file_input" type="file" name="profile_pic" value="profile_pic"/><br>
             <input class="create_user_submit" type="submit" name="submit_create" value="Create">
         </form>
     </div>

@@ -16,7 +16,7 @@ class UsersController extends Controller {
         self::createModule("header");
         self::createView("profile");
         if (array_key_exists("update", $_GET) && !empty($_GET['update'])) {
-            if ($_GET['update'] == 'login' || $_GET['update'] == 'email' || $_GET['update'] == 'password' || $_GET['update'] == 'notification_email')
+            if ($_GET['update'] == 'login' || $_GET['update'] == 'email' || $_GET['update'] == 'password' || $_GET['update'] == 'notification_email' || $_GET['update'] == 'profile_pic')
             UsersController::createModule('update_' . $_GET['update']);
         }
         self::createModule("footer");
@@ -31,7 +31,7 @@ class UsersController extends Controller {
     private static function fill_session_error(array $arr, $url) {
         $_SESSION['last_email'] = (array_key_exists("email", $arr)) ? $arr["email"] : "";
         $_SESSION['last_login'] = (array_key_exists("login", $arr)) ? $arr["login"] : "";
-        header("Location: $url");
+//        header("Location: $url");
     }
 
     /*
@@ -57,10 +57,69 @@ class UsersController extends Controller {
             $_SESSION["current_user_notification_email"] = $content[0]["notification_email"];
             $_SESSION["current_user_date_of_creation"] = $content[0]["date_of_creation"];
             // Change to createTemplate
-            header("Location: $url");
+//            header("Location: $url");
             return (1);
         }
         return (0);
+    }
+
+    private function upload_profile_pic($key) {
+
+        // Current working directory ("/Camagru-MVC-/")
+        $directory_self = str_replace(basename($_SERVER['PHP_SELF']), '', $_SERVER['PHP_SELF']);
+        // Directory that will receive uploaded files
+        $uploads_directory = $_SERVER['DOCUMENT_ROOT'] . $directory_self . 'assets/profile_pics/';
+        // Location of index page
+        $index_page = "http://" . $_SERVER["HTTP_HOST"] . $directory_self;
+        // Location of the upload form
+        $upload_form = 'http://' . $_SERVER['HTTP_HOST'] . $directory_self . 'sign_up';
+
+        // location of the success page
+        // $uploadSuccess = $upload_form;
+
+        // fieldname used within the file <input> of the HTML form
+        $fieldname = $key;
+        // possible PHP upload errors
+        $errors = array(
+            1 => 'php.ini max file size exceeded',
+            2 => 'html form max file size exceeded',
+            3 => 'file upload was only partial',
+            4 => 'no file was attached'
+        );
+        if (isset($_FILES) && array_key_exists($fieldname, $_FILES)) {
+            if ($_FILES[$fieldname]['error'] !== 0) {
+                self::$errors[] = $_FILES[$fieldname]['error'];
+                self::fill_session_error(array(), 'sign_up');
+            }
+            if (!is_uploaded_file($_FILES[$fieldname]['tmp_name'])) {
+                self::$errors[] = 'not an HTTP upload';
+                self::fill_session_error(array(), 'sign_up');
+            }
+            // validation... since this is an image upload script we should run a check
+            // to make sure the uploaded file is in fact an image. Here is a simple check:
+            // getimagesize() returns false if the file tested is not an image.
+            if (!(getimagesize($_FILES[$fieldname]['tmp_name']))) {
+                self::$errors[] = 'Only image uploads are allowed';
+                self::fill_session_error(array(), 'sign_up');
+            }
+            // make a unique filename for the uploaded file and check it is not already
+            // taken... if it is already taken keep trying until we find a vacant one
+            // sample filename: 1140732936-filename.jpg
+            if (!file_exists($uploads_directory))
+                mkdir($uploads_directory, 0755, true);
+            $now = time();
+            while (file_exists($uploadFilename = $uploads_directory . $now . '-' . $_FILES[$fieldname]['name']))
+                $now++;
+            // now let's move the file to its final location and allocate the new filename to it
+            if (!(move_uploaded_file($_FILES[$fieldname]['tmp_name'], $uploadFilename))) {
+                self::$errors[] = 'Receiving directory insufficient permission';
+                self::fill_session_error(array(), 'sign_up');
+            }
+            $ret = basename($uploadFilename);
+            return ($ret);
+        } else {
+            return ("");
+        }
     }
 
     private static function creation_user_response($return_val, $arr) {
@@ -113,11 +172,12 @@ class UsersController extends Controller {
                 return "Error: empty inputs when creating an user\n";
             }
             if ($kwargs["password"] == $kwargs["password_verif"]) {
+                $profile_pic = self::upload_profile_pic("profile_pic");
                 $kwargs_model = [
                     "email" => array_key_exists("email", $kwargs) ? $kwargs["email"] : "",
                     "login" => array_key_exists("login", $kwargs) ? $kwargs["login"] : "",
                     "password" => array_key_exists("password", $kwargs) ? hash("whirlpool", $kwargs["password"]) : "",
-                    "profile_pic" => array_key_exists("profile_pic", $kwargs) ? $kwargs["profile_pic"] : "assets",
+                    "profile_pic" => empty($profile_pic) ? "assets/profile_pics/default.png" : $profile_pic,
                     "verif_hash" => md5(rand(9101994, 11021994))
                 ];
                 $user = new User;
@@ -278,6 +338,26 @@ class UsersController extends Controller {
         }
     }
 
+    private static function update_profile_pic() {
+        $user = new User;
+        $profile_pic = self::upload_profile_pic("new_profile_pic");
+        if (isset($_FILES) && array_key_exists("new_profile_pic", $_FILES)) {
+            try {
+                if ($user->update_profile_pic($profile_pic, $_SESSION['current_user'])) {
+                    self::fill_current_user_login($_SESSION['current_user'], "profile");
+                } else {
+                    $_SESSION['refresh'] = 'profile&update=profile_pic';
+                    self::fill_session_error(array(), 'profile');
+                }
+            } catch (Exception $e) {
+                echo "FATAL ERROR:" . $e->getMessage();
+            }
+        } else {
+            echo "Image not inserted";
+            self::fill_session_error(array(), "profile");
+        }
+    }
+
     private static function update_email($user_info) {
         $user = new User;
         if (self::email_valid($user_info['new_email'])) {
@@ -324,6 +404,8 @@ class UsersController extends Controller {
             self::update_email($column);
         } else if (array_key_exists("new_notification_email", $column)) {
             self::update_notification_email($column);
+        } else if (array_key_exists("new_profile_pic", $_FILES)) {
+            self::update_profile_pic();
         }
 	}
 }

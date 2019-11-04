@@ -12,7 +12,7 @@
     <p class="profile_texts">Login: <?php echo htmlspecialchars($_SESSION['current_user']); ?></p>
     <p class="profile_texts">Email: <?php echo htmlspecialchars($_SESSION['current_user_email']); ?></p>
     <p class="profile_texts">Notification Email: <?php echo htmlspecialchars($_SESSION['current_user_notification_email']);?></p>
-    <p class="profile_texts">profile_pic: <?php echo htmlspecialchars($_SESSION['current_user_pic']); ?></p>
+    <p class="profile_texts">profile_pic: <img src="assets/profile_pics/<?php echo htmlspecialchars($_SESSION['current_user_pic']); ?>" /></p>
     <a href="profile&update=password">
         <button class="profile_change_buttons">Change password</button>
     </a>
@@ -23,7 +23,10 @@
         <button class="profile_change_buttons">Change email</button>
     </a>
     <a href="profile&update=notification_email">
-        <button class="profile_change_notification">Change notification mail</button>
+        <button class="profile_change_buttons">Change notification mail</button>
+    </a>
+    <a href="profile&update=profile_pic">
+        <button class="profile_change_buttons">Change profile picture</button>
     </a>
 </body>
 </html>

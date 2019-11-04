@@ -92,7 +92,7 @@ class User extends Model {
             $sql = "SELECT `login`, `email` 
                     FROM `users` 
                     WHERE ((LOWER(`email`)=? OR `login`=?) 
-                    AND `active`='1') OR (LOWER(`email`)=? AND `login`=?)";
+                    AND `active`='1') OR ((LOWER(`email`)=? AND `login`=?) AND `active`='1')";
             $this->stmt = $this->pdo->prepare($sql);
             $this->stmt->execute(array($email, $login, $email, $login));
             $arr = $this->stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -224,10 +224,29 @@ class User extends Model {
         try {
             parent::db_connect();
             $sql = "UPDATE `users`
-                    SET login=?
-                    WHERE LOWER(login)=?";
+                    SET `login`=?
+                    WHERE LOWER(`login`)=?";
             $this->stmt = $this->pdo->prepare($sql);
             $return_value = $this->stmt->execute(array($new_login, $old_login));
+            parent::db_drop_connection();
+            if ($return_value == FALSE) {
+                return (USER_DONT_EXIST);
+            } else {
+                return (1);
+            }
+        } catch (PDOException $e) {
+            throw new Exception("Error update_login in User Model:<br/>" . $e->getMessage());
+        }
+    }
+
+    public function update_profile_pic($new_pic, $login) {
+        try {
+            parent::db_connect();
+            $sql = "UPDATE `users`
+                    SET `profile_pic`=?
+                    WHERE LOWER(`login`)=?";
+            $this->stmt = $this->pdo->prepare($sql);
+            $return_value = $this->stmt->execute(array($new_pic, $login));
             parent::db_drop_connection();
             if ($return_value == FALSE) {
                 return (USER_DONT_EXIST);
