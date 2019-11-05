@@ -2,19 +2,19 @@
 
 function ajax_response($method) {
     UsersController::$method($_POST);
+    var_dump($_POST);
     $errors = Controller::get_errors();
-    $success_msgs = Controller::get_success();
     if (!empty($errors)) {
         foreach ($errors as $error)
             echo "<p class=\"error\">" . $error . "</p>";
-    } else if (!empty($success_msgs)) {
-        foreach ($success_msgs as $success_msg)
-            echo "<p class=\"error\">" . $success_msg . "</p>";
-    } else {
-        return "OK";
+        return;
     }
-
+    echo "OK";
 }
-var_dump($_GET);
-var_dump($_POST);
-ajax_response($_GET['method']);
+
+if (!array_key_exists("current_user", $_SESSION)) {
+    if (isset($_GET) && array_key_exists("method", $_GET) && isset($_POST)) {
+        var_dump("fuck you");
+        ajax_response($_GET['method']);
+    }
+}

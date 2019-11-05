@@ -2,9 +2,8 @@
 class Controller {
 
     static $errors = [];
-    static $success = [];
 
-	/* 
+	/*
 	This function takes a view name as parameter and will get the file if it exists.
 	A view is a part of a website that is used only once in the website (Ex: The login view)
 	*/
@@ -13,7 +12,7 @@ class Controller {
 		require_once('./views/'.$viewName.'.view.php');
 	    require_once("views/footer.module.php");
 	}
-	
+
 	/* 
 	This function takes a module name as parameter and will get the file if it exists.
 	A module is a part of website that is used more than once and on different part of the website (Ex: The header)
@@ -23,9 +22,11 @@ class Controller {
 	}
 
 	public static function template_index(){
-        require_once("views/header.module.php");
-        require_once("views/index.view.php");
-        require_once("views/footer.module.php");
+        self::createModule("top_html_tags");
+        self::createModule("header");
+        self::createModule("index");
+        self::createModule("footer");
+        self::createModule("bottom_html_tags");
     }
 
     public static function get_errors() {
@@ -34,10 +35,10 @@ class Controller {
         return ($all_errors);
     }
 
-    public static function get_success() {
-        $all_success = self::$success;
-        self::$success = [];
-        return ($all_success);
+    public static function show_success_msg() {
+	    $return_str = $_SESSION['success'];
+        $_SESSION['success'] = "";
+        return $return_str;
     }
 }
 

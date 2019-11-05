@@ -7,12 +7,6 @@
 
 ?>
 
-<!DOCTYPE html>
-<head>
-    <link rel="stylesheet" href="assets/css/style.css?rnd=132" type="text/css">
-</head>
-<html>
-<body>
     <div id="container_title">
         <h1>GALLERY</h1>
         <!-- <a href="montage">Create a new post</a> -->
@@ -75,47 +69,3 @@
 
         ?>
     </div>
-        <!-- <div class="post_index">
-			<img src="assets/post_imgs/aze.png" alt="">
-            <div class="display_nb">
-                <p><?=$nb_comments?>X Comment(s)</p>
-                <p><?=$nb_likes?>X Like(s)</p>
-            </div>
-        </div> -->
-        <!-- <div class="post_index">
-			<img src="assets/post_imgs/aze.png" alt="">
-            <div class="display_nb">
-                <p><?=$nb_comments?>X Comment(s)</p>
-                <p><?=$nb_likes?>X Like(s)</p>
-            </div>
-        </div>
-        <div class="post_index">
-            <img src="assets/post_imgs/aze.png" alt="">
-            <div class="display_nb">
-                <p><?=$nb_comments?>X Comment(s)</p>
-                <p><?=$nb_likes?>X Like(s)</p>
-            </div>
-        </div>
-        <div class="post_index">
-            <img src="assets/post_imgs/aze.png" alt="">
-            <div class="display_nb">
-                <p><?=$nb_comments?>X Comment(s)</p>
-                <p><?=$nb_likes?>X Like(s)</p>
-            </div>
-        </div>
-        <div class="post_index">
-			<img src="assets/post_imgs/aze.png" alt="">
-            <div class="display_nb">
-                <p><?=$nb_comments?>X Comment(s)</p>
-                <p><?=$nb_likes?>X Like(s)</p>
-            </div>
-        </div>
-        <div class="post_index">
-			<img src="assets/post_imgs/aze.png" alt="">
-            <div class="display_nb">
-                <p><?=$nb_comments?>X Comment(s)</p>
-                <p><?=$nb_likes?>X Like(s)</p>
-            </div>
-        </div> -->
-</body>
-</html>

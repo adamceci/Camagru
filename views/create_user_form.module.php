@@ -14,7 +14,7 @@ if (isset($_SESSION) && array_key_exists("last_login", $_SESSION) && !empty($_SE
     </div>
 
     <div class="create_user_absolute_form">
-        <form action="#" method="POST" enctype="multipart/form-data">
+        <form action="#" method="POST" enctype="multipart/form-data" onsubmit="return false">
             <p class="input_text">Email <span class="asterix_obligatory">*</span></p><input class="create_user_inputs" type="email" name="email" value="<?php if(isset($last_email)) echo $last_email; ?>"/><br>
             <p class="input_text">Username <span class="asterix_obligatory">*</span></p> <input class="create_user_inputs" type="text" name="login" value="<?php if(isset($last_login)) echo $last_login; ?>"/><br>
             <p class="input_text">Password <span class="asterix_obligatory">*</span></p> <input class="create_user_inputs" type="password" name="password" value=""/><br>

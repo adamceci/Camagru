@@ -20,7 +20,7 @@ class PostsController extends Controller {
 			$_SESSION["nb_pages"] = (int)$post->get_nb_pages();
 			self::$offset = 6 * ($page - 1);
 			$_SESSION["index_posts"] = $post->get_index_posts(self::$limit, self::$offset);
-			parent::createView("index");
+			parent::template_index();
 		}
 		catch (Exception $e) {
 			throw new Exception("Error while getting the index posts in PostsController " . $e->getMessage());

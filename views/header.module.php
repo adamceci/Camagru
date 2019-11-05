@@ -29,3 +29,13 @@ else {
 <div class="error_wrapper">
 
 </div>
+
+<div class="success_wrapper">
+    <?php
+    if (isset($_SESSION) && array_key_exists('success', $_SESSION) && !empty($_SESSION['success'])) {
+        $msg = Controller::show_success_msg();
+        echo "<p class='success_msg'>" . $msg . "</p>";
+    }
+    ?>
+</div>
+
