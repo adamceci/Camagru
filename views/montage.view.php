@@ -20,11 +20,19 @@
     <div id="wrapper">
         <div id="container">
             <div id="main">
+                <video autoplay></video>
+                <img id="screenshot-img">
+                <canvas style="display:none;"></canvas>
+                <p>
+                    <button id="capture-button">Capture video</button>
+                </p>
+                <p>
+                    <button id="screenshot-button">Take screenshot</button>
+                </p>
                 <form enctype="multipart/form-data" action="success_upload" method="post">
                     <!-- webcam or picture -->
                     <!-- filters -->
                     <!-- submit_create_post -->
-                    <video autoplay></video>
                     <input type="hidden" name="MAX_FILE_SIZE" value="<?=$max_file_size;?>" />
                     Picture: <input type="file" name="image" value="upload_pic" /><br />
                     <input type="submit" name="submit_create_post" value="Post" />
