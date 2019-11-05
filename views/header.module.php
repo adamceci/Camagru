@@ -1,11 +1,3 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <link rel="stylesheet" href="assets/css/style.css?rnd=132" type="text/css">
-</head> 
-<body>
-
 <?php
 
 if (isset($_SESSION) && array_key_exists("current_user", $_SESSION)) {
@@ -34,6 +26,6 @@ else {
 }
 
 ?>
+<div class="error_wrapper">
 
-</body>
-</html>
+</div>

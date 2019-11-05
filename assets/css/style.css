@@ -222,6 +222,8 @@ div.header div:nth-child(4) button {
 
 .create_user_body {
     background-color: #fff;
+    width: 100%;
+    height: 100%;
 }
 
 .create_user_absolute_title {
@@ -401,6 +403,8 @@ Login view css start
 
 .sign_in_body {
     background-color: #f9f9f9;
+    width: 100%;
+    height: 100%;
 }
 
 .sign_in_absolute_title {

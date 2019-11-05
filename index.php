@@ -15,6 +15,10 @@ if (array_key_exists("email", $_GET) && array_key_exists("hash", $_GET)) {
     echo UsersController::activate_account($_GET["email"], $_GET["hash"]);
 }
 
+Route::set("ajax", function() {
+    require_once("assets/ajax_responses/status_ajax.php");
+});
+
 Route::set("index", function() {
     PostsController::display_index_posts($_SESSION["current_page"]);
 });
@@ -27,11 +31,18 @@ Route::set("profile", function () {
 });
 
 Route::set("sign_up", function() {
-    UsersController::createView("create_user_form");
+    UsersController::template_sign_up();
 });
 
 Route::set("login", function () {
-    UsersController::createView("login");
+    UsersController::template_login();
+    if (isset($_POST) && array_key_exists("submit_login", $_POST)) {
+        UsersController::login($_POST);
+    }
+});
+
+Route::set("ajax", function() {
+    require_once("assets/ajax_responses/status_ajax.php");
 });
 
 Route::set("logout", function () {
@@ -63,14 +74,6 @@ Route::set("webcam", function () {
 Route::set("update", function() {
 
 });
-
-if (isset($_POST) && array_key_exists("submit_create", $_POST)) {
-    echo UsersController::create_user($_POST);
-}
-
-if (isset($_POST) && array_key_exists("submit_login", $_POST)) {
-    echo UsersController::login($_POST);
-}
 
 if (isset($_POST) && (array_key_exists("submit_create_post", $_POST) || array_key_exists("save", $_POST))) {
     PostsController::create_post($_POST);

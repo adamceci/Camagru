@@ -34,5 +34,10 @@ class Controller {
         return ($all_errors);
     }
 
+    public static function get_success() {
+        $all_success = self::$success;
+        self::$success = [];
+        return ($all_success);
+    }
 }
 

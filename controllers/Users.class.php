@@ -5,21 +5,34 @@ require_once("models/User.class.php");
 class UsersController extends Controller {
 
     public static function template_sign_up() {
-        self::createView("create_user_form");
+        self::createModule("top_html_tags");
+        self::createModule("header");
+        self::createModule("create_user_form");
+        self::createModule("footer");
+        self::createModule("script");
+        self::createModule("bottom_html_tags");
     }
 
     public static function template_login() {
-        self::createView("login");
+        self::createModule("top_html_tags");
+        self::createModule("header");
+        self::createModule("login");
+        self::createModule("footer");
+        self::createModule("script");
+        self::createModule("bottom_html_tags");
     }
 
     public static function template_profile() {
+        self::createModule("top_html_tags");
         self::createModule("header");
-        self::createView("profile");
+        self::createModule("profile");
         if (array_key_exists("update", $_GET) && !empty($_GET['update'])) {
             if ($_GET['update'] == 'login' || $_GET['update'] == 'email' || $_GET['update'] == 'password' || $_GET['update'] == 'notification_email' || $_GET['update'] == 'profile_pic')
             UsersController::createModule('update_' . $_GET['update']);
         }
+        self::createModule("script");
         self::createModule("footer");
+        self::createModule("bottom_html_tags");
     }
 
     private static function show_errors() {
@@ -33,10 +46,11 @@ class UsersController extends Controller {
     /*
     This function takes an array and fill the session 
     */
-    private static function fill_session_error(array $arr, $url) {
+    private static function fill_session_error(array $arr, $url, $error_msg) {
         $_SESSION['last_email'] = (array_key_exists("email", $arr)) ? $arr["email"] : "";
         $_SESSION['last_login'] = (array_key_exists("login", $arr)) ? $arr["login"] : "";
 //        header("Location: $url");
+        self::$errors[] = $error_msg;
     }
 
     /*
@@ -286,14 +300,14 @@ class UsersController extends Controller {
 	public static function login(array $kwargs) {
         if (array_key_exists("password", $kwargs) && !empty($kwargs["password"])) {
             if (self::login_verif($kwargs)) {
-                return ("Logged");
+                return (1);
             } else {
-                self::fill_session_error($kwargs, "login");
-                return ("Wrong login or password\n");
+                self::fill_session_error($kwargs, "login", "Wrong login or password");
+                return (0);
             }
         }
-        self::fill_session_error($kwargs, "login");
-        return ("Empty password");
+        self::fill_session_error($kwargs, "login", "Empty password");
+        return (0);
     }
 
     public static function logout() {
