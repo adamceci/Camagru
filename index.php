@@ -11,8 +11,9 @@ require("controllers/Routes.class.php");
 $_SESSION["current_page"] = 1;
 $_SESSION["nb_pages"] = 1;
 
-if (array_key_exists("email", $_GET) && array_key_exists("hash", $_GET)) {
-    UsersController::activate_account($_GET["email"], $_GET["hash"]);
+if (isset($_GET) && array_key_exists("email", $_GET) && array_key_exists("hash", $_GET)
+    && array_key_exists("login", $_GET)) {
+    UsersController::activate_account($_GET["email"], $_GET['login'], $_GET["hash"]);
 }
 
 Route::set("ajax", function() {

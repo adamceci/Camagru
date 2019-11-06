@@ -231,7 +231,7 @@ class UsersController extends Controller {
             $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
             $headers .= 'From: '.$from. "\r\n"; 
             $subject = "Verification mail Camagru";
-            $link = "http://localhost:8080/Camagru/index.php?email=" . $user_info['email'] . "&hash=" . $user_info["verif_hash"] . "";
+            $link = "http://localhost:8080/Camagru/index.php?email=" . $user_info['email'] . "&hash=" . $user_info["verif_hash"] . "&login=" . $user_info['login'];
             $message = '<h1>Welcome in Camagru</h1>
                         <p>Account: ' . $user_info['login'] . '</p>
                         <p>Email: ' . $user_info['email'] . '</p>
@@ -244,10 +244,15 @@ class UsersController extends Controller {
         }
     }
 
-    public static function activate_account($email, $hash) {
+    public static function activate_account($email, $login, $hash) {
         if (self::email_valid($email) && self::md5_valid($hash)) {
             $user = new User;
-            $return_value = $user->activate_account($email, $hash);
+            try {
+                $return_value = $user->activate_account($email, $login, $hash);
+            } catch (Exception $e) {
+                self::fill_session_error(array(), "ERROR:" . $e->getMessage());
+                return (0);
+            }
             return self::activation_user_response($return_value, $email);
         }
     } 
@@ -308,7 +313,7 @@ class UsersController extends Controller {
                 return (0);
             }
         }
-        self::fill_session_error($kwargs, "login", "Empty password");
+        self::fill_session_error($kwargs, "Empty password");
         return (0);
     }
 

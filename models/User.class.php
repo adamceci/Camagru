@@ -138,14 +138,14 @@ class User extends Model {
         }
     }
 
-    public function remove_inactive_accounts($email) {
+    public function remove_inactive_accounts($email, $login) {
         try {
             parent::db_connect();
             $sql = "DELETE FROM `users` 
-                    WHERE LOWER(`email`)=? 
+                    WHERE (LOWER(`email`)=? OR LOWER(`login`)=?)
                     AND `active`='0'";
             $this->stmt = $this->pdo->prepare($sql);
-            $this->stmt->execute(array($email));
+            $this->stmt->execute(array($email, $login));
             parent::db_drop_connection();
             return (1);
         } catch (Exception $e) {
@@ -153,24 +153,24 @@ class User extends Model {
         }
     }
 
-    public function activate_account($email, $hash) {
+    public function activate_account($email, $login, $hash) {
         try {
             parent::db_connect();
             $sql = "UPDATE `users` 
                     SET active=1
                     WHERE verif_hash=? 
-                    AND LOWER(email)=?";
+                    AND LOWER(email)=? AND LOWER(`login`)=?";
             $this->stmt = $this->pdo->prepare($sql);
-            $return_value = $this->stmt->execute(array($hash, $email));
+            $return_value = $this->stmt->execute(array($hash, $email, $login));
             parent::db_drop_connection();
             if ($return_value == FALSE) {
                 return (USER_DONT_EXIST);
             } else {
-                $this->remove_inactive_accounts($email);
+                $this->remove_inactive_accounts($email, $login);
                 return (1);
             }
         } catch (Exception $e) {
-            throw new Exception("Error create_user in User Model:" . $e->getMessage());
+            throw new Exception("Error activate_account in User Model:" . $e->getMessage());
         }
     }
 
@@ -193,7 +193,7 @@ class User extends Model {
                 return ($arr);
             }
         } catch (Exception $e) {
-            throw new Exception("Error user_login_or_email_exist in User Model:" . $e->getMessage());
+            throw new Exception("Error get_info in User Model:" . $e->getMessage());
         }
     }
 
