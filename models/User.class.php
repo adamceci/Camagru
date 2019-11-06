@@ -74,13 +74,9 @@ class User extends Model {
                     WHERE LOWER(`login`)=?  AND `active`='1'";
             $this->stmt = $this->pdo->prepare($sql);
             $this->stmt->execute(array($login));
-            $arr = $this->stmt->fetchAll(PDO::FETCH_ASSOC);
+            $arr = $this->stmt->fetch();
             parent::db_drop_connection();
-            if (!$arr) {
-                return (0);
-            } else {
-                return (1);
-            }
+            return $arr;
         } catch (Exception $e) {
             throw new Exception("Error user_login_exist in User Model:" . $e->getMessage());
         }

@@ -2,7 +2,7 @@
 class Controller {
 
     static $errors = [];
-
+    static $info = [];
 	/*
 	This function takes a view name as parameter and will get the file if it exists.
 	A view is a part of a website that is used only once in the website (Ex: The login view)
@@ -18,6 +18,7 @@ class Controller {
 	A module is a part of website that is used more than once and on different part of the website (Ex: The header)
 	*/
 	public static function createModule($moduleName){
+	    $information = self::$info;
 		require_once('./views/'.$moduleName.'.module.php');
 	}
 

@@ -16,7 +16,8 @@ CREATE TABLE IF NOT EXISTS users
     verif_hash CHAR(32) NOT NULL,
     active TINYINT(1) NOT NULL DEFAULT 0,
     `date_of_creation` DATETIME NOT NULL default NOW(),
-    `notification_email` VARCHAR(255) NOT NULL
+    `notification_email` VARCHAR(255) NOT NULL,
+    `notification_active` TINYINT(1) NOT NULL DEFAULT 1
 );
 
 -- Posts table creation

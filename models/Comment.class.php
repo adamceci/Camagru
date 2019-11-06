@@ -16,11 +16,7 @@ class Comment extends Model {
             $this->stmt->execute(array($post_id));
             $arr = $this->stmt->fetchAll(PDO::FETCH_ASSOC);
             parent::db_drop_connection();
-            if (!$arr) {
-                return (0);
-            } else {
-                return (1);
-            }
+            return ($arr);
         } catch (Exception $e) {
             throw new Exception("Error user_login_exist in User Model:" . $e->getMessage());
         }

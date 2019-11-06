@@ -30,8 +30,9 @@ Route::set("profile", function () {
 });
 
 Route::set('comments', function () {
-    if (isset($_GET) && array_key_exists("post", $_GET) && !empty($_GET['post'])) {
-        PostsController::fill_post_info($_GET['post']);
+    if (isset($_GET) && array_key_exists('post_img', $_GET) && !empty($_GET['post_img'])) {
+        PostsController::fill_post_info($_GET['post_img']);
+        PostsController::$info = PostsController::get_comments();
         PostsController::template_comment();
     }
 });

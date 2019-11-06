@@ -18,8 +18,19 @@ class Post extends Model {
         }
     }
 
-    public function get_post() {
-
+    public function get_post_info($post_img) {
+        try {
+            parent::db_connect();
+            $sql = "SELECT users.login, `image` FROM posts INNER JOIN users WHERE posts.user_id=users.user_id AND `image`=?";
+            $this->stmt = $this->pdo->prepare($sql);
+            $this->stmt->execute(array($post_img));
+            $arr = $this->stmt->fetch(PDO::FETCH_ASSOC);
+            parent::db_drop_connection();
+            return $arr;
+        }
+        catch (Exception $e) {
+            throw new Exception("Error in get_post_info in model " . $e->getMessage());
+        }
     }
 
     // get 6 by 6 posts
@@ -104,7 +115,7 @@ class Post extends Model {
             $sql = "SELECT `post_id` FROM posts WHERE `image` = ?";
             $this->stmt = $this->pdo->prepare($sql);
             $this->stmt->execute(array($image));
-            $arr = $this->stmt->fetchAll(PDO::FETCH_ASSOC);
+            $arr = $this->stmt->fetch();
             parent::db_drop_connection();
             return $arr;
         }

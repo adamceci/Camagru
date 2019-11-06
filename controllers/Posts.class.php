@@ -1,6 +1,7 @@
 <?php
 
 require_once("models/Model.class.php");
+require_once("models/Comment.class.php");
 require_once("models/PostsModel.class.php");
 // session_start();
 date_default_timezone_set("Europe/Brussels");
@@ -203,31 +204,43 @@ class PostsController extends Controller implements Comments {
 		}
 	}
 
-	public static function get_comments() {
-        $comment = new Comment;
-        if (isset($_POST) && array_key_exists('post', $_POST)) {
-            $post = New Post;
-            $post_id = $post->get_post_id($_POST['post']);
-            $all_comments = $comment->get_post_comments($post_id);
-            return ($all_comments);
-        } else {
-            self::$errors[] = 'No post to take comments';
+	public static function fill_post_info($post_img) {
+        $post = New Post;
+        try {
+            $post_info = $post->get_post_info($post_img);
+        } catch (Exception $e) {
+            self::$errors[] = 'Error:' . $e->getMessage();
             return (0);
         }
+        if ($post_info) {
+            $_SESSION['post_img'] = $post_info['image'];
+            $_SESSION['post_creator'] = $post_info['login'];
+            return (1);
+        } else {
+            header("Location: index");
+        }
+    }
+
+	public static function get_comments() {
+        $comment = new Comment;
+        $post = New Post;
+        $post_id = $post->get_post_id($_SESSION['post_img']);
+        $all_comments = $comment->get_post_comments($post_id['post_id']);
+        return ($all_comments);
     }
 
     public static function create_comment() {
         if (isset($_SESSION) && array_key_exists('current_user', $_SESSION)) {
-            if (isset($_POST) && array_key_exists('message', $_POST) && array_key_exists('post', $_POST)) {
+            if (isset($_POST) && array_key_exists('message', $_POST)) {
                 try {
                     $comment = new Comment;
                     $post = new Post;
                     $user = new User;
-                    $user_id = $user->get_user_id($_POST['login']);
-                    $post_id = $post->get_post_id($_POST['post']);
+                    $user_id = $user->get_user_id($_SESSION['current_user']);
+                    $post_id = $post->get_post_id($_SESSION['post_img']);
                     $msg = $_POST['message'];
                     if ($user_id && $post_id)
-                        $comment->create_comment($user_id, $post_id, $msg);
+                        $comment->create_comment($user_id['user_id'], $post_id['post_id'], $msg);
                     else {
                         self::$errors[] = 'Invalid user or post';
                         return (0);
