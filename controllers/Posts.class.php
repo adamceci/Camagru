@@ -133,6 +133,7 @@ class PostsController extends Controller {
 		try {
 			if (isset($_SESSION["current_user"])) {
 				$kwargs["image"] = self::upload_post($kwargs);
+				echo "TEST";
 				if (isset($kwargs["image"])) {
 					$post = new Post;
 					$kwargs["user_id"] = (int)$_SESSION["current_user_user_id"];
