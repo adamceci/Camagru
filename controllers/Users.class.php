@@ -299,6 +299,7 @@ class UsersController extends Controller {
             if ((self::login_valid($kwargs["login"]) || self::email_valid($kwargs["login"]))
             && $user->auth_user($kwargs["login"], hash("whirlpool", $kwargs["password"]))) {
                 self::fill_current_user_login($kwargs["login"]);
+                return (1);
             }
         }
         return (0);
@@ -386,7 +387,7 @@ class UsersController extends Controller {
         if (self::email_valid($user_info['new_email'])) {
             try {
                 if ($user->update_email($user_info['new_email'], $_SESSION["current_user_email"], $_SESSION['current_user']) != USER_DONT_EXIST) {
-                    self::fill_current_user_login($user_info['new_email'], "profile");
+                    self::fill_current_user_login($user_info['new_email']);
                 } else {
                     $_SESSION['refresh'] = "profile&update=email";
                     self::fill_session_error(array('email' => $user_info['new_email']), 'profile');

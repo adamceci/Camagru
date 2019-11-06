@@ -10,8 +10,9 @@ function login_status() {
         if (this.readyState === 4 && this.status === 200) {
             if (this.response == 'OK') {
                 window.location.replace('index');
+            } else {
+                errorWrapper.innerHTML = this.response;
             }
-            errorWrapper.innerHTML = this.response;
         }
     };
     xhttp.open("POST", "ajax?method=login", true);
