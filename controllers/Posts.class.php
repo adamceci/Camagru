@@ -6,7 +6,7 @@ require_once("models/PostsModel.class.php");
 date_default_timezone_set("Europe/Brussels");
 
 
-class PostsController extends Controller {
+class PostsController extends Controller implements Comments {
 
 	private static $limit = 6;
 	private static $offset;
@@ -40,6 +40,16 @@ class PostsController extends Controller {
 			throw new Exception("Error while getting the user posts in PostsController" . $e->getMessage());
 		}
 	}
+
+	public static function template_comment() {
+        self::createModule("top_html_tags");
+        self::createModule("header");
+        self::createModule("post_description");
+        self::createModule("comment");
+        self::createModule("footer");
+        self::createModule("script_comments");
+        self::createModule("bottom_html_tags");
+    }
 
 	// error handling for post creation
 	private function error_post($error, $location, $seconds = 5) {
@@ -192,4 +202,47 @@ class PostsController extends Controller {
 			throw new Exception("Error while deleting the post in controller " . $e->getMessage());
 		}
 	}
+
+	public static function get_comments() {
+        $comment = new Comment;
+        if (isset($_POST) && array_key_exists('post', $_POST)) {
+            $post = New Post;
+            $post_id = $post->get_post_id($_POST['post']);
+            $all_comments = $comment->get_post_comments($post_id);
+            return ($all_comments);
+        } else {
+            self::$errors[] = 'No post to take comments';
+            return (0);
+        }
+    }
+
+    public static function create_comment() {
+        if (isset($_SESSION) && array_key_exists('current_user', $_SESSION)) {
+            if (isset($_POST) && array_key_exists('message', $_POST) && array_key_exists('post', $_POST)) {
+                try {
+                    $comment = new Comment;
+                    $post = new Post;
+                    $user = new User;
+                    $user_id = $user->get_user_id($_POST['login']);
+                    $post_id = $post->get_post_id($_POST['post']);
+                    $msg = $_POST['message'];
+                    if ($user_id && $post_id)
+                        $comment->create_comment($user_id, $post_id, $msg);
+                    else {
+                        self::$errors[] = 'Invalid user or post';
+                        return (0);
+                    }
+                } catch (Exception $e) {
+                    self::$errors[] = 'Error:' . $e->getMessage();
+                    return (0);
+                }
+            } else {
+                    self::$errors[] = 'You can\'t post a empty comment';
+                    return (0);
+            }
+        } else {
+            self::$errors[] = 'You have to be connected to comment';
+            return (0);
+        }
+    }
 }

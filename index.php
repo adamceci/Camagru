@@ -3,6 +3,7 @@
 session_start();
 require_once("assets/macros/errors.php");
 require("controllers/Controller.class.php");
+require_once("controllers/Comments.interface.php");
 require_once("controllers/Users.class.php");
 require_once("controllers/Posts.class.php");
 require_once("controllers/Webcam.class.php");
@@ -26,8 +27,12 @@ Route::set("index", function() {
 
 Route::set("profile", function () {
     UsersController::template_profile();
-    if (isset($_POST)) {
-        UsersController::update_user($_POST);
+});
+
+Route::set('comments', function () {
+    if (isset($_GET) && array_key_exists("post", $_GET) && !empty($_GET['post'])) {
+        PostsController::fill_post_info($_GET['post']);
+        PostsController::template_comment();
     }
 });
 

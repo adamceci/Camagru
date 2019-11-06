@@ -348,30 +348,34 @@ class UsersController extends Controller {
         if (self::login_valid($user_info['new_login'])) {
             try {
                 if ($user->update_login($user_info['new_login'], $_SESSION['current_user'])) {
-                    self::fill_current_user_login($user_info['new_login'], "profile");
+                    self::fill_current_user_login($user_info['new_login']);
+                    return (1);
                 } else {
                     $_SESSION['refresh'] = "profile&update=login";
                     self::fill_session_error(array('login' => $user_info['new_login']), 'profile');
+                    return (0);
                 }
             } catch (Exception $e) {
                 echo "FATAL ERROR:" . $e->getMessage();
             }
         } else {
-            echo "Login not well formatted";
-            self::fill_session_error(array('login' => $user_info['new_login']), "profile");
+            self::fill_session_error(array('login' => $user_info['new_login']), "Login not well formatted");
+            return (0);
         }
     }
 
     private static function update_profile_pic() {
         $user = new User;
-        $profile_pic = self::upload_profile_pic("new_profile_pic");
         if (isset($_FILES) && array_key_exists("new_profile_pic", $_FILES)) {
             try {
+                $profile_pic = self::upload_profile_pic("new_profile_pic");
                 if ($user->update_profile_pic($profile_pic, $_SESSION['current_user'])) {
-                    self::fill_current_user_login($_SESSION['current_user'], "profile");
+                    self::fill_current_user_login($_SESSION['current_user']);
+                    return (1);
                 } else {
                     $_SESSION['refresh'] = 'profile&update=profile_pic';
-                    self::fill_session_error(array(), 'profile');
+                    self::fill_session_error(array(), "Couldn't update profile pic");
+                    return (0);
                 }
             } catch (Exception $e) {
                 echo "FATAL ERROR:" . $e->getMessage();

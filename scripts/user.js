@@ -8,14 +8,14 @@ function login_status() {
 
     xhttp.onreadystatechange = function() {
         if (this.readyState === 4 && this.status === 200) {
-            if (this.response == 'OK') {
+            if (this.response === 'OK') {
                 window.location.replace('index');
             } else {
                 errorWrapper.innerHTML = this.response;
             }
         }
     };
-    xhttp.open("POST", "ajax?method=login", true);
+    xhttp.open("POST", "ajax?method=login&user=1", true);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xhttp.send("login=" + login + "&password=" + password);
 }
@@ -34,14 +34,13 @@ function create_user_status() {
 
     xhttp.onreadystatechange = function() {
         if (this.readyState === 4 && this.status === 200) {
-            console.log(this.error);
-            if (this.response == 'OK') {
+            if (this.response === 'OK') {
                 window.location.replace('index');
             }
             errorWrapper.innerHTML = this.response;
         }
     };
-    xhttp.open("POST", "ajax?method=create_user", true);
+    xhttp.open("POST", "ajax?method=create_user&controller=UsersController", true);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xhttp.send("password=" + password + "&password_verif=" + password_confirmation + "&login=" + login
         + "&email=" + email + "&profile_pic=" + filename);
@@ -49,6 +48,7 @@ function create_user_status() {
 
 let createUserButton = document.querySelector(".create_user_submit");
 let loginButton = document.querySelector(".sign_in_submit");
+let update_login = document.querySelector(".submit_change_login");
 
 if (loginButton !== null) {
     loginButton.addEventListener("click", function () {

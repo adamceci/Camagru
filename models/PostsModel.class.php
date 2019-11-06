@@ -18,6 +18,10 @@ class Post extends Model {
         }
     }
 
+    public function get_post() {
+
+    }
+
     // get 6 by 6 posts
     public function get_index_posts($limit, $offset) {
         try {
@@ -91,6 +95,21 @@ class Post extends Model {
         }
         catch (Exception $e) {
             throw new Ecxeption("Error while deleting post in Post Model : " . $e->getMessage());
+        }
+    }
+
+    public function get_post_id($image) {
+        try {
+            parent::db_connect();
+            $sql = "SELECT `post_id` FROM posts WHERE `image` = ?";
+            $this->stmt = $this->pdo->prepare($sql);
+            $this->stmt->execute(array($image));
+            $arr = $this->stmt->fetchAll(PDO::FETCH_ASSOC);
+            parent::db_drop_connection();
+            return $arr;
+        }
+        catch (Exception $e) {
+            throw new Exception("Error while getting the index posts in model " . $e->getMessage());
         }
     }
 }

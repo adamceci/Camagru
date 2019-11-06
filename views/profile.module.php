@@ -1,5 +1,5 @@
 <?php
-    if (isset($_SESSION)) {
+    if (isset($_SESSION) && array_key_exists('current_user', $_SESSION) && !empty($_SESSION['current_user'])) {
 ?>
 
         <p class="profile_texts">Login: <?php echo htmlspecialchars($_SESSION['current_user']); ?></p>

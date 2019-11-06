@@ -66,10 +66,10 @@ class User extends Model {
         }
     }
 
-    public function get_user_login($login) {
+    public function get_user_id($login) {
         try {
             parent::db_connect();
-            $sql = "SELECT `login` 
+            $sql = "SELECT `user_id` 
                     FROM `users` 
                     WHERE LOWER(`login`)=?  AND `active`='1'";
             $this->stmt = $this->pdo->prepare($sql);
