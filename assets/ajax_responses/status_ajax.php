@@ -7,9 +7,15 @@ function user_ajax_response($method) {
     UsersController::$method($_POST);
     $errors = Controller::get_errors();
     if (!empty($errors)) {
+        echo "NOTOK";
         foreach ($errors as $error)
             echo "<p class=\"error\">" . $error . "</p>";
         return (0);
+    }
+    if (input_useable($_SESSION, 'success')) {
+        $success = UsersController::show_success_msg();
+        echo $success;
+        return (1);
     }
     echo "OK";
 }

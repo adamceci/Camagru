@@ -52,14 +52,19 @@ function password_rec_status() {
     let emailOrLoginInput = document.querySelector(".pass_rec_input");
     let emailOrLogin = emailOrLoginInput.value;
     let errorWrapper = document.querySelector(".error_wrapper");
+    let successWrapper = document.querySelector(".success_wrapper");
 
     xhttp.onreadystatechange = function() {
         if (this.readyState === 4 && this.status === 200) {
-            if (this.response === 'OK') {
+            if (this.response.substr(0, 5) === 'NOTOK')
+                errorWrapper.innerHTML = this.response.substr(5);
+            else if (this.response !== 'OK') {
+                successWrapper.innerHTML = this.response;
+                setTimeout(function () {
+                    window.location.replace('index');
+                }, 10000);
+            } else
                 window.location.replace('index');
-            } else {
-                errorWrapper.innerHTML = this.response;
-            }
         }
     };
     xhttp.open("POST", "ajax?method=password_recovery&user=1", true);
@@ -76,11 +81,13 @@ function change_password_rec_status() {
 
     xhttp.onreadystatechange = function() {
         if (this.readyState === 4 && this.status === 200) {
-            if (this.response === 'OK') {
+            if (this.response.substr(0, 5) === 'NOTOK')
+                errorWrapper.innerHTML = this.response.substr(5);
+            else if (this.response !== 'OK') {
+                successWrapper.innerHTML = this.response;
                 window.location.replace('index');
-            } else {
-                errorWrapper.innerHTML = this.response;
-            }
+            } else
+                window.location.replace('index');
         }
     };
     xhttp.open("POST", "ajax?method=password_recovery_update&user=1", true);

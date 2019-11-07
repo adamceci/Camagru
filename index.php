@@ -23,7 +23,7 @@ if (input_useable($_GET, 'url')
     && input_useable($_GET, 'email')
     && input_useable($_GET, 'hash')
     && input_useable($_GET,'password_reset')) {
-    Route::set('password_recovery', function () {
+    Route::set('password_reset', function () {
         UsersController::template_password_change();
     });
 }
@@ -38,6 +38,10 @@ Route::set("index", function() {
 
 Route::set("profile", function () {
     UsersController::template_profile();
+});
+
+Route::set("password_recovery", function() {
+    UsersController::template_password_recovery();
 });
 
 Route::set('comments', function () {
