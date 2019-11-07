@@ -46,21 +46,17 @@ class User extends Model {
         }
     }
 
-    private function user_email_exist($email) {
+    public function get_email($login) {
         try {
             parent::db_connect();
             $sql = "SELECT `email` 
                     FROM `users` 
-                    WHERE LOWER(`email`)=? AND `active`='1'";
+                    WHERE (LOWER(`email`)=? OR LOWER(`login`)=?) AND `active`='1'";
             $this->stmt = $this->pdo->prepare($sql);
-            $this->stmt->execute(array($email));
-            $arr = $this->stmt->fetchAll(PDO::FETCH_ASSOC);
+            $this->stmt->execute(array($login, $login));
+            $arr = $this->stmt->fetch(PDO::FETCH_ASSOC);
+            return ($arr);
             parent::db_drop_connection();
-            if (!$arr) {
-                return (0);
-            } else {
-                return (1);
-            }
         } catch (Exception $e) {
             throw new Exception("Error user_email_exist in User Model:" . $e->getMessage());
         }
@@ -82,13 +78,13 @@ class User extends Model {
         }
     }
 
-    private function user_login_or_email_exist($email, $login) {
+    public function user_login_or_email_exist($email, $login) {
         try {
             parent::db_connect();
             $sql = "SELECT `login`, `email` 
                     FROM `users` 
-                    WHERE ((LOWER(`email`)=? OR `login`=?) 
-                    AND `active`='1') OR ((LOWER(`email`)=? AND `login`=?) AND `active`='1')";
+                    WHERE ((LOWER(`email`)=? OR LOWER(`login`=?))
+                    AND `active`='1') OR ((LOWER(`email`)=? AND LOWER(`login`=?)) AND `active`='1')";
             $this->stmt = $this->pdo->prepare($sql);
             $this->stmt->execute(array($email, $login, $email, $login));
             $arr = $this->stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -215,6 +211,25 @@ class User extends Model {
 //            throw new Exception("Error user_login_or_email_exist in User Model:" . $e->getMessage());
 //        }
 //    }
+
+    public function update_hash($login, $hash) {
+        try {
+            parent::db_connect();
+            $sql = "UPDATE `users`
+                    SET `verif_hash`=?
+                    WHERE (LOWER(`login`)=? OR LOWER(`login`)=?) AND `active`=1";
+            $this->stmt = $this->pdo->prepare($sql);
+            $return_value = $this->stmt->execute(array($hash, $login, $login));
+            parent::db_drop_connection();
+            if ($return_value == FALSE) {
+                return (USER_DONT_EXIST);
+            } else {
+                return (1);
+            }
+        } catch (PDOException $e) {
+            throw new Exception("Error update_hash in User Model:<br/>" . $e->getMessage());
+        }
+    }
 
     public function update_login($new_login, $old_login) {
         try {

@@ -460,6 +460,17 @@ Login view css start
     margin-left: 4px;
 }
 
+.pass_rec_submit {
+    width: 100%;
+    background: linear-gradient(rgb(15, 129, 158), rgb(45, 159, 188));
+    border: 1px solid rgb(15, 129, 158);
+    border-radius: 4px;
+    font-size: 15px;
+    color: #fff;
+    margin-top: 20px;
+    margin-left: 4px;
+}
+
 .sign_in_submit:hover {
     background: linear-gradient(rgb(45, 159, 188), rgb(15, 129, 158));
 }
@@ -534,6 +545,21 @@ Login view css start
     }
 
     .sign_in_submit:hover {
+        background: linear-gradient(rgb(45, 159, 188), rgb(15, 129, 158));
+    }
+
+    .pass_rec_submit {
+        width: 100%;
+        background: linear-gradient(rgb(15, 129, 158), rgb(45, 159, 188));
+        border: 1px solid rgb(15, 129, 158);
+        border-radius: 4px;
+        font-size: 22px;
+        color: #fff;
+        margin-left: 4px;
+        margin-top: 30px;
+    }
+
+    .pass_rec_submit:hover {
         background: linear-gradient(rgb(45, 159, 188), rgb(15, 129, 158));
     }
 

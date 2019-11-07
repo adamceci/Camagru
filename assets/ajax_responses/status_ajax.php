@@ -1,7 +1,7 @@
 <?php
 
 function user_ajax_response($method) {
-    if ($method != 'login' && $method != 'create_user') {
+    if ($method != 'login' && $method != 'create_user' && $method != 'password_recovery') {
         return (0);
     }
     UsersController::$method($_POST);
@@ -28,6 +28,7 @@ function posts_ajax_response($method) {
     }
     echo "OK";
 }
+
 
 if (!array_key_exists("current_user", $_SESSION)) {
     if (isset($_GET) && array_key_exists("method", $_GET) && array_key_exists('user', $_GET) && isset($_POST)) {

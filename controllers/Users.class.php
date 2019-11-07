@@ -30,6 +30,24 @@ class UsersController extends Controller {
             if ($_GET['update'] == 'login' || $_GET['update'] == 'email' || $_GET['update'] == 'password' || $_GET['update'] == 'notification_email' || $_GET['update'] == 'profile_pic')
             UsersController::createModule('update_' . $_GET['update']);
         }
+        self::createModule("footer");
+        self::createModule("script");
+        self::createModule("bottom_html_tags");
+    }
+
+    public static function template_password_recovery() {
+        self::createModule("top_html_tags");
+        self::createModule("header");
+        self::createModule('password_recovery');
+        self::createModule("script");
+        self::createModule("footer");
+        self::createModule("bottom_html_tags");
+    }
+
+    public static function template_password_change() {
+        self::createModule("top_html_tags");
+        self::createModule("header");
+        self::createModule('update_password_rec');
         self::createModule("script");
         self::createModule("footer");
         self::createModule("bottom_html_tags");
@@ -244,6 +262,26 @@ class UsersController extends Controller {
         }
     }
 
+    private static function send_recovery_email($login, $email, $hash) {
+        $to = "gabriele_Virga@hotmail.com";
+        //$to = $email;
+        $from = "gvirga@student.s19.be";
+        $headers = "MIME-Version: 1.0" . "\r\n";
+        $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+        $headers .= 'From: '.$from. "\r\n";
+        $subject = "Verification mail Camagru";
+        $link = "http://localhost:8080/Camagru/index.php?url=password_recovery&email=" . $login . "&hash=" . $hash . "&password_reset=1";
+        $message = '<h1>Have you asked a new password ?</h1>
+                    <p>Account: ' . $login . '</p>
+                    <p>If it is the case, click the link below to get a new password</p>
+            <a href="' . $link . '"> localhost:8080/Camagru/verif </a>';
+        if (mail($to, $subject, $message, $headers)) {
+            return (1);
+        } else {
+            return (0);
+        }
+    }
+
     public static function activate_account($email, $login, $hash) {
         if (self::email_valid($email) && self::md5_valid($hash)) {
             $user = new User;
@@ -436,4 +474,48 @@ class UsersController extends Controller {
             self::update_profile_pic();
         }
 	}
+
+	public static function password_recovery($info) {
+	    if (input_useable($info, 'login')) {
+            if (self::login_valid($info['login']) || self::email_valid($info['login'])) {
+                $user = New User;
+                if ($user->user_login_or_email_exist($info['login'], $info['login'])) {
+                    $hash = md5(rand(9101994, 11021994));
+                    $email = $user->get_email($info['login']);
+                    if (!array_key_exists('email', $email)
+                        || !($user->update_hash($info['login'], $hash))
+                        || !(self::send_recovery_email($info['login'], $email['email'], $hash))) {
+                        self::$errors[] = 'The email wasn\'t send';
+                        return (0);
+                    }
+                    $_SESSION['success'] = "<p class='success'>Password recovery email sent,<br />
+                                            check your email to see the activation link.</p>";
+                    return (1);
+                }
+            }
+            self::$errors[] = 'Wrong email or username';
+            return (0);
+        } else {
+            self::$errors[] = 'Can\'t recover an empty input';
+            return (0);
+        }
+    }
+
+    public static function password_recovery_update() {
+	    if (input_useable($_GET, 'login')
+            && input_useable($_GET, 'hash')
+            && input_useable($_POST, 'password')
+            && input_useable($_POST, 'password_verif')){
+            if (self::password_valid($_POST['password'])
+                && self::password_valid($_POST['password_verif'])) {
+
+            } else {
+                self::$errors[] = 'Wrong format';
+                return (0);
+            }
+        } else {
+	        self::$errors[] = 'How did you get here?!';
+	        return (0);
+        }
+    }
 }

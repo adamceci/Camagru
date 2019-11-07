@@ -8,13 +8,24 @@ require_once("controllers/Users.class.php");
 require_once("controllers/Posts.class.php");
 require_once("controllers/Webcam.class.php");
 require("controllers/Routes.class.php");
+require_once("assets/utils_functions/input_verification.php");
 
 $_SESSION["current_page"] = 1;
 $_SESSION["nb_pages"] = 1;
 
-if (isset($_GET) && array_key_exists("email", $_GET) && array_key_exists("hash", $_GET)
-    && array_key_exists("login", $_GET)) {
+if (input_useable($_GET, 'email')
+    && input_useable($_GET, 'login')
+    && input_useable($_GET,'hash')) {
     UsersController::activate_account($_GET["email"], $_GET['login'], $_GET["hash"]);
+}
+
+if (input_useable($_GET, 'url')
+    && input_useable($_GET, 'email')
+    && input_useable($_GET, 'hash')
+    && input_useable($_GET,'password_reset')) {
+    Route::set('password_recovery', function () {
+        UsersController::template_password_change();
+    });
 }
 
 Route::set("ajax", function() {
