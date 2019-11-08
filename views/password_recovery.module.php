@@ -5,7 +5,7 @@
 <div class="sign_in_body">
     <div class="sign_in_responsive">
         <div class="sign_in_absolute_title">
-            <h1 class="sign_in_title">Sign in to Camagru</h1>
+            <h1 class="sign_in_title">Password recovery</h1>
         </div>
         <div class="sign_in_absolute_form">
             <form class="sign_in_form" action="#" method="POST" onsubmit="return false">

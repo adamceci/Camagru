@@ -16,12 +16,11 @@ $_SESSION["nb_pages"] = 1;
 
 if (input_useable($_GET, 'email')
     && input_useable($_GET, 'login')
-    && input_useable($_GET,'hash')
-    && !input_useable($_GET, 'url')) {
+    && input_useable($_GET,'hash')) {
     UsersController::activate_account($_GET["email"], $_GET['login'], $_GET["hash"]);
 }
 
-if (input_useable($_GET, 'url')
+if (input_useable($_GET, 'url') && $_GET['url'] == 'password_reset'
     && input_useable($_GET, 'email')
     && input_useable($_GET, 'hash')) {
     Route::set('password_reset', function () {

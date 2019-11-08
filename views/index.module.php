@@ -4,7 +4,12 @@
     $directory_self = str_replace(basename($_SERVER['PHP_SELF']), '', $_SERVER['PHP_SELF']);
     // Directory that will receive uploaded files
     $uploads_directory = $_SERVER['DOCUMENT_ROOT'] . $directory_self . 'assets/post_imgs/';
-
+    $i = 0;
+    if (isset($information)) {
+        foreach ($information as $info_comments)
+            foreach ($info_comments as $comment)
+                $nb_comments[] = $comment;
+    }
 ?>
 
     <div id="container_title">
@@ -23,14 +28,15 @@
                         ?>
                         <img src="assets/post_imgs/<?= $post["image"]; ?>" alt="">
                         <div class="display_nb">
-                            <a href="comments&post_img=<?= $post["image"]; ?>&"><p><?=$nb_comments?>X Comment(s)</p></a>
-                            <p><?=$nb_likes?>X Like(s)</p>
+                            <a href="comments&post_img=<?= $post["image"]; ?>&"><p><?= isset($nb_comments) ? $nb_comments[$i]['nb_comments'] : "0";?> Comment(s)</p></a>
+                            <p><?=isset($nb_likes) ? $nb_likes : "0";?> Like(s)</p>
                         </div>
                     <?php
                     }
                     ?>
                 </div>
                 <?php
+                $i++;
             }
         }
         else {

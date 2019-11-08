@@ -19,18 +19,20 @@ class Controller {
 	This function takes a module name as parameter and will get the file if it exists.
 	A module is a part of website that is used more than once and on different part of the website (Ex: The header)
 	*/
-	public static function createModule($moduleName){
-	    $information = self::$info;
-	    self::$info = "";
+	public static function createModule($moduleName, $i){
+        if ($i == 1) {
+            $information = self::$info;
+            self::$info = [];
+        }
         require_once('./views/'.$moduleName.'.module.php');
 	}
 
 	public static function template_index(){
-        self::createModule("top_html_tags");
-        self::createModule("header");
-        self::createModule("index");
-        self::createModule("footer");
-        self::createModule("bottom_html_tags");
+        self::createModule("top_html_tags", 0);
+        self::createModule("header", 0);
+        self::createModule("index", 1);
+        self::createModule("footer", 0);
+        self::createModule("bottom_html_tags", 0);
     }
 
     public static function get_errors() {

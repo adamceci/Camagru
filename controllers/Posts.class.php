@@ -18,9 +18,15 @@ class PostsController extends Controller implements Comments {
 			if (!isset($page))
 				$page = 1;
 			$post = new Post;
+			$comments = new Comment;
 			$_SESSION["nb_pages"] = (int)$post->get_nb_pages();
 			self::$offset = 6 * ($page - 1);
 			$_SESSION["index_posts"] = $post->get_index_posts(self::$limit, self::$offset);
+			if ($_SESSION['index_posts']) {
+			    foreach ($_SESSION['index_posts'] as $post) {
+			        self::$info[] = $comments->get_nbr_comments($post['post_id']);
+                }
+            }
 			parent::template_index();
 		}
 		catch (Exception $e) {
@@ -43,14 +49,14 @@ class PostsController extends Controller implements Comments {
 	}
 
 	public static function template_comment() {
-        self::createModule("top_html_tags");
-        self::createModule("header");
-        self::createModule("post_description");
+        self::createModule("top_html_tags", 0);
+        self::createModule("header", 0);
+        self::createModule("post_description", 0);
         self::$info = self::get_comments();
-        self::createModule("comment");
-        self::createModule("footer");
-        self::createModule("script_comments");
-        self::createModule("bottom_html_tags");
+        self::createModule("comment", 1);
+        self::createModule("footer", 0);
+        self::createModule("script_comments", 0);
+        self::createModule("bottom_html_tags", 0);
     }
 
 	// error handling for post creation
@@ -109,7 +115,6 @@ class PostsController extends Controller implements Comments {
 			// return (0);
 		}
 		// check for PHP's built-in uploading errors
-		var_dump($_FILES[$fieldname]);
 		if ($_FILES[$fieldname]['error'] !== 0) {
 			self::error_post($errors[$_FILES[$fieldname]['error']], $upload_form);
 		}
@@ -227,7 +232,7 @@ class PostsController extends Controller implements Comments {
     public static function send_notification_email($creator_id, $post_img) {
         $user = new User;
         $allowed_notif = $user->get_notification_active($creator_id);
-        if ($allowed_notif['notification_email']) {
+        if ($allowed_notif) {
             $creator_notif_email = $user->get_notification_email($creator_id);
             $to = "gabriele_Virga@hotmail.com";
             // $to = $creator_notif_email;
@@ -272,7 +277,7 @@ class PostsController extends Controller implements Comments {
                         $msg = $_POST['message'];
                         $comment->create_comment($user_id['user_id'], $post_id['post_id'], $msg);
                         $_SESSION['success'] = $msg;
-                        self::send_notification_email($creator_id, $_SESSION['post_img']);
+                        self::send_notification_email($creator_id['user_id'], $_SESSION['post_img']);
                         return (1);
                     }
                     else {

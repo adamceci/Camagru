@@ -5,52 +5,52 @@ require_once("models/User.class.php");
 class UsersController extends Controller {
 
     public static function template_sign_up() {
-        self::createModule("top_html_tags");
-        self::createModule("header");
-        self::createModule("create_user_form");
-        self::createModule("footer");
-        self::createModule("script");
-        self::createModule("bottom_html_tags");
+        self::createModule("top_html_tags", 0);
+        self::createModule("header", 0);
+        self::createModule("create_user_form", 1);
+        self::createModule("footer", 0);
+        self::createModule("script", 0);
+        self::createModule("bottom_html_tags", 0);
     }
 
     public static function template_login() {
-        self::createModule("top_html_tags");
-        self::createModule("header");
-        self::createModule("login");
-        self::createModule("footer");
-        self::createModule("script");
-        self::createModule("bottom_html_tags");
+        self::createModule("top_html_tags_grey", 0);
+        self::createModule("header", 0);
+        self::createModule("login", 1);
+        self::createModule("footer", 0);
+        self::createModule("script", 0);
+        self::createModule("bottom_html_tags", 0);
     }
 
     public static function template_profile() {
-        self::createModule("top_html_tags");
-        self::createModule("header");
-        self::createModule("profile");
+        self::createModule("top_html_tags", 0);
+        self::createModule("header", 0);
+        self::createModule("profile", 1);
         if (array_key_exists("update", $_GET) && !empty($_GET['update'])) {
             if ($_GET['update'] == 'login' || $_GET['update'] == 'email' || $_GET['update'] == 'password' || $_GET['update'] == 'notification_email' || $_GET['update'] == 'profile_pic')
-            UsersController::createModule('update_' . $_GET['update']);
+            UsersController::createModule('update_', 0 . $_GET['update']);
         }
-        self::createModule("footer");
-        self::createModule("script");
-        self::createModule("bottom_html_tags");
+        self::createModule("footer", 0);
+        self::createModule("script", 0);
+        self::createModule("bottom_html_tags", 0);
     }
 
     public static function template_password_recovery() {
-        self::createModule("top_html_tags");
-        self::createModule("header");
-        self::createModule('password_recovery');
-        self::createModule("script");
-        self::createModule("footer");
-        self::createModule("bottom_html_tags");
+        self::createModule("top_html_tags_grey", 0);
+        self::createModule("header", 0);
+        self::createModule('password_recovery', 1);
+        self::createModule("script", 0);
+        self::createModule("footer", 0);
+        self::createModule("bottom_html_tags", 0);
     }
 
     public static function template_password_change() {
-        self::createModule("top_html_tags");
-        self::createModule("header");
-        self::createModule('update_password_rec');
-        self::createModule("script");
-        self::createModule("footer");
-        self::createModule("bottom_html_tags");
+        self::createModule("top_html_tags", 0);
+        self::createModule("header", 0);
+        self::createModule('update_password_rec', 1);
+        self::createModule("script", 0);
+        self::createModule("footer", 0);
+        self::createModule("bottom_html_tags", 0);
     }
 
     private static function show_errors() {
@@ -344,7 +344,7 @@ class UsersController extends Controller {
     }
 
 	public static function login(array $kwargs) {
-        if (array_key_exists("password", $kwargs) && !empty($kwargs["password"])) {
+        if (input_useable($kwargs, 'password')) {
             if (self::login_verif($kwargs)) {
                 return (1);
             } else {

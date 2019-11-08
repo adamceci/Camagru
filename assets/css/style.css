@@ -240,21 +240,20 @@ div.header div:nth-child(4) button {
 }
 
 .create_user_absolute_title {
-    width: 100%;
+    width: 30%;
+    min-width: 300px;
+    max-width: 400px;
+    padding-right: 30px;
     padding-left: 16px;
-    position: absolute;
-    text-align: initial;
-    margin-left: 32%;
+    text-align: center;
+    margin-left: 36%;
 }
 
 .create_user_title {
     display:block;
     font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji;
     color: rgb(10, 86, 104);
-    position: relative;
-    left: 12%;
     font-size: 15px;
-    top: 15px;
 }
 
 .create_user_join {
@@ -262,12 +261,10 @@ div.header div:nth-child(4) button {
     color: rgb(15, 129, 158);
     font-family: SFMono-Regular,Consolas,Liberation Mono,Menlo,monospace;
     position: relative;
-    left: 10%;
     top: 15px;
 }
 
 .create_user_absolute_form {
-    position: absolute;
     width: 30%;
     min-width: 300px;
     max-width: 400px;
@@ -332,7 +329,6 @@ div.header div:nth-child(4) button {
     .create_user_absolute_title {
         width: 100%;
         padding-left: 16px;
-        position: absolute;
         text-align: center;
         margin-left: 0%;
     }
@@ -346,11 +342,9 @@ div.header div:nth-child(4) button {
         font-size: 19px;
         color: rgb(15, 129, 158);
         font-family: SFMono-Regular,Consolas,Liberation Mono,Menlo,monospace;
-        left: 0%;
     }
 
     .create_user_absolute_form {
-        position: absolute;
         width: 100%;
         max-width: 100%;
         padding-right: 30px;
@@ -414,18 +408,18 @@ Create user form css end
 Login view css start
  */
 
-.sign_in_body {
+.grey_background {
     background-color: #f9f9f9;
-    width: 100%;
-    height: 100%;
 }
 
 .sign_in_absolute_title {
-    width: 100%;
+    padding-right: 30px;
     padding-left: 16px;
-    position: absolute;
-    text-align: initial;
-    margin-left: 32%;
+    min-width: 300px;
+    max-width: 400px;
+    width: 30%;
+    text-align: center;
+    margin-left: 36%;
 }
 
 .sign_in_title {
@@ -433,14 +427,11 @@ Login view css start
     font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji;
     color: rgb(10, 86, 104);
     position: relative;
-    left: 12%;
     font-size: 18px;
-    top: 15px;
     font-weight: 300;
 }
 
 .sign_in_absolute_form {
-    position: absolute;
     width: 30%;
     min-width: 300px;
     max-width: 400px;
@@ -475,6 +466,38 @@ Login view css start
 
 .pass_rec_submit {
     width: 100%;
+    background: linear-gradient(rgb(45, 159, 188), rgb(15, 129, 158));
+    border: 1px solid rgb(15, 129, 158);
+    border-radius: 4px;
+    font-size: 15px;
+    color: #fff;
+    margin-top: 20px;
+    margin-left: 4px;
+}
+
+.password_rec_wrapper {
+    width: 30%;
+    min-width: 300px;
+    max-width: 400px;
+    padding-right: 30px;
+    padding-left: 16px;
+    top: 80px;
+    margin-left: 36%;
+}
+
+.pass_rec_inputs {
+    width: 100%;
+    border-radius: 5px;
+    font-size: 13px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    padding-left: 8px;
+    border: 1px solid rgb(15, 129, 158);
+    background-color: #efefef;
+}
+
+.submit_change_password_rec {
+    width: 100%;
     background: linear-gradient(rgb(15, 129, 158), rgb(45, 159, 188));
     border: 1px solid rgb(15, 129, 158);
     border-radius: 4px;
@@ -504,9 +527,10 @@ Login view css start
 @media screen and (max-width: 780px) {
 
     .sign_in_absolute_title {
-        width: 100%;
+        padding-right: 16px;
         padding-left: 16px;
-        position: absolute;
+        max-width: 100%;
+        width: 100%;
         text-align: center;
         margin-left: 0%;
     }
@@ -519,7 +543,6 @@ Login view css start
     }
 
     .sign_in_absolute_form {
-        position: absolute;
         width: 100%;
         max-width: 100%;
         padding-right: 16px;
@@ -562,6 +585,17 @@ Login view css start
     }
 
     .pass_rec_submit {
+        width: 100%;
+        background: linear-gradient(rgb(15, 129, 158), rgb(45, 159, 188));
+        border: 1px solid rgb(15, 129, 158);
+        border-radius: 4px;
+        font-size: 22px;
+        color: #fff;
+        margin-left: 4px;
+        margin-top: 30px;
+    }
+
+    .submit_change_password_rec{
         width: 100%;
         background: linear-gradient(rgb(15, 129, 158), rgb(45, 159, 188));
         border: 1px solid rgb(15, 129, 158);

@@ -11,9 +11,9 @@ function login_status() {
             if (this.response.substr(0, 2) !== 'OK') {
                 errorWrapper.innerHTML = this.response.substr(5);
             } else {
-                // setTimeout(function () {
-                //     window.location.replace('index');
-                // }, 5);
+                setTimeout(function () {
+                    window.location.replace('index');
+                }, 5);
             }
         }
     };
@@ -58,7 +58,7 @@ function password_rec_status() {
 
     xhttp.onreadystatechange = function() {
         if (this.readyState === 4 && this.status === 200) {
-            if (this.response.substr(0, 2) === 'OK') {
+            if (this.response.substr(0, 2) !== 'OK') {
                 errorWrapper.innerHTML = this.response.substr(5);
             } else {
                 setTimeout(function () {

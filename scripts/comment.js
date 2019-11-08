@@ -5,6 +5,7 @@ function create_comment_status() {
     let errorWrapper = document.querySelector(".error_wrapper");
     let commentWrapper = document.querySelector('.comments_wrapper');
     let login = document.querySelector(".current_user").innerHTML;
+    let textarea = document.querySelector('.message');
 
     xhttp.onreadystatechange = function() {
         if (this.readyState === 4 && this.status === 200) {
@@ -19,6 +20,7 @@ function create_comment_status() {
                 commentNode.appendChild(commentTextNode);
                 commentWrapper.appendChild(loginNode);
                 commentWrapper.appendChild(commentNode);
+                textarea.value = '';
             } else {
                 errorWrapper.innerHTML = this.response.substr(5);
             }
