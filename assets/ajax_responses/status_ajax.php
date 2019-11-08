@@ -34,6 +34,7 @@ function posts_ajax_response($method) {
     echo $success;
 }
 
+
 if (!array_key_exists("current_user", $_SESSION)) {
     if (isset($_GET) && array_key_exists("method", $_GET) && array_key_exists('user', $_GET) && isset($_POST)) {
         user_ajax_response($_GET['method']);

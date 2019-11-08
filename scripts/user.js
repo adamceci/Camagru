@@ -11,7 +11,9 @@ function login_status() {
             if (this.response.substr(0, 2) !== 'OK') {
                 errorWrapper.innerHTML = this.response.substr(5);
             } else {
-                window.location.replace('index');
+                // setTimeout(function () {
+                //     window.location.replace('index');
+                // }, 5);
             }
         }
     };
@@ -34,13 +36,15 @@ function create_user_status() {
     xhttp.onreadystatechange = function() {
         if (this.readyState === 4 && this.status === 200) {
             if (this.response === 'OK') {
-                window.location.replace('index');
+                setTimeout(function () {
+                    window.location.replace('index');
+                }, 5);
             } else {
                 errorWrapper.innerHTML = this.response;
             }
         }
     };
-    xhttp.open("POST", "ajax?method=create_user&controller=UsersController", true);
+    xhttp.open("POST", "ajax?method=create_user&controller=UsersController&user=1", true);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xhttp.send("password=" + password + "&password_verif=" + password_confirmation + "&login=" + login
         + "&email=" + email + "&profile_pic=" + filename);

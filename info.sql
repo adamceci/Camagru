@@ -46,3 +46,4 @@ CREATE TABLE IF NOT EXISTS comments
 --     `name` VARCHAR(255) NOT NULL,
 --     `image_src` VARCHAR(255) NOT NULL
 -- }
+s
