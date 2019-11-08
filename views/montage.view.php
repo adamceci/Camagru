@@ -20,15 +20,34 @@
     <div id="wrapper">
         <div id="container">
             <div id="main">
-                <form enctype="multipart/form-data" action="success_upload" method="post">
-                    <!-- webcam or picture -->
-                    <!-- filters -->
-                    <!-- submit_create_post -->
+                <p>
+                    Pick a filter :
+                    <div id="display_filters">
+                        <img class="filter" src="assets/post_imgs/1573035515-alien7.jpg" alt="">
+                        <img class="filter" src="assets/post_imgs/1573035515-alien7.jpg" alt="">
+                        <img class="filter" src="assets/post_imgs/1573035515-alien7.jpg" alt="">
+                        <img class="filter" src="assets/post_imgs/1573035515-alien7.jpg" alt="">
+                    </div>
+                </p>
+                <p id="choice">
+                    <button id="chose_file">Upload file</button>
+                    or
+                    <button id="chose_vid">Take a picture</button>
+                </p>
+                <form class="hidden" id="form_file" enctype="multipart/form-data" action="success_upload" method="post">
                     <input type="hidden" name="MAX_FILE_SIZE" value="<?=$max_file_size;?>" />
-                    Picture: <input type="file" name="image" value="upload_pic" /><br />
+                    <input type="file" name="image" value="upload_pic" /><br />
                     <input type="submit" name="submit_create_post" value="Post" />
                     <input type="submit" name="save" value="Save" />
                 </form>
+                <div class="hidden" id="cam_div">
+                    <video autoplay></video>
+                    <img id="screenshot-img">
+                    <canvas style="display: none;"></canvas>
+                    <p>
+                        <button id="screenshot-button">Take screenshot</button>
+                    </p>
+                </div>
             </div>
             <div id="side">
                 <h2>My uploads</h2>
@@ -36,7 +55,7 @@
                 $i = 0;
                 if (isset($_SESSION["user_posts"])) {
                     foreach($_SESSION["user_posts"] as $post) {
-                        var_dump($_SESSION["user_posts"]);
+                        // var_dump($_SESSION["user_posts"]);
                         ?>
                         <div class="user_posts">
                             <div class="hidden remove">
@@ -63,6 +82,6 @@
             </div>
         </div>
     </div>
-    <script src="scripts/post.js"></script>
+    <script src="scripts/gallery.js"></script>
 </body>
 </html>

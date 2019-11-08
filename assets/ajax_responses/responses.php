@@ -1,7 +1,5 @@
 <?php
 
-require_once("../../controllers/Posts.class.php");
-
 if(isset($_GET)) {
     if (array_key_exists("toDelSrc", $_GET)) {
         try {

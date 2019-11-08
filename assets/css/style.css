@@ -31,7 +31,7 @@ div.header div:nth-child(1) a {
     color: rgb(15, 129, 158);
 }
 
-div.header div:nth-child(2) {
+.header .blank {
     flex-grow: 6;
 }
 
@@ -144,7 +144,7 @@ div.header div:nth-child(4) button {
 /* Montage page */
 
 #container {
-    height: 1000px;
+    min-height: 500px;
     margin-top: 40px;
     display: flex;
 }
@@ -155,12 +155,10 @@ div.header div:nth-child(4) button {
 
 #side {
     width: 20%;
-    /* border: 1px solid rgb(15, 129, 158); */
-    /* margin: auto; */
+    border: 1px solid rgb(15, 129, 158);
     display: flex;
     flex-direction: column;
     align-items: center;
-    /* flex-wrap: wrap; */
     justify-content: flex-start;
 }
 
@@ -178,12 +176,12 @@ div.header div:nth-child(4) button {
 }
 
 .user_posts img {
-    width: 100%;
-    /* border: 3px solid rgb(15, 129, 158); */
+    width: 95%;
+    margin: auto;
     max-height: 160px;
 }
 
-.user_posts .hidden {
+.hidden {
     display: none;
 }
 
@@ -200,6 +198,21 @@ div.header div:nth-child(4) button {
 
 .post {
     position: absolute;
+}
+
+#display_filters {
+    display: flex;
+    flex-direction: row;
+    max-height: 200px;
+}
+
+#display_filters img {
+    margin-right: 10px;
+    width: 20%;
+}
+
+.selected_filter {
+    border: 5px solid rgb(15, 129, 158);
 }
 
 /* Plus button */
