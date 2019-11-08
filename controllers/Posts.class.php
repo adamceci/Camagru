@@ -109,6 +109,7 @@ class PostsController extends Controller implements Comments {
 			// return (0);
 		}
 		// check for PHP's built-in uploading errors
+		var_dump($_FILES[$fieldname]);
 		if ($_FILES[$fieldname]['error'] !== 0) {
 			self::error_post($errors[$_FILES[$fieldname]['error']], $upload_form);
 		}
@@ -144,6 +145,7 @@ class PostsController extends Controller implements Comments {
 		try {
 			if (isset($_SESSION["current_user"])) {
 				$kwargs["image"] = self::upload_post($kwargs);
+				echo "TEST";
 				if (isset($kwargs["image"])) {
 					$post = new Post;
 					$kwargs["user_id"] = (int)$_SESSION["current_user_user_id"];
@@ -189,7 +191,7 @@ class PostsController extends Controller implements Comments {
     // delete post
 	public static function delete_post(array $kwargs) {
 		try {
-			if (isset($_SESSION["current_user"])) {
+			if (isset($_SESSION["current_user"]) && $_SESSION["current_user_user_id"]) {
 				if (isset($kwargs["toDelSrc"])) {
 					$post = new Post;
 					$post->delete_post($kwargs);

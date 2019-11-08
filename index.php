@@ -33,6 +33,10 @@ Route::set("ajax", function() {
     require_once("assets/ajax_responses/status_ajax.php");
 });
 
+Route::set("responses", function () {
+    require_once("assets/ajax_responses/responses.php");
+});
+
 Route::set("index", function() {
     PostsController::display_index_posts($_SESSION["current_page"]);
 });

@@ -20,10 +20,8 @@
                 ?>
                 <div class="post_index">
                     <?php if (file_exists($uploads_directory . $post["image"])) {
-                        echo $uploads_directory . $post["image"];
                         ?>
                         <img src="assets/post_imgs/<?= $post["image"]; ?>" alt="">
-                         <img src="<?=$uploads_directory . $post["image"]; ?>" alt="">
                         <div class="display_nb">
                             <a href="comments&post_img=<?= $post["image"]; ?>&"><p><?=$nb_comments?>X Comment(s)</p></a>
                             <p><?=$nb_likes?>X Like(s)</p>
