@@ -13,16 +13,17 @@ require_once("assets/utils_functions/input_verification.php");
 $_SESSION["current_page"] = 1;
 $_SESSION["nb_pages"] = 1;
 
+
 if (input_useable($_GET, 'email')
     && input_useable($_GET, 'login')
-    && input_useable($_GET,'hash')) {
+    && input_useable($_GET,'hash')
+    && !input_useable($_GET, 'url')) {
     UsersController::activate_account($_GET["email"], $_GET['login'], $_GET["hash"]);
 }
 
 if (input_useable($_GET, 'url')
     && input_useable($_GET, 'email')
-    && input_useable($_GET, 'hash')
-    && input_useable($_GET,'password_reset')) {
+    && input_useable($_GET, 'hash')) {
     Route::set('password_reset', function () {
         UsersController::template_password_change();
     });
@@ -60,10 +61,6 @@ if (!array_key_exists("current_user", $_SESSION)) {
         UsersController::template_sign_up();
     });
 }
-
-Route::set("ajax", function() {
-    require_once("assets/ajax_responses/status_ajax.php");
-});
 
 Route::set("logout", function () {
     UsersController::logout();

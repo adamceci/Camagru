@@ -1,7 +1,9 @@
 <?php
 
 function user_ajax_response($method) {
-    if ($method != 'login' && $method != 'create_user' && $method != 'password_recovery') {
+    if ($method != 'login' && $method != 'create_user'
+        && $method != 'password_recovery' && $method != 'password_recovery_update') {
+        echo "Unautorized method";
         return (0);
     }
     UsersController::$method($_POST);
@@ -11,11 +13,6 @@ function user_ajax_response($method) {
         foreach ($errors as $error)
             echo "<p class=\"error\">" . $error . "</p>";
         return (0);
-    }
-    if (input_useable($_SESSION, 'success')) {
-        $success = UsersController::show_success_msg();
-        echo $success;
-        return (1);
     }
     echo "OK";
 }
@@ -33,8 +30,9 @@ function posts_ajax_response($method) {
         return (0);
     }
     echo "OK";
+    $success = PostsController::show_success_msg();
+    echo $success;
 }
-
 
 if (!array_key_exists("current_user", $_SESSION)) {
     if (isset($_GET) && array_key_exists("method", $_GET) && array_key_exists('user', $_GET) && isset($_POST)) {

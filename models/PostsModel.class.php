@@ -123,6 +123,22 @@ class Post extends Model {
             throw new Exception("Error while getting the index posts in model " . $e->getMessage());
         }
     }
+
+    public function get_user_id($post_id) {
+        try {
+            parent::db_connect();
+            $sql = "SELECT `user_id` FROM posts WHERE `post_id` = ?";
+            $this->stmt = $this->pdo->prepare($sql);
+            $this->stmt->execute(array($post_id));
+            $arr = $this->stmt->fetch();
+            parent::db_drop_connection();
+            return $arr;
+        }
+        catch (Exception $e) {
+            throw new Exception("Error while getting the index posts in model " . $e->getMessage());
+        }
+
+    }
 }
 
 ?>

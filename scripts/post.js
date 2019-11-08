@@ -35,13 +35,15 @@ let postButtons;
 removeButtons = document.querySelectorAll(".remove");
 postButtons = document.querySelectorAll(".post");
 
-for (let removeButton of removeButtons) {
-	removeButton.addEventListener("click", removeImage);
-}
-for (let postButton of postButtons) {
-	postButton.addEventListener("click", publishImage);
+
+if (removeButtons != null) {
+	for (let removeButton of removeButtons) {
+		removeButton.addEventListener("click", removeImage);
+	}
 }
 
-// xhttp.open("POST", "index.php", true);
-// console.log(xhttp);
-// xhttp.send();
+if (postButtons != null) {
+	for (let postButton of postButtons) {
+		postButton.addEventListener("click", publishImage);
+	}
+}

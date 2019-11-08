@@ -362,16 +362,17 @@ class UsersController extends Controller {
     }
 
     private static function update_password($user_info) {
-        $user = new User;
         if (self::password_valid($user_info['new_password']) && self::password_valid($user_info['old_password'])) {
             try {
-                if ($user->update_password(hash("whirlpool", $user_info['new_password']), hash("whirlpool", $user_info['old_password']), $_SESSION['current_user']) != USER_DONT_EXIST) {
-                    echo "password changed";
-                    return (1);
-                } else {
+                $user = new User;
+                if (!($user->auth_user($_SESSION['current_user'], hash('whirlpool', $user_info['old_password'])))) {
                     echo "Wrong password";
                     $_SESSION['refresh'] = "profile&update=password";
                     self::fill_session_error(array(), 'Wrong password');
+                }
+                if ($user->update_password(hash("whirlpool", $user_info['new_password']), $_SESSION['current_user']) != USER_DONT_EXIST) {
+                    echo "password changed";
+                    return (1);
                 }
             } catch (Exception $e) {
                 echo "FATAL ERROR:" . $e->getMessage();
@@ -503,12 +504,39 @@ class UsersController extends Controller {
 
     public static function password_recovery_update() {
 	    if (input_useable($_GET, 'login')
-            && input_useable($_GET, 'hash')
-            && input_useable($_POST, 'password')
-            && input_useable($_POST, 'password_verif')){
+            && input_useable($_GET, 'hash')) {
+	        if (!input_useable($_POST, 'password')
+                || !input_useable($_POST, 'password_verif')) {
+                self::$errors[] = 'Empty password can not be a password';
+                return (0);
+            } else if ($_POST['password'] !== $_POST['password_verif']) {
+                self::$errors[] = 'The passwords are not the same';
+                return (0);
+            }
             if (self::password_valid($_POST['password'])
                 && self::password_valid($_POST['password_verif'])) {
-
+                try {
+                    $user = New User;
+                    if ($user->activate_account($_GET['login'], $_GET['login'], $_GET['hash']) === USER_DONT_EXIST) {
+                        self::$errors[] = 'Couldn\'t change the password';
+                        return (0);
+                    } else {
+                        $user->update_password(hash('whirlpool', $_POST['password']), $_GET['login']);
+                        if ($user->auth_user($_GET['login'], hash('whirlpool',$_POST['password'])) == 1) {
+                            self::fill_current_user_login($_GET['login']);
+                            $hash = md5(rand(9101994, 11021994));
+                            $user->update_hash($_GET['login'], $hash);
+                            $_SESSION['success'] = 'Welcome back !';
+                            return (1);
+                        } else {
+                            self::$errors[] = 'Couldn\'t login';
+                            return (0);
+                        }
+                    }
+                } catch (Exception $e) {
+                    self::$errors[] = $e->getMessage();
+                    return (0);
+                }
             } else {
                 self::$errors[] = 'Wrong format';
                 return (0);

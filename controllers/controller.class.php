@@ -19,7 +19,8 @@ class Controller {
 	*/
 	public static function createModule($moduleName){
 	    $information = self::$info;
-		require_once('./views/'.$moduleName.'.module.php');
+	    self::$info = "";
+        require_once('./views/'.$moduleName.'.module.php');
 	}
 
 	public static function template_index(){

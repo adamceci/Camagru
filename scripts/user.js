@@ -8,10 +8,10 @@ function login_status() {
 
     xhttp.onreadystatechange = function() {
         if (this.readyState === 4 && this.status === 200) {
-            if (this.response === 'OK') {
-                window.location.replace('index');
+            if (this.response.substr(0, 2) !== 'OK') {
+                errorWrapper.innerHTML = this.response.substr(5);
             } else {
-                errorWrapper.innerHTML = this.response;
+                window.location.replace('index');
             }
         }
     };
@@ -30,7 +30,6 @@ function create_user_status() {
     let picPath = document.querySelector('.create_user_file_input').value;
     let filename = picPath.replace(/^.*\\/, "");
     let errorWrapper = document.querySelector(".error_wrapper");
-
 
     xhttp.onreadystatechange = function() {
         if (this.readyState === 4 && this.status === 200) {
@@ -52,19 +51,16 @@ function password_rec_status() {
     let emailOrLoginInput = document.querySelector(".pass_rec_input");
     let emailOrLogin = emailOrLoginInput.value;
     let errorWrapper = document.querySelector(".error_wrapper");
-    let successWrapper = document.querySelector(".success_wrapper");
 
     xhttp.onreadystatechange = function() {
         if (this.readyState === 4 && this.status === 200) {
-            if (this.response.substr(0, 5) === 'NOTOK')
+            if (this.response.substr(0, 2) === 'OK') {
                 errorWrapper.innerHTML = this.response.substr(5);
-            else if (this.response !== 'OK') {
-                successWrapper.innerHTML = this.response;
+            } else {
                 setTimeout(function () {
                     window.location.replace('index');
-                }, 10000);
-            } else
-                window.location.replace('index');
+                }, 5);
+            }
         }
     };
     xhttp.open("POST", "ajax?method=password_recovery&user=1", true);
@@ -78,19 +74,25 @@ function change_password_rec_status() {
     let password = passwordsInputs[0].value;
     let passwordVerif = passwordsInputs[1].value;
     let errorWrapper = document.querySelector(".error_wrapper");
+    let url = window.location.toString();
+    let toLogin = url.substr(url.indexOf("email="));
+    let login = toLogin.substr(toLogin.indexOf('=') + 1,
+        toLogin.indexOf('&') - toLogin.indexOf('=') - 1);
+    let toHash = url.substr(url.indexOf("hash="));
+    let hash = toHash.substr(toHash.indexOf('=') + 1);
 
     xhttp.onreadystatechange = function() {
         if (this.readyState === 4 && this.status === 200) {
-            if (this.response.substr(0, 5) === 'NOTOK')
+            if (this.response.substr(0, 2) !== 'OK') {
                 errorWrapper.innerHTML = this.response.substr(5);
-            else if (this.response !== 'OK') {
-                successWrapper.innerHTML = this.response;
-                window.location.replace('index');
-            } else
-                window.location.replace('index');
+            } else {
+                setTimeout(function () {
+                    window.location.replace('index');
+                }, 5);
+            }
         }
     };
-    xhttp.open("POST", "ajax?method=password_recovery_update&user=1", true);
+    xhttp.open("POST", "ajax?method=password_recovery_update&user=1&hash=" + hash + "&login=" + login, true);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xhttp.send("password=" + password + "&password_verif=" + passwordVerif);
 }
@@ -118,14 +120,8 @@ if (passwordRecButton !== null) {
     });
 }
 
-if (passwordRecButton !== null) {
-    passwordRecButton.addEventListener("click", function () {
-        password_rec_status();
-    });
-}
-
 if (passwordChangeRecButton !== null) {
-    passwordRecButton.addEventListener("click", function () {
+    passwordChangeRecButton.addEventListener("click", function () {
         change_password_rec_status();
     });
 }

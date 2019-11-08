@@ -46,6 +46,8 @@ class User extends Model {
         }
     }
 
+    public func
+
     public function get_email($login) {
         try {
             parent::db_connect();
@@ -151,7 +153,7 @@ class User extends Model {
             $sql = "UPDATE `users` 
                     SET active=1
                     WHERE verif_hash=? 
-                    AND LOWER(email)=? AND LOWER(`login`)=?";
+                    AND LOWER(email)=? OR LOWER(`login`)=?";
             $this->stmt = $this->pdo->prepare($sql);
             $return_value = $this->stmt->execute(array($hash, $email, $login));
             parent::db_drop_connection();
@@ -269,14 +271,14 @@ class User extends Model {
         }
     }
 
-    public function update_password($new_password, $old_password, $login) {
+    public function update_password($new_password, $login) {
         try {
             parent::db_connect();
             $sql = "UPDATE `users`
                     SET `password`=?
-                    WHERE (`password`=? AND LOWER(`login`)=?)";
+                    WHERE LOWER(`login`)=? AND `active`='1'";
             $this->stmt = $this->pdo->prepare($sql);
-            $return_value = $this->stmt->execute(array($new_password, $old_password, $login));
+            $return_value = $this->stmt->execute(array($new_password, $login));
             if ($return_value) {
                 $affected_rows = $this->stmt->rowCount();
                 if ($affected_rows == 0) {

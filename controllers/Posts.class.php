@@ -46,6 +46,7 @@ class PostsController extends Controller implements Comments {
         self::createModule("top_html_tags");
         self::createModule("header");
         self::createModule("post_description");
+        self::$info = self::get_comments();
         self::createModule("comment");
         self::createModule("footer");
         self::createModule("script_comments");
@@ -205,7 +206,7 @@ class PostsController extends Controller implements Comments {
 	}
 
 	public static function fill_post_info($post_img) {
-        $post = New Post;
+        $post = new Post;
         try {
             $post_info = $post->get_post_info($post_img);
         } catch (Exception $e) {
@@ -221,6 +222,11 @@ class PostsController extends Controller implements Comments {
         }
     }
 
+    public static function send_notification_email($creator_id, $post_img) {
+        $user = new User;
+        $user->get_notification_email($creator_id);
+    }
+
 	public static function get_comments() {
         $comment = new Comment;
         $post = New Post;
@@ -230,17 +236,22 @@ class PostsController extends Controller implements Comments {
     }
 
     public static function create_comment() {
-        if (isset($_SESSION) && array_key_exists('current_user', $_SESSION)) {
-            if (isset($_POST) && array_key_exists('message', $_POST)) {
+        if (input_useable($_SESSION, 'current_user')) {
+            if (input_useable($_POST, 'message')) {
                 try {
                     $comment = new Comment;
                     $post = new Post;
                     $user = new User;
                     $user_id = $user->get_user_id($_SESSION['current_user']);
                     $post_id = $post->get_post_id($_SESSION['post_img']);
-                    $msg = $_POST['message'];
-                    if ($user_id && $post_id)
+                    $creator_id = $post->get_user_id($post_id['post_id']);
+                    if ($user_id && $post_id && $creator_id) {
+                        $msg = $_POST['message'];
                         $comment->create_comment($user_id['user_id'], $post_id['post_id'], $msg);
+                        $_SESSION['success'] = $msg;
+                        self::send_notification_email($creator_id, $_SESSION['post_img']);
+                        return (1);
+                    }
                     else {
                         self::$errors[] = 'Invalid user or post';
                         return (0);
