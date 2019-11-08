@@ -200,10 +200,6 @@ div.header div:nth-child(4) button {
     position: absolute;
 }
 
-#main video {
-    display: none;
-}
-
 #display_filters {
     display: flex;
     flex-direction: row;
@@ -213,6 +209,10 @@ div.header div:nth-child(4) button {
 #display_filters img {
     margin-right: 10px;
     width: 20%;
+}
+
+.selected_filter {
+    border: 5px solid rgb(15, 129, 158);
 }
 
 /* Plus button */

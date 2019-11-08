@@ -5,35 +5,30 @@ function hasGetUserMedia() {
 
 function displayVid() {
 	let toHideElem;
-	let form;
+	let camDiv;
 
 	//add elem left arrow
 	toHideElem = document.querySelector("#choice");
 	toHideElem.classList.add("hidden");
-	form = document.querySelector("#form_vid");
-	form.classList.remove("hidden");
+	camDiv = document.querySelector("#cam_div");
+	camDiv.classList.remove("hidden");
 	if (hasGetUserMedia()) {
-		// Good to go!
 		const constraints = {
 			video: {
 				width: { ideal: 720 },
 				height: { ideal: 500}
 			}
 		};
-	
-		const captureVideoButton = document.querySelector('#capture-button');
+
 		const screenshotButton = document.querySelector('#screenshot-button');
-		const img = document.querySelector('#main img');
+		const img = document.querySelector('#screenshot-img');
 		const video = document.querySelector('#main video');
-	
+
 		const canvas = document.createElement('canvas');
-	
-		captureVideoButton.onclick = function() {
-			alert("working");
-			navigator.mediaDevices.getUserMedia(constraints).
-			then(handleSuccess).catch(handleError);
-		};
-	
+
+		navigator.mediaDevices.getUserMedia(constraints).
+		then(handleSuccess).catch(handleError);
+
 		screenshotButton.onclick = video.onclick = function() {
 			canvas.width = video.videoWidth;
 			canvas.height = video.videoHeight;
@@ -41,14 +36,15 @@ function displayVid() {
 			// Other browsers will fall back to image/png
 			img.src = canvas.toDataURL('image/webp');
 		};
-	
+
 		function handleSuccess(stream) {
+			console.log(stream);
 			screenshotButton.disabled = false;
 			video.srcObject = stream;
 		}
-	
+
 		function handleError() {
-			console.log("error.name : error.message");
+			alert("error.name : error.message");
 		}
 	}
 	else {
@@ -67,6 +63,7 @@ function displayFile() {
 }
 
 function removeImage(data) {
+	console.log(data);
 	let divToRemove = data["path"][2];
 	let imageToRemove = divToRemove.querySelector("img").getAttribute("src");
 	let xhttp = new XMLHttpRequest();
@@ -82,7 +79,7 @@ function removeImage(data) {
 }
 
 function publishImage(data) {
-	let buttonToRemove = data["path"][1];
+	let buttonToRemove = data["target"];
 	let imageToPublish = data["path"][2]["children"][2]["src"];
 	let xhttp = new XMLHttpRequest();
 
@@ -96,15 +93,28 @@ function publishImage(data) {
 	}
 }
 
+function border(data) {
+	let current_filter = data["target"];
+
+	if (current_filter.classList.contains("selected_filter")) {
+		current_filter.classList.remove("selected_filter");
+	}
+	else {
+		current_filter.classList.add("selected_filter");
+	}
+}
+
 let fileButton;
 let videoButton;
 let removeButtons;
 let postButtons;
+let filters;
 
 fileButton = document.querySelector("#chose_file");
 videoButton = document.querySelector("#chose_vid");
 removeButtons = document.querySelectorAll(".remove");
 postButtons = document.querySelectorAll(".post");
+filters = document.querySelectorAll(".filter");
 
 videoButton.addEventListener("click", displayVid);
 fileButton.addEventListener("click", displayFile);
@@ -114,4 +124,8 @@ for (let removeButton of removeButtons) {
 }
 for (let postButton of postButtons) {
 	postButton.addEventListener("click", publishImage);
+}
+
+for (let filter of filters) {
+	filter.addEventListener("click", border);
 }

@@ -23,10 +23,10 @@
                 <p>
                     Pick a filter :
                     <div id="display_filters">
-                        <img src="assets/post_imgs/1573035515-alien7.jpg" alt="">
-                        <img src="assets/post_imgs/1573035515-alien7.jpg" alt="">
-                        <img src="assets/post_imgs/1573035515-alien7.jpg" alt="">
-                        <img src="assets/post_imgs/1573035515-alien7.jpg" alt="">
+                        <img class="filter" src="assets/post_imgs/1573035515-alien7.jpg" alt="">
+                        <img class="filter" src="assets/post_imgs/1573035515-alien7.jpg" alt="">
+                        <img class="filter" src="assets/post_imgs/1573035515-alien7.jpg" alt="">
+                        <img class="filter" src="assets/post_imgs/1573035515-alien7.jpg" alt="">
                     </div>
                 </p>
                 <p id="choice">
@@ -44,29 +44,10 @@
                     <video autoplay></video>
                     <img id="screenshot-img">
                     <canvas style="display: none;"></canvas>
-                </div>
-                <form class="hidden" id="form_vid" action="#" method="post">
-                    <!-- <video autoplay></video>
-                    <img id="screenshot-img">
-                    <canvas style="display: none;"></canvas> -->
-                    <p>
-                    <button id="capture-button">Capture video</button>
-                    </p>
                     <p>
                         <button id="screenshot-button">Take screenshot</button>
                     </p>
-                    <!-- <input type="submit" name="submit_create_post" value="Post" />
-                    <input type="submit" name="save" value="Save" /> -->
-                </form>
-                <!-- <video autoplay></video> -->
-                <!-- <img id="screenshot-img"> -->
-                <!-- <canvas style="display:none;"></canvas> -->
-                <!-- <p>
-                    <button id="capture-button">Capture video</button>
-                </p>
-                <p>
-                    <button id="screenshot-button">Take screenshot</button>
-                </p> -->
+                </div>
             </div>
             <div id="side">
                 <h2>My uploads</h2>
@@ -102,7 +83,5 @@
         </div>
     </div>
     <script src="scripts/gallery.js"></script>
-    <!-- <script src="scripts/post.js"></script>
-    <script src="scripts/webcam.js"></script> -->
 </body>
 </html>
