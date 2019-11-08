@@ -19,14 +19,14 @@
     </div>
     <div id="wrapper">
         <div id="container">
-            <div id="main">
+            <!-- <div id="main">
                 <p>
                     Pick a filter :
                     <div id="display_filters">
-                        <img class="filter" src="assets/post_imgs/1573035515-alien7.jpg" alt="">
-                        <img class="filter" src="assets/post_imgs/1573035515-alien7.jpg" alt="">
-                        <img class="filter" src="assets/post_imgs/1573035515-alien7.jpg" alt="">
-                        <img class="filter" src="assets/post_imgs/1573035515-alien7.jpg" alt="">
+                        <img class="filter" src="assets/post_imgs/trump.png" alt="">
+                        <img class="filter" src="assets/post_imgs/trump.png" alt="">
+                        <img class="filter" src="assets/post_imgs/trump.png" alt="">
+                        <img class="filter" src="assets/post_imgs/trump.png" alt="">
                     </div>
                 </p>
                 <p id="choice">
@@ -48,12 +48,47 @@
                         <button id="screenshot-button">Take screenshot</button>
                     </p>
                 </div>
+            </div> -->
+
+            <div id="main">
+                <p id="choice">
+                    <button id="file_choice">Upload file</button>
+                    or
+                    <button id="cam_choice">Take a picture</button>
+                </p>
+                <form class="hidden" id="form_file" enctype="multipart/form-data" action="success_upload" method="post">
+                    <input type="hidden" name="MAX_FILE_SIZE" value="<?=$max_file_size;?>" />
+                    <input type="file" name="image" value="upload_pic" /><br />
+                    <input type="submit" name="upload_image" value="Ok" />
+                </form>
+                <div class="hidden" id="cam_div">
+                    <video autoplay></video>
+                    <img id="screenshot-img">
+                    <canvas style="display: none;"></canvas>
+                    <p>
+                        <button id="screenshot-button">Take screenshot</button>
+                    </p>
+                </div>
             </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
             <div id="side">
                 <h2>My uploads</h2>
                 <?php
                 $i = 0;
                 if (isset($_SESSION["user_posts"])) {
+                    // var_dump($_SESSION["user_posts"]); // array(0) {} il rentre dans le isset.... (faudrait unset())
                     foreach($_SESSION["user_posts"] as $post) {
                         // var_dump($_SESSION["user_posts"]);
                         ?>

@@ -52,14 +52,22 @@ function displayVid() {
 	}
 }
 
+function displayImage(data) {
+	console.log(data);
+}
+
 function displayFile() {
 	let toHideElem;
 	let form;
+	let fileChosen;
 
 	toHideElem = document.querySelector("#choice");
 	toHideElem.classList.add("hidden");
 	form = document.querySelector("#form_file");
 	form.classList.remove("hidden");
+	fileChosen = document.querySelector("input[type=file]");
+	fileChosen.addEventListener("change", displayImage);
+
 }
 
 function removeImage(data) {
@@ -104,28 +112,58 @@ function border(data) {
 	}
 }
 
-let fileButton;
-let videoButton;
-let removeButtons;
-let postButtons;
-let filters;
-
-fileButton = document.querySelector("#chose_file");
-videoButton = document.querySelector("#chose_vid");
-removeButtons = document.querySelectorAll(".remove");
-postButtons = document.querySelectorAll(".post");
-filters = document.querySelectorAll(".filter");
-
-videoButton.addEventListener("click", displayVid);
-fileButton.addEventListener("click", displayFile);
-
-for (let removeButton of removeButtons) {
-	removeButton.addEventListener("click", removeImage);
-}
-for (let postButton of postButtons) {
-	postButton.addEventListener("click", publishImage);
+function back(toHide, toDel) {
+	document.querySelector("#choice").classList.remove("hidden");
+	toHide.classList.add("hidden");
+	toDel.remove();
 }
 
-for (let filter of filters) {
-	filter.addEventListener("click", border);
+function insertAfter(el, referenceNode) {
+	referenceNode.parentNode.insertBefore(el, referenceNode.nextSibling);
 }
+
+function displayFileForm() {
+	
+	document.querySelector("#choice").classList.add("hidden");
+
+	let backButton = document.createElement("button");
+	backButton.innerHTML = "Back";
+	backButton.addEventListener("click", function() {
+		back(document.querySelector("#form_file"), backButton);
+	});
+
+	let formToDisplay = document.querySelector("#form_file");
+	insertAfter(backButton, formToDisplay);
+	formToDisplay.classList.remove("hidden");
+}
+
+// let fileButton;
+// let videoButton;
+// let removeButtons;
+// let postButtons;
+// let filters;
+
+// fileButton = document.querySelector("#chose_file");
+// videoButton = document.querySelector("#chose_vid");
+// removeButtons = document.querySelectorAll(".remove");
+// postButtons = document.querySelectorAll(".post");
+// filters = document.querySelectorAll(".filter");
+
+// videoButton.addEventListener("click", displayVid);
+// fileButton.addEventListener("click", displayFile);
+
+// for (let removeButton of removeButtons) {
+// 	removeButton.addEventListener("click", removeImage);
+// }
+// for (let postButton of postButtons) {
+// 	postButton.addEventListener("click", publishImage);
+// }
+
+// for (let filter of filters) {
+// 	filter.addEventListener("click", border);
+// }
+
+
+let fileButton = document.querySelector("#file_choice");
+
+fileButton.addEventListener("click", displayFileForm);

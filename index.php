@@ -96,6 +96,10 @@ Route::set("update", function() {
 
 });
 
+if (isset($_POST) && array_key_exists("upload_image", $_POST)) {
+    Controller::upload_image($_POST);
+}
+
 if (isset($_POST) && (array_key_exists("submit_create_post", $_POST) || array_key_exists("save", $_POST))) {
     PostsController::create_post($_POST);
 }

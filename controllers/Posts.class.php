@@ -75,13 +75,13 @@ class PostsController extends Controller implements Comments {
 		exit;
 	}
 
-	// upload post into /assets/post_imgs
+	// upload post into /assets/post_pics
 	private function upload_post(array $kwargs) {
 
 		// Current working directory ("/Camagru-MVC-/")
 		$directory_self = str_replace(basename($_SERVER['PHP_SELF']), '', $_SERVER['PHP_SELF']);
 		// Directory that will receive uploaded files
-		$uploads_directory = $_SERVER['DOCUMENT_ROOT'] . $directory_self . 'assets/post_imgs/';
+		$uploads_directory = $_SERVER['DOCUMENT_ROOT'] . $directory_self . 'assets/post_pics/';
 		// Location of index page
 		$index_page = "http://" . $_SERVER["HTTP_HOST"] . $directory_self;
 		// Location of the upload form
@@ -109,7 +109,6 @@ class PostsController extends Controller implements Comments {
 			// return (0);
 		}
 		// check for PHP's built-in uploading errors
-		var_dump($_FILES[$fieldname]);
 		if ($_FILES[$fieldname]['error'] !== 0) {
 			self::error_post($errors[$_FILES[$fieldname]['error']], $upload_form);
 		}
@@ -132,7 +131,6 @@ class PostsController extends Controller implements Comments {
 		// now let's move the file to its final location and allocate the new filename to it
 		if (!(move_uploaded_file($_FILES[$fieldname]['tmp_name'], $uploadFilename)))
 			error('receiving directory insuffiecient permission', $upload_form);
-		// var_dump($uploadFilename);
 		$ret = basename($uploadFilename);
 		return ($ret);
 		// This far, everything has worked and the file has been successfully saved.
@@ -145,7 +143,6 @@ class PostsController extends Controller implements Comments {
 		try {
 			if (isset($_SESSION["current_user"])) {
 				$kwargs["image"] = self::upload_post($kwargs);
-				echo "TEST";
 				if (isset($kwargs["image"])) {
 					$post = new Post;
 					$kwargs["user_id"] = (int)$_SESSION["current_user_user_id"];
