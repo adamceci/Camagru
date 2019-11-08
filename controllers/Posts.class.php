@@ -224,7 +224,28 @@ class PostsController extends Controller implements Comments {
 
     public static function send_notification_email($creator_id, $post_img) {
         $user = new User;
-        $user->get_notification_email($creator_id);
+        $allowed_notif = $user->get_notification_active($creator_id);
+        if ($allowed_notif['notification_email']) {
+            $creator_notif_email = $user->get_notification_email($creator_id);
+            $to = "gabriele_Virga@hotmail.com";
+            // $to = $creator_notif_email;
+            $from = "gvirga@student.s19.be";
+            $headers = "MIME-Version: 1.0" . "\r\n";
+            $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+            $headers .= 'From: '.$from. "\r\n";
+            $subject = "Someone commented on your post";
+            $link = "http://localhost:8080/Camagru/comments&post_img=". $post_img . "&";
+            $message = '<h1>Someone commented your post!</h1>
+                        <img src="'.$post_img . '"/>
+                <a href="' . $link . '"> localhost:8080/Camagru/verif </a>';
+            if (mail($to, $subject, $message, $headers)) {
+                return (1);
+            } else {
+                return (0);
+            }
+        } else {
+            return (0);
+        }
     }
 
 	public static function get_comments() {

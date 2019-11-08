@@ -46,7 +46,37 @@ class User extends Model {
         }
     }
 
-    public func
+    public function get_notification_email($login) {
+        try {
+            parent::db_connect();
+            $sql = "SELECT `notification_email` 
+                    FROM `users` 
+                    WHERE (LOWER(`email`)=? OR LOWER(`login`)=? OR `user_id`=?) AND `active`='1'";
+            $this->stmt = $this->pdo->prepare($sql);
+            $this->stmt->execute(array($login, $login, $login));
+            $arr = $this->stmt->fetch(PDO::FETCH_ASSOC);
+            return ($arr);
+            parent::db_drop_connection();
+        } catch (Exception $e) {
+            throw new Exception("Error user_email_exist in User Model:" . $e->getMessage());
+        }
+    }
+
+    public function get_notification_active($login) {
+        try {
+            parent::db_connect();
+            $sql = "SELECT `notification_active` 
+                    FROM `users` 
+                    WHERE (LOWER(`email`)=? OR LOWER(`login`)=? OR `user_id`=?) AND `active`='1'";
+            $this->stmt = $this->pdo->prepare($sql);
+            $this->stmt->execute(array($login, $login, $login));
+            $arr = $this->stmt->fetch(PDO::FETCH_ASSOC);
+            return ($arr);
+            parent::db_drop_connection();
+        } catch (Exception $e) {
+            throw new Exception("Error user_email_exist in User Model:" . $e->getMessage());
+        }
+    }
 
     public function get_email($login) {
         try {
