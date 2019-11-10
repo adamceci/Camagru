@@ -1,5 +1,23 @@
 /* Header */
 
+.error {
+    border: 2px solid darkred;
+    border-radius: 5px;
+    padding: 10px;
+    text-align: center;
+    background-color: palevioletred;
+    color: darkred;
+}
+
+.success {
+    border: 2px solid darkgreen;
+    border-radius: 5px;
+    padding: 10px;
+    text-align: center;
+    background-color: darkseagreen;
+    color: darkgreen;
+}
+
 .header {
     width: 90%;
     margin: auto;

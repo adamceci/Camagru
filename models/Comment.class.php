@@ -27,7 +27,7 @@ class Comment extends Model {
                     VALUES (?,?,?)";
             $this->stmt = $this->pdo->prepare($sql);
             if ($this->stmt->execute(array($user_id, $post_id, $msg)) == FALSE) {
-                throw new Exception("Error, couldn't insert into comments in create_conment");
+                throw new Exception("Error, couldn't insert into comments in create_comment");
             }
             parent::db_drop_connection();
             return (1);

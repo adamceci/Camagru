@@ -4,6 +4,7 @@ session_start();
 require_once("assets/macros/errors.php");
 require("controllers/Controller.class.php");
 require_once("controllers/Comments.interface.php");
+require_once("controllers/Likes.interface.php");
 require_once("controllers/Users.class.php");
 require_once("controllers/Posts.class.php");
 require_once("controllers/Webcam.class.php");
@@ -42,6 +43,9 @@ Route::set("index", function() {
 
 Route::set("profile", function () {
     UsersController::template_profile();
+    if (array_key_exists('update', $_GET)) {
+        UsersController::update_user($_GET);
+    }
 });
 
 Route::set("password_recovery", function() {
@@ -51,7 +55,6 @@ Route::set("password_recovery", function() {
 Route::set('comments', function () {
     if (isset($_GET) && array_key_exists('post_img', $_GET) && !empty($_GET['post_img'])) {
         PostsController::fill_post_info($_GET['post_img']);
-        PostsController::$info = PostsController::get_comments();
         PostsController::template_comment();
     }
 });
@@ -85,14 +88,6 @@ Route::set("success_upload", function() {
         Controller::createView("only_to_members");
     else
         Controller::createView("success_upload");
-});
-
-Route::set("webcam", function () {
-   Webcam::createView("webcam");
-});
-
-Route::set("update", function() {
-
 });
 
 if (isset($_POST) && (array_key_exists("submit_create_post", $_POST) || array_key_exists("save", $_POST))) {

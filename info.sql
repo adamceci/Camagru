@@ -41,6 +41,17 @@ CREATE TABLE IF NOT EXISTS comments
     FOREIGN KEY (`user_id`) REFERENCES users(`user_id`) ON DELETE CASCADE,
     FOREIGN KEY (`post_id`) REFERENCES posts(`post_id`) ON DELETE CASCADE
 );
+
+CREATE TABLE IF NOT EXISTS comments
+(
+    `like_id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `user_id` INT NOT NULL,
+    `post_id` INT NOT NULL,
+    `active` TINYINT(1) NOT NULL DEFAULT 0,
+    FOREIGN KEY (`user_id`) REFERENCES users(`user_id`) ON DELETE CASCADE,
+    FOREIGN KEY (`post_id`) REFERENCES posts(`post_id`) ON DELETE CASCADE
+);
+
 -- CREATE TABLE IF NOT EXISTS filters (
 --     `filter_id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 --     `name` VARCHAR(255) NOT NULL,

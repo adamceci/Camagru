@@ -7,7 +7,7 @@ require_once("models/PostsModel.class.php");
 date_default_timezone_set("Europe/Brussels");
 
 
-class PostsController extends Controller implements Comments {
+class PostsController extends Controller implements Comments, Likes {
 
 	private static $limit = 6;
 	private static $offset;
@@ -256,15 +256,20 @@ class PostsController extends Controller implements Comments {
     }
 
 	public static function get_comments() {
-        $comment = new Comment;
-        $post = New Post;
-        $post_id = $post->get_post_id($_SESSION['post_img']);
-        $all_comments = $comment->get_post_comments($post_id['post_id']);
-        return ($all_comments);
+	    try {
+            $comment = new Comment;
+            $post = New Post;
+            $post_id = $post->get_post_id($_SESSION['post_img']);
+            $all_comments = $comment->get_post_comments($post_id['post_id']);
+            return ($all_comments);
+        } catch (Exception $e) {
+	        self::$errors[] = $e->getMessage();
+	        return (0);
+        }
     }
 
     public static function create_comment() {
-        if (input_useable($_SESSION, 'current_user')) {
+        if (input_useable($_SESSION, 'current_user') && input_useable($_SESSION, 'post_img')) {
             if (input_useable($_POST, 'message')) {
                 try {
                     $comment = new Comment;
@@ -294,6 +299,56 @@ class PostsController extends Controller implements Comments {
             }
         } else {
             self::$errors[] = 'You have to be connected to comment';
+            return (0);
+        }
+    }
+
+    public static function create_like()
+    {
+        if (input_useable($_SESSION, 'current_user')) {
+            if (input_useable($_POST, 'post_img')) {
+                try {
+                    $like = new Like;
+                    $post = new Post;
+                    $user = new User;
+                    $user_id = $user->get_user_id($_SESSION['current_user']);
+                    $post_id = $post->get_post_id($_POST['post_img']);
+                    if ($user_id && $post_id) {
+                        if ($like->exist($user_id, $post_id)) {
+                            $like->toggle_like($user_id, $post_id);
+                        } else {
+                            $like->create_like($user_id['user_id'], $post_id['post_id']);
+                        }
+                        return (1);
+                    }
+                    else {
+                        self::$errors[] = 'Invalid user or post';
+                        return (0);
+                    }
+                } catch (Exception $e) {
+                    self::$errors[] = 'Error:' . $e->getMessage();
+                    return (0);
+                }
+            } else {
+                self::$errors[] = 'You can\'t post a empty comment';
+                return (0);
+            }
+        } else {
+            self::$errors[] = 'You have to be connected to Like';
+            return (0);
+        }
+    }
+
+    public static function get_likes()
+    {
+        try {
+            $like = new Like;
+            $post = New Post;
+            $post_id = $post->get_post_id($_SESSION['post_img']);
+            $nb_likes = $like->get_post_nblikes($post_id['post_id']);
+            return ($nb_likes);
+        } catch (Exception $e) {
+            self::$errors[] = $e->getMessage();
             return (0);
         }
     }

@@ -29,7 +29,7 @@
                         <img src="assets/post_imgs/<?= $post["image"]; ?>" alt="">
                         <div class="display_nb">
                             <a href="comments&post_img=<?= $post["image"]; ?>&"><p><?= isset($nb_comments) ? $nb_comments[$i]['nb_comments'] : "0";?> Comment(s)</p></a>
-                            <p><?=isset($nb_likes) ? $nb_likes : "0";?> Like(s)</p>
+                            <p class="like_post post_img_<?= $post['image']; ?>"><?=isset($nb_likes) ? $nb_likes : "0";?> Like(s)</p>
                         </div>
                     <?php
                     }

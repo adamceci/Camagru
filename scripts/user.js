@@ -29,8 +29,6 @@ function create_user_status() {
     let login = all_inputs[1].value;
     let password = all_inputs[2].value;
     let password_confirmation = all_inputs[3].value;
-    let picPath = document.querySelector('.create_user_file_input').value;
-    let filename = picPath.replace(/^.*\\/, "");
     let errorWrapper = document.querySelector(".error_wrapper");
 
     xhttp.onreadystatechange = function() {
@@ -40,14 +38,14 @@ function create_user_status() {
                     window.location.replace('index');
                 }, 5);
             } else {
-                errorWrapper.innerHTML = this.response;
+                errorWrapper.innerHTML = this.response.substr(5);
             }
         }
     };
     xhttp.open("POST", "ajax?method=create_user&controller=UsersController&user=1", true);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xhttp.send("password=" + password + "&password_verif=" + password_confirmation + "&login=" + login
-        + "&email=" + email + "&profile_pic=" + filename);
+        + "&email=" + email);
 }
 
 function password_rec_status() {

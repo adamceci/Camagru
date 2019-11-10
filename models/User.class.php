@@ -9,7 +9,7 @@ class User extends Model {
             parent::db_connect();
             $sql = "SELECT `email` 
                     FROM `users` 
-                    WHERE (LOWER(`email`)=? OR `login`=?)
+                    WHERE (LOWER(`email`)=? OR `login`=?) AND `active`=1
                     AND `password`=?";
             $this->stmt = $this->pdo->prepare($sql);
             $this->stmt->execute(array($login, $login, $hash_password));

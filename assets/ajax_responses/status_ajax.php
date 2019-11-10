@@ -18,7 +18,7 @@ function user_ajax_response($method) {
 }
 
 function posts_ajax_response($method) {
-    if ($method != 'get_comments' && $method != 'create_comment') {
+    if ($method != 'get_comments' && $method != 'create_comment' && $method != 'create_like' && $method != 'get_likes') {
         echo "Unauthorized method";
         return (0);
     }
@@ -38,7 +38,8 @@ function posts_ajax_response($method) {
 if (!array_key_exists("current_user", $_SESSION)) {
     if (isset($_GET) && array_key_exists("method", $_GET) && array_key_exists('user', $_GET) && isset($_POST)) {
         user_ajax_response($_GET['method']);
-    }
+    } else
+        echo "NOTOK<p class='error'>You have to be connected</p>";
 } else {
     if (isset($_GET) && array_key_exists("method", $_GET) && array_key_exists('posts', $_GET) && isset($_POST)) {
         posts_ajax_response($_GET['method']);

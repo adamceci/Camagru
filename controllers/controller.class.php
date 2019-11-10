@@ -32,6 +32,7 @@ class Controller {
         self::createModule("header", 0);
         self::createModule("index", 1);
         self::createModule("footer", 0);
+        self::createModule("script_likes", 0);
         self::createModule("bottom_html_tags", 0);
     }
 
