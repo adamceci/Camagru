@@ -18,13 +18,35 @@ function user_ajax_response($method) {
 }
 
 function posts_ajax_response($method) {
-    if ($method != 'get_comments' && $method != 'create_comment' && $method != 'create_like' && $method != 'get_likes') {
+    if ($method != 'get_comments' && $method != 'create_comment' && $method != 'create_like') {
         echo "Unauthorized method";
         return (0);
+    }
+    if ($method == 'create_like') {
+        $return_value = PostsController::$method($_POST);
+        if ($return_value === 1) {
+            echo "OK";
+            echo '+1';
+            return (1);
+        } else {
+            $errors = Controller::get_errors();
+            if (!empty($errors)) {
+                echo "NOTOK";
+                foreach ($errors as $error)
+                    echo "<p class=\"error\">" . $error . "</p>";
+                return (0);
+            }
+            echo "OK";
+            echo '-1';
+            $success = PostsController::show_success_msg();
+            echo $success;
+            return (1);
+        }
     }
     PostsController::$method($_POST);
     $errors = Controller::get_errors();
     if (!empty($errors)) {
+        echo "NOTOK";
         foreach ($errors as $error)
             echo "<p class=\"error\">" . $error . "</p>";
         return (0);

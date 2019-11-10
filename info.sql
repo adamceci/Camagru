@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS comments
     FOREIGN KEY (`post_id`) REFERENCES posts(`post_id`) ON DELETE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS comments
+CREATE TABLE IF NOT EXISTS likes
 (
     `like_id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `user_id` INT NOT NULL,
@@ -57,4 +57,3 @@ CREATE TABLE IF NOT EXISTS comments
 --     `name` VARCHAR(255) NOT NULL,
 --     `image_src` VARCHAR(255) NOT NULL
 -- }
-s

@@ -15,7 +15,7 @@ class Comment extends Model {
             parent::db_drop_connection();
             return ($arr);
         } catch (Exception $e) {
-            throw new Exception("Error user_login_exist in Comment Model:" . $e->getMessage());
+            throw new Exception("Error get_post_comments in Comment Model:" . $e->getMessage());
         }
     }
 
@@ -32,7 +32,7 @@ class Comment extends Model {
             parent::db_drop_connection();
             return (1);
         } catch (Exception $e) {
-            throw new Exception("Error create_user in Comment Model:" . $e->getMessage());
+            throw new Exception("Error create_comment in Comment Model:" . $e->getMessage());
         }
     }
 

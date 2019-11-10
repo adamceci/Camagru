@@ -6,9 +6,23 @@
     $uploads_directory = $_SERVER['DOCUMENT_ROOT'] . $directory_self . 'assets/post_imgs/';
     $i = 0;
     if (isset($information)) {
-        foreach ($information as $info_comments)
-            foreach ($info_comments as $comment)
-                $nb_comments[] = $comment;
+        foreach($information as $arr_nb_likes_or_comments_per_post) {
+            foreach($arr_nb_likes_or_comments_per_post as $nb_likes_or_comments_per_post) {
+                if (input_useable($nb_likes_or_comments_per_post, 'nb_comments')) {
+                    if ($nb_likes_or_comments_per_post['nb_comments'] > 1) {
+                        $nb_comments[] = $nb_likes_or_comments_per_post['nb_comments'] . " Comments";
+                    } else {
+                        $nb_comments[] = $nb_likes_or_comments_per_post['nb_comments'] . " Comment";
+                    }
+                } else {
+                    if ($nb_likes_or_comments_per_post['nb_likes'] > 1) {
+                        $nb_likes[] = $nb_likes_or_comments_per_post['nb_likes'] . " Likes";
+                    } else {
+                        $nb_likes[] = $nb_likes_or_comments_per_post['nb_likes'] . " Like";
+                    }
+                }
+            }
+        }
     }
 ?>
 
@@ -28,8 +42,8 @@
                         ?>
                         <img src="assets/post_imgs/<?= $post["image"]; ?>" alt="">
                         <div class="display_nb">
-                            <a href="comments&post_img=<?= $post["image"]; ?>&"><p><?= isset($nb_comments) ? $nb_comments[$i]['nb_comments'] : "0";?> Comment(s)</p></a>
-                            <p class="like_post post_img_<?= $post['image']; ?>"><?=isset($nb_likes) ? $nb_likes : "0";?> Like(s)</p>
+                            <a href="comments&post_img=<?= $post["image"]; ?>&"><p><?= isset($nb_comments) ? $nb_comments[$i] : "0 Comment";?></p></a>
+                            <p class="like_post post_id_<?= $post['post_id']; ?>"><?= isset($nb_likes) ? $nb_likes[$i] : "0 Like";?></p>
                         </div>
                     <?php
                     }

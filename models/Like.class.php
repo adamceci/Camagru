@@ -7,7 +7,7 @@ class Like extends Model {
         try {
             parent::db_connect();
             $sql = "SELECT COUNT(`active`) as nb_likes
-                    FROM `comments`
+                    FROM `likes`
                     WHERE `post_id`=? AND `active`='1'";
             $this->stmt = $this->pdo->prepare($sql);
             $this->stmt->execute(array($post_id));
@@ -15,7 +15,7 @@ class Like extends Model {
             parent::db_drop_connection();
             return ($arr);
         } catch (Exception $e) {
-            throw new Exception("Error get_nbr_comment in Comment Model:" . $e->getMessage());
+            throw new Exception("Error get_post_nblikes in Comment Model:" . $e->getMessage());
         }
     }
 
@@ -35,7 +35,7 @@ class Like extends Model {
                 return (0);
             }
         } catch (Exception $e) {
-            throw new Exception("Error get_nbr_comment in Comment Model:" . $e->getMessage());
+            throw new Exception("Error is_active in Comment Model:" . $e->getMessage());
         }
     }
 
@@ -55,7 +55,7 @@ class Like extends Model {
                 return (0);
             }
         } catch (Exception $e) {
-            throw new Exception("Error get_nbr_comment in Comment Model:" . $e->getMessage());
+            throw new Exception("Error exist in Comment Model:" . $e->getMessage());
         }
     }
 
@@ -69,6 +69,7 @@ class Like extends Model {
                 $this->stmt = $this->pdo->prepare($sql);
                 $this->stmt->execute(array($user_id, $post_id));
                 parent::db_drop_connection();
+                return (2);
             } else {
                 parent::db_connect();
                 $sql = "UPDATE `likes`
@@ -77,10 +78,10 @@ class Like extends Model {
                 $this->stmt = $this->pdo->prepare($sql);
                 $this->stmt->execute(array($user_id, $post_id));
                 parent::db_drop_connection();
+                return (1);
             }
-            return (1);
         } catch (Exception $e) {
-            throw new Exception("Error create_user in Comment Model:" . $e->getMessage());
+            throw new Exception("Error toggle_like in Comment Model:" . $e->getMessage());
         }
     }
 
@@ -97,7 +98,7 @@ class Like extends Model {
             parent::db_drop_connection();
             return (1);
         } catch (Exception $e) {
-            throw new Exception("Error create_user in Comment Model:" . $e->getMessage());
+            throw new Exception("Error create_like in Comment Model:" . $e->getMessage());
         }
     }
 }

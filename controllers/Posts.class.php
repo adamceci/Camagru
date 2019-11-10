@@ -2,8 +2,8 @@
 
 require_once("models/Model.class.php");
 require_once("models/Comment.class.php");
+require_once("models/Like.class.php");
 require_once("models/PostsModel.class.php");
-// session_start();
 date_default_timezone_set("Europe/Brussels");
 
 
@@ -19,12 +19,14 @@ class PostsController extends Controller implements Comments, Likes {
 				$page = 1;
 			$post = new Post;
 			$comments = new Comment;
+			$likes = new Like;
 			$_SESSION["nb_pages"] = (int)$post->get_nb_pages();
 			self::$offset = 6 * ($page - 1);
 			$_SESSION["index_posts"] = $post->get_index_posts(self::$limit, self::$offset);
 			if ($_SESSION['index_posts']) {
 			    foreach ($_SESSION['index_posts'] as $post) {
 			        self::$info[] = $comments->get_nbr_comments($post['post_id']);
+			        self::$info[] = $likes->get_post_nblikes($post['post_id']);
                 }
             }
 			parent::template_index();
@@ -309,17 +311,16 @@ class PostsController extends Controller implements Comments, Likes {
             if (input_useable($_POST, 'post_img')) {
                 try {
                     $like = new Like;
-                    $post = new Post;
                     $user = new User;
                     $user_id = $user->get_user_id($_SESSION['current_user']);
-                    $post_id = $post->get_post_id($_POST['post_img']);
+                    $post_id = $_POST['post_img'];
                     if ($user_id && $post_id) {
-                        if ($like->exist($user_id, $post_id)) {
-                            $like->toggle_like($user_id, $post_id);
+                        if ($like->exist($user_id['user_id'], $post_id)) {
+                            return $like->toggle_like($user_id['user_id'], $post_id);
                         } else {
-                            $like->create_like($user_id['user_id'], $post_id['post_id']);
+                            $like->create_like($user_id['user_id'], $post_id);
+                            return (1);
                         }
-                        return (1);
                     }
                     else {
                         self::$errors[] = 'Invalid user or post';

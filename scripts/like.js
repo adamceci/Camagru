@@ -1,38 +1,46 @@
-function create_comment_status() {
+function create_like_status(post_info) {
     let xhttp = new XMLHttpRequest();
-    let post_img = document.querySelector(".like_post").className;
+    let post_img = post_info.className;
+    let textLike = post_info.innerHTML;
+    let post_img_id = post_img.substr(post_img.indexOf("post_id_")).substr(8);
+    let nbLikes = textLike.substr(0, textLike.indexOf(" "));
+    let errorWrapper = document.querySelector('.error_wrapper');
 
-    console.log(post_img);
-
-    // xhttp.onreadystatechange = function() {
-    //     if (this.readyState === 4 && this.status === 200) {
-    //         if (this.response.substr(0,2) === "OK") {
-    //             let loginNode = document.createElement("p");
-    //             let loginTextNode = document.createTextNode(login);
-    //             let commentNode = document.createElement("p");
-    //             let commentTextNode = document.createTextNode(this.response.substr(2));
-    //             loginNode.className = 'poster';
-    //             commentNode.className = 'comment';
-    //             loginNode.appendChild(loginTextNode);
-    //             commentNode.appendChild(commentTextNode);
-    //             commentWrapper.appendChild(loginNode);
-    //             commentWrapper.appendChild(commentNode);
-    //             textarea.value = '';
-    //         } else {
-    //             errorWrapper.innerHTML = this.response.substr(5);
-    //         }
-    //     }
-    // };
-    // xhttp.open("POST", "ajax?method=create_like&posts=1", true);
-    // xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    // xhttp.send("post_img=" + post_img);
+    xhttp.onreadystatechange = function() {
+        if (this.readyState === 4 && this.status === 200) {
+            if (this.response.substr(0,2) === "OK") {
+                if (this.response.substr(2, 4) === '+1') {
+                    nbLikesInt = parseInt(nbLikes);
+                    nbLikesInt += 1;
+                    if (nbLikesInt > 1)
+                        post_info.innerHTML = nbLikesInt + " Likes";
+                    else
+                        post_info.innerHTML = nbLikesInt + " Like";
+                } else {
+                    nbLikesInt = parseInt(nbLikes);
+                    nbLikesInt -= 1;
+                    if (nbLikesInt > 1)
+                        post_info.innerHTML = nbLikesInt + " Likes";
+                    else
+                        post_info.innerHTML = nbLikesInt + " Like";
+                }
+            } else {
+                errorWrapper.innerHTML = this.response.substr(5);
+            }
+        }
+    };
+    xhttp.open("POST", "ajax?method=create_like&posts=1", true);
+    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhttp.send("post_img=" + post_img_id);
 }
 
-let createLikeButton = document.querySelector(".like_post");
+let createLikeButtons = document.querySelectorAll(".like_post");
 
-if (createLikeButton !== null) {
-    createLikeButton.addEventListener("click", function () {
-        create_comment_status();
+if (createLikeButtons !== null) {
+    createLikeButtons.forEach(function (createLikeButton) {
+        createLikeButton.addEventListener("click", function () {
+            create_like_status(this);
+        });
     });
 }
 
