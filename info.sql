@@ -2,6 +2,9 @@
 CREATE DATABASE IF NOT EXISTS db_camagru;
 USE db_camagru;
 
+[client]
+character-sets-dir="C:/Program Files/MySQL/MySQL Server 5.7/share/charsets"
+
 -- Get errors when NOT NULL is not respected
 SET sql_mode = "strict_all_tables";
 

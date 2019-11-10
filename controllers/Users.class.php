@@ -165,14 +165,14 @@ class UsersController extends Controller {
                                             that has been sent to your email.<br /></p>";
                     return (1);
                 } else {
-                   $user = new User;
-                    try {
-                        $user->delete_user($arr['login'], $arr['password']);
-                    } catch (Exception $e) {
-                        self::fill_session_error(array(), "Error creation_user_response for deleting user" . $e->getMessage());
-                        return (0);
-                    }
-                    self::fill_session_error(array(), "The verification email wasn't sent");
+//                   $user = new User;
+//                    try {
+//                        $user->delete_user($arr['login'], $arr['password']);
+//                    } catch (Exception $e) {
+//                        self::fill_session_error(array(), "Error creation_user_response for deleting user" . $e->getMessage());
+//                        return (0);
+//                    }
+//                    self::fill_session_error(array(), "The verification email wasn't sent");
                     return (0);
                 }
             case EMAIL_EXISTS:
