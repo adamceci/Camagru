@@ -97,21 +97,18 @@ Route::set("success_upload", function() {
         Controller::createView("success_upload");
 });
 
-<<<<<<< HEAD
-Route::set("webcam", function () {
-   Webcam::createView("webcam");
-});
+// Route::set("webcam", function () {
+//    Webcam::createView("webcam");
+// });
 
-Route::set("update", function() {
+// Route::set("update", function() {
 
-});
+// });
 
 // if (isset($_POST) && array_key_exists("upload_image", $_POST)) {
 //     PostsController::upload("tmp_pics/");
 // }
 
-=======
->>>>>>> d9d0aa51a09a818ff91b063558df721b8f2bbe1a
 if (isset($_POST) && (array_key_exists("submit_create_post", $_POST) || array_key_exists("save", $_POST))) {
     PostsController::create_post($_POST);
 }

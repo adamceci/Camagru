@@ -6,18 +6,14 @@ require_once("models/Like.class.php");
 require_once("models/PostsModel.class.php");
 date_default_timezone_set("Europe/Brussels");
 
-<<<<<<< HEAD
-class PostsController extends Controller implements Comments {
-=======
 
 class PostsController extends Controller implements Comments, Likes {
->>>>>>> d9d0aa51a09a818ff91b063558df721b8f2bbe1a
 
 	private static $offset;
 
 	public static function template_file_filters() {
 		self::createModule("top_html_tags", 0);
-        self::createModule("header", 0);
+		self::createModule("header", 0);
 		self::createModule("montage_file", 0);
 		self::createModule("filters", 0);
         self::createModule("montage_side", 1);
@@ -63,22 +59,16 @@ class PostsController extends Controller implements Comments, Likes {
 		try {
 			if (!isset($page))
 				$page = 1;
-<<<<<<< HEAD
 			self::$info = self::get_index_posts($page);
-=======
-			$post = new Post;
 			$comments = new Comment;
 			$likes = new Like;
-			$_SESSION["nb_pages"] = (int)$post->get_nb_pages();
-			self::$offset = 6 * ($page - 1);
-			$_SESSION["index_posts"] = $post->get_index_posts(self::$limit, self::$offset);
+			var_dump(self::$info);
 			if ($_SESSION['index_posts']) {
 			    foreach ($_SESSION['index_posts'] as $post) {
 			        self::$info[] = $comments->get_nbr_comments($post['post_id']);
 			        self::$info[] = $likes->get_post_nblikes($post['post_id']);
                 }
             }
->>>>>>> d9d0aa51a09a818ff91b063558df721b8f2bbe1a
 			parent::template_index();
 		}
 		catch (Exception $e) {
