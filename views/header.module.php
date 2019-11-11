@@ -1,12 +1,17 @@
 <?php
 
-if (input_useable($_SESSION, 'current_user')) {
+if (input_useable($_SESSION, 'current_user') && input_useable($_SESSION, 'current_user_pic')) {
 
 ?>
 	<div class="header">
         <div><a href="index">CAMAGRU</a></div>
         <div class="blank"></div>
-        <div><a class="current_user" href="profile"><?=strtoupper($_SESSION["current_user"]); ?></a></div>
+        <div>
+            <a class="current_user_link_header" href="profile">
+                <p class="current_user_header"><?= htmlspecialchars(($_SESSION["current_user"])); ?></p>
+                <img class="profile_pic_header" src="./<?= htmlspecialchars($_SESSION['current_user_pic']) ;?>"
+            </a>
+        </div>
         <div><a href="logout"><button class="clickeable" type="button">Log out</button></a></div>
     </div>
 <?php
@@ -32,7 +37,7 @@ else {
 
 <div class="success_wrapper">
     <?php
-    if (isset($_SESSION) && array_key_exists('success', $_SESSION) && !empty($_SESSION['success'])) {
+    if (input_useable($_SESSION, 'success')) {
         $msg = Controller::show_success_msg();
         echo "<p class='success_msg'>" . $msg . "</p>";
     }

@@ -7,7 +7,7 @@
         <p class="profile_texts">Notification
             Email: <?php echo htmlspecialchars($_SESSION['current_user_notification_email']); ?></p>
         <p class="profile_texts">profile_pic: <img
-                    src="assets/profile_pics/<?php echo htmlspecialchars($_SESSION['current_user_pic']); ?>"/></p>
+                    src="<?php echo htmlspecialchars($_SESSION['current_user_pic']); ?>"></p>
         <a href="profile&update=password">
             <button class="profile_change_buttons">Change password</button>
         </a>
