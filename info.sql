@@ -45,12 +45,6 @@ CREATE TABLE IF NOT EXISTS comments
     FOREIGN KEY (`post_id`) REFERENCES posts(`post_id`) ON DELETE CASCADE
 );
 
-<<<<<<< HEAD
-CREATE TABLE IF NOT EXISTS filters (
-    `filter_id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    `image` VARCHAR(255) NOT NULL
-}
-=======
 CREATE TABLE IF NOT EXISTS likes
 (
     `like_id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -63,7 +57,11 @@ CREATE TABLE IF NOT EXISTS likes
 
 -- CREATE TABLE IF NOT EXISTS filters (
 --     `filter_id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+--     `image` VARCHAR(255) NOT NULL
+-- }
+
+-- CREATE TABLE IF NOT EXISTS filters (
+--     `filter_id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 --     `name` VARCHAR(255) NOT NULL,
 --     `image_src` VARCHAR(255) NOT NULL
 -- }
->>>>>>> d9d0aa51a09a818ff91b063558df721b8f2bbe1a

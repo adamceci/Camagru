@@ -28,6 +28,4 @@
         echo "There are no posts to show"; // faire une balise html !
     }
     ?>
-        </div>
-    </div>
 </div>

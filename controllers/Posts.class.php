@@ -14,9 +14,11 @@ class PostsController extends Controller implements Comments, Likes {
 	public static function template_file_filters() {
 		self::createModule("top_html_tags", 0);
 		self::createModule("header", 0);
+		self::createModule("montage_title", 0);
+		self::createModule("open_container_tags", 0);
 		self::createModule("montage_file", 0);
-		self::createModule("filters", 0);
         self::createModule("montage_side", 1);
+		self::createModule("close_container_tags", 0);
         self::createModule("footer", 0);
         self::createModule("bottom_html_tags", 0);
 	}
@@ -39,9 +41,12 @@ class PostsController extends Controller implements Comments, Likes {
 
 	public static function template_montage() {
         self::createModule("top_html_tags", 0);
-        self::createModule("header", 0);
+		self::createModule("header", 0);
+		self::createModule("montage_title", 0);
+		self::createModule("open_container_tags", 0);
         self::createModule("montage_main", 0);
         self::createModule("montage_side", 1);
+		self::createModule("close_container_tags", 0);
         self::createModule("footer", 0);
         self::createModule("bottom_html_tags", 0);
     }
@@ -62,11 +67,10 @@ class PostsController extends Controller implements Comments, Likes {
 			self::$info = self::get_index_posts($page);
 			$comments = new Comment;
 			$likes = new Like;
-			var_dump(self::$info);
-			if ($_SESSION['index_posts']) {
-			    foreach ($_SESSION['index_posts'] as $post) {
+			if (self::$info) {
+			    foreach (self::$info as $post) {
 			        self::$info[] = $comments->get_nbr_comments($post['post_id']);
-			        self::$info[] = $likes->get_post_nblikes($post['post_id']);
+					self::$info[] = $likes->get_post_nblikes($post['post_id']);
                 }
             }
 			parent::template_index();
