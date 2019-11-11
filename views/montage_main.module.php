@@ -33,4 +33,3 @@
         </p>
     </div>
 </div>
-<script src="scripts/gallery.js"></script>

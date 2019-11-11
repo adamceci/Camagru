@@ -218,20 +218,10 @@ div.header div:nth-child(4) button {
     position: absolute;
 }
 
-#tentage {
-    width: 100%;
-}
-
-#my_canvas {
-    /* width: 40%; */
-    text-align: center;
+#canvas_container {
+    width: 60%;
     margin: auto;
 }
-
-/* #my_canvas img {
-    max-width: 100%;
-    max-height: 400px;
-} */
 
 #filters {
     text-align: center;

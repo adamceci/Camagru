@@ -19,6 +19,8 @@ class PostsController extends Controller implements Comments, Likes {
 		self::createModule("montage_file", 0);
         self::createModule("montage_side", 1);
 		self::createModule("close_container_tags", 0);
+		self::createModule("script_filters", 0);
+		self::createModule("script_montage_file", 0);
         self::createModule("footer", 0);
         self::createModule("bottom_html_tags", 0);
 	}
@@ -46,7 +48,8 @@ class PostsController extends Controller implements Comments, Likes {
 		self::createModule("open_container_tags", 0);
         self::createModule("montage_main", 0);
         self::createModule("montage_side", 1);
-		self::createModule("close_container_tags", 0);
+		self::createModule("close_container_tags", 0);		
+		self::createModule("script_gallery", 0);
         self::createModule("footer", 0);
         self::createModule("bottom_html_tags", 0);
     }
