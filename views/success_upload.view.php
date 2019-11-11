@@ -8,7 +8,7 @@
 
 	<?php
 
-	header("Refresh: 10; URL=montage");
+	header("Refresh: 2; URL=montage");
 	
 	?>
 	<div class="wrapper">

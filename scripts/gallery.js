@@ -101,21 +101,10 @@ function publishImage(data) {
 	}
 }
 
-function border(data) {
-	let current_filter = data["target"];
-
-	if (current_filter.classList.contains("selected_filter")) {
-		current_filter.classList.remove("selected_filter");
-	}
-	else {
-		current_filter.classList.add("selected_filter");
-	}
-}
-
-function back(toHide, toDel) {
-	document.querySelector("#choice").classList.remove("hidden");
+function backToOne(backButton, toDisplay, toHide) {
+	backButton.classList.add("hidden");
+	toDisplay.classList.remove("hidden");
 	toHide.classList.add("hidden");
-	toDel.remove();
 }
 
 function insertAfter(el, referenceNode) {
@@ -123,31 +112,34 @@ function insertAfter(el, referenceNode) {
 }
 
 function displayFileForm() {
-	
-	document.querySelector("#choice").classList.add("hidden");
-
+	let toDisplay = document.querySelector("#form_file");
+	let toHide = document.querySelector("#choice");
 	let backButton = document.createElement("button");
+
 	backButton.innerHTML = "Back";
 	backButton.addEventListener("click", function() {
-		back(document.querySelector("#form_file"), backButton);
+		backToOne(backButton, toHide, toDisplay);
 	});
-
-	let formToDisplay = document.querySelector("#form_file");
-	insertAfter(backButton, formToDisplay);
-	formToDisplay.classList.remove("hidden");
+	toDisplay.classList.remove("hidden");
+	toHide.classList.add("hidden");
+	insertAfter(backButton, toHide);
 }
+
+let fileButton = document.querySelector("#file_button");
+let camButton = document.querySelector("#cam_button");
+
+fileButton.addEventListener("click", displayFileForm);
+
 
 // let fileButton;
 // let videoButton;
 // let removeButtons;
 // let postButtons;
-// let filters;
 
 // fileButton = document.querySelector("#chose_file");
 // videoButton = document.querySelector("#chose_vid");
 // removeButtons = document.querySelectorAll(".remove");
 // postButtons = document.querySelectorAll(".post");
-// filters = document.querySelectorAll(".filter");
 
 // videoButton.addEventListener("click", displayVid);
 // fileButton.addEventListener("click", displayFile);
@@ -158,12 +150,3 @@ function displayFileForm() {
 // for (let postButton of postButtons) {
 // 	postButton.addEventListener("click", publishImage);
 // }
-
-// for (let filter of filters) {
-// 	filter.addEventListener("click", border);
-// }
-
-
-let fileButton = document.querySelector("#file_choice");
-
-fileButton.addEventListener("click", displayFileForm);

@@ -3,24 +3,61 @@
 require_once("models/Model.class.php");
 require_once("models/Comment.class.php");
 require_once("models/PostsModel.class.php");
-// session_start();
 date_default_timezone_set("Europe/Brussels");
-
 
 class PostsController extends Controller implements Comments {
 
-	private static $limit = 6;
 	private static $offset;
 
-	// display posts in index
+	public static function template_file_filters() {
+		self::createModule("top_html_tags", 0);
+        self::createModule("header", 0);
+		self::createModule("montage_file", 0);
+		self::createModule("filters", 0);
+        self::createModule("montage_side", 1);
+        self::createModule("footer", 0);
+        self::createModule("bottom_html_tags", 0);
+	}
+
+	public static function upload($dir_name) {
+		try {
+			if (input_useable($_POST, "upload_image")) {
+				parent::upload_file($dir_name);
+				self::$info = self::get_user_images();
+				self::template_file_filters();
+			}
+			else
+				echo "upload_image vide"; // in self errors
+		}
+		catch (Exception $e) {
+			throw new Exception("Error while uploading in PostsController " . $e->getMessage());
+		}
+
+	}
+
+	public static function template_montage() {
+        self::createModule("top_html_tags", 0);
+        self::createModule("header", 0);
+        self::createModule("montage_main", 0);
+        self::createModule("montage_side", 1);
+        self::createModule("footer", 0);
+        self::createModule("bottom_html_tags", 0);
+    }
+
+	private static function get_index_posts($page) {
+		$post = new Post;
+		$_SESSION["nb_pages"] = (int)$post->get_nb_pages();
+		self::$offset = 6 * ($page - 1);
+		$index_posts = $post->get_index_posts(self::$offset);
+		return ($index_posts);
+	} 
+
+	// get index posts from db and calls index template
 	public static function display_index_posts($page) {
 		try {
 			if (!isset($page))
 				$page = 1;
-			$post = new Post;
-			$_SESSION["nb_pages"] = (int)$post->get_nb_pages();
-			self::$offset = 6 * ($page - 1);
-			$_SESSION["index_posts"] = $post->get_index_posts(self::$limit, self::$offset);
+			self::$info = self::get_index_posts($page);
 			parent::template_index();
 		}
 		catch (Exception $e) {
@@ -28,13 +65,18 @@ class PostsController extends Controller implements Comments {
 		}
 	}
 
-	// display posts in montage page
+	private static function get_user_images() {
+		$post = new Post;
+		$current_user_images = $post->get_user_images();
+		return ($current_user_images);
+	}
+
+	// get current_user's images from db and calls montage template
 	public static function display_user_posts() {
 		try {
 			if (isset($_SESSION["current_user"])) {
-				$post = new Post;
-				$_SESSION["user_posts"] = $post->get_user_uploads();
-				parent::CreateView("montage");
+				self::$info = self::get_user_images();
+				self::template_montage();
 			}
 		}
 		catch (Exception $e) {
@@ -43,14 +85,14 @@ class PostsController extends Controller implements Comments {
 	}
 
 	public static function template_comment() {
-        self::createModule("top_html_tags");
-        self::createModule("header");
-        self::createModule("post_description");
+        self::createModule("top_html_tags", 0);
+        self::createModule("header", 0);
+        self::createModule("post_description", 0);
         self::$info = self::get_comments();
-        self::createModule("comment");
-        self::createModule("footer");
-        self::createModule("script_comments");
-        self::createModule("bottom_html_tags");
+        self::createModule("comment", 1);
+        self::createModule("footer", 0);
+        self::createModule("script_comments", 0);
+        self::createModule("bottom_html_tags", 0);
     }
 
 	// error handling for post creation

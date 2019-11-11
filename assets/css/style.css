@@ -200,15 +200,41 @@ div.header div:nth-child(4) button {
     position: absolute;
 }
 
+#tentage {
+    width: 100%;
+}
+
+#my_canvas {
+    /* width: 40%; */
+    text-align: center;
+    margin: auto;
+}
+
+/* #my_canvas img {
+    max-width: 100%;
+    max-height: 400px;
+} */
+
+#filters {
+    text-align: center;
+}
+
 #display_filters {
+    width: 80%;
+    max-height: 200px;
+    margin: auto;
     display: flex;
     flex-direction: row;
-    max-height: 200px;
+    justify-content: space-between;
 }
 
 #display_filters img {
     margin-right: 10px;
     width: 20%;
+}
+
+.unselected_filter {
+    border: 5px solid transparent;
 }
 
 .selected_filter {

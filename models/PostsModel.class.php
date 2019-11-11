@@ -34,13 +34,13 @@ class Post extends Model {
     }
 
     // get 6 by 6 posts
-    public function get_index_posts($limit, $offset) {
+    public function get_index_posts($offset) {
         try {
             parent::db_connect();
-            $sql = "SELECT * FROM posts WHERE posted = 1 ORDER BY posted_date DESC LIMIT ? OFFSET ?";
+            $sql = "SELECT * FROM posts WHERE posted = 1 ORDER BY posted_date DESC LIMIT 6 OFFSET ?";
             $this->pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
             $this->stmt = $this->pdo->prepare($sql);
-            $this->stmt->execute(array((int)$limit, (int)$offset));
+            $this->stmt->execute(array((int)$offset));
             $arr = $this->stmt->fetchAll(PDO::FETCH_ASSOC);
             parent::db_drop_connection();
             return $arr;
@@ -51,10 +51,10 @@ class Post extends Model {
     }
 
     // get 6 by 6 posts of certain user
-    public function get_user_uploads() {
+    public function get_user_images() {
         try {
             parent::db_connect();
-            $sql = "SELECT * FROM posts WHERE `user_id` = ? ORDER BY post_id DESC LIMIT 6 OFFSET 0";
+            $sql = "SELECT * FROM posts WHERE `user_id` = ? ORDER BY post_id DESC";
             $this->pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
             $this->stmt = $this->pdo->prepare($sql);
             $this->stmt->execute(array((int)$_SESSION["current_user_user_id"]));

@@ -8,30 +8,32 @@ class Controller {
 	A view is a part of a website that is used only once in the website (Ex: The login view)
 	*/
 	public static function createView($viewName){
-        self::createModule("top_html_tags");
+        self::createModule("top_html_tags", 0);
 		require_once("views/header.module.php");
 		require_once('./views/'.$viewName.'.view.php');
 	    require_once("views/footer.module.php");
-        self::createModule("bottom_html_tags");
+        self::createModule("bottom_html_tags", 0);
 	}
 
 	/* 
 	This function takes a module name as parameter and will get the file if it exists.
 	A module is a part of website that is used more than once and on different part of the website (Ex: The header)
 	*/
-	public static function createModule($moduleName){
-	    $information = self::$info;
-	    self::$info = "";
+	public static function createModule($moduleName, $i) {
+		if ($i == 1) {
+			$information = self::$info;
+			self::$info = "";
+		}
         require_once('./views/'.$moduleName.'.module.php');
 	}
 
 	public static function template_index(){
-        self::createModule("top_html_tags");
-        self::createModule("header");
-        self::createModule("index");
-        self::createModule("footer");
-        self::createModule("bottom_html_tags");
-    }
+        self::createModule("top_html_tags", 0);
+        self::createModule("header", 0);
+        self::createModule("index", 1);
+        self::createModule("footer", 0);
+        self::createModule("bottom_html_tags", 0);
+	}
 
     public static function get_errors() {
 	    $all_errors = self::$errors;
@@ -46,21 +48,16 @@ class Controller {
 	}
 
 	//upload image
-	public static function upload_image() {
+	private static function upload_image($dir_name) {
 
 		// Current working directory ("/Camagru-MVC-/")
 		$directory_self = str_replace(basename($_SERVER['PHP_SELF']), '', $_SERVER['PHP_SELF']);
 		// Directory that will receive uploaded files
-		$uploads_directory = $_SERVER['DOCUMENT_ROOT'] . $directory_self . 'assets/tmp_pics/';
+		$uploads_directory = $_SERVER['DOCUMENT_ROOT'] . $directory_self . 'assets/' . $dir_name;
 		// Location of index page
 		$index_page = "http://" . $_SERVER["HTTP_HOST"] . $directory_self;
 		// Location of the upload form
 		$upload_form = 'http://' . $_SERVER['HTTP_HOST'] . $directory_self . 'montage';
-
-		echo "directory_self = " . $directory_self . "\n";
-		echo "uploads_directory = " . $uploads_directory . "\n";
-		echo "index_page = " . $index_page . "\n";
-		echo "upload_form = " . $upload_form . "\n";
 
 		// location of the success page
 		// $uploadSuccess = $upload_form;
@@ -75,13 +72,12 @@ class Controller {
 			4 => 'no file was attached'
 		);
 		// check the upload form was actually submitted else print the form 
-		if (!(isset($kwargs) && (array_key_exists("submit_create_post", $kwargs) || array_key_exists("save", $kwargs)))) {
+		if (!(isset($_POST) && (array_key_exists("upload_image", $_POST)))) {
     		// check if user is logged in
     		if (isset($_SESSION["current_user"]))
         		self::error_post('the upload form is neaded', $upload_form);
     		else
 				self::error_post('log in before accessing this page', $index_page);
-			// return (0);
 		}
 		// check for PHP's built-in uploading errors
 		if ($_FILES[$fieldname]['error'] !== 0) {
@@ -106,12 +102,15 @@ class Controller {
 		// now let's move the file to its final location and allocate the new filename to it
 		if (!(move_uploaded_file($_FILES[$fieldname]['tmp_name'], $uploadFilename)))
 			error('receiving directory insuffiecient permission', $upload_form);
-		$ret = basename($uploadFilename);
-		return ($ret);
+		$file_name = basename($uploadFilename);
+		return ($file_name);
 		// This far, everything has worked and the file has been successfully saved.
 		// We are now going to redirect the client to a success page.
 		// header('Location: ' . $uploadSuccess);
+	}
 
+	public static function upload_file($dir_name) {
+		$_SESSION["tmp_file_name"] = self::upload_image($dir_name);
 	}
 }
 
