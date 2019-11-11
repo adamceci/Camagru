@@ -2,6 +2,9 @@
 CREATE DATABASE IF NOT EXISTS db_camagru;
 USE db_camagru;
 
+[client]
+character-sets-dir="C:/Program Files/MySQL/MySQL Server 5.7/share/charsets"
+
 -- Get errors when NOT NULL is not respected
 SET sql_mode = "strict_all_tables";
 
@@ -42,7 +45,25 @@ CREATE TABLE IF NOT EXISTS comments
     FOREIGN KEY (`post_id`) REFERENCES posts(`post_id`) ON DELETE CASCADE
 );
 
+<<<<<<< HEAD
 CREATE TABLE IF NOT EXISTS filters (
     `filter_id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `image` VARCHAR(255) NOT NULL
 }
+=======
+CREATE TABLE IF NOT EXISTS likes
+(
+    `like_id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `user_id` INT NOT NULL,
+    `post_id` INT NOT NULL,
+    `active` TINYINT(1) NOT NULL DEFAULT 0,
+    FOREIGN KEY (`user_id`) REFERENCES users(`user_id`) ON DELETE CASCADE,
+    FOREIGN KEY (`post_id`) REFERENCES posts(`post_id`) ON DELETE CASCADE
+);
+
+-- CREATE TABLE IF NOT EXISTS filters (
+--     `filter_id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+--     `name` VARCHAR(255) NOT NULL,
+--     `image_src` VARCHAR(255) NOT NULL
+-- }
+>>>>>>> d9d0aa51a09a818ff91b063558df721b8f2bbe1a

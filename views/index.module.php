@@ -4,7 +4,26 @@
     $directory_self = str_replace(basename($_SERVER['PHP_SELF']), '', $_SERVER['PHP_SELF']);
     // Directory that will receive uploaded files
     $uploads_directory = $_SERVER['DOCUMENT_ROOT'] . $directory_self . 'assets/post_pics/';
-
+    $i = 0;
+    if (isset($information)) {
+        foreach($information as $arr_nb_likes_or_comments_per_post) {
+            foreach($arr_nb_likes_or_comments_per_post as $nb_likes_or_comments_per_post) {
+                if (input_useable($nb_likes_or_comments_per_post, 'nb_comments')) {
+                    if ($nb_likes_or_comments_per_post['nb_comments'] > 1) {
+                        $nb_comments[] = $nb_likes_or_comments_per_post['nb_comments'] . " Comments";
+                    } else {
+                        $nb_comments[] = $nb_likes_or_comments_per_post['nb_comments'] . " Comment";
+                    }
+                } else {
+                    if ($nb_likes_or_comments_per_post['nb_likes'] > 1) {
+                        $nb_likes[] = $nb_likes_or_comments_per_post['nb_likes'] . " Likes";
+                    } else {
+                        $nb_likes[] = $nb_likes_or_comments_per_post['nb_likes'] . " Like";
+                    }
+                }
+            }
+        }
+    }
 ?>
 
     <div id="container_title">
@@ -22,14 +41,15 @@
                         ?>
                         <img src="assets/post_pics/<?= $post["image"]; ?>" alt="">
                         <div class="display_nb">
-                            <a href="comments&post_img=<?= $post["image"]; ?>&"><p><?=$nb_comments?>X Comment(s)</p></a>
-                            <p><?=$nb_likes?>X Like(s)</p>
+                            <a href="comments&post_img=<?= $post["image"]; ?>&"><p><?= isset($nb_comments) ? $nb_comments[$i] : "0 Comment";?></p></a>
+                            <p class="like_post post_id_<?= $post['post_id']; ?>"><?= isset($nb_likes) ? $nb_likes[$i] : "0 Like";?></p>
                         </div>
                     <?php
                     }
                     ?>
                 </div>
                 <?php
+                $i++;
             }
         }
         else {

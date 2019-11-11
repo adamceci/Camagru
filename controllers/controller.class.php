@@ -9,7 +9,11 @@ class Controller {
 	*/
 	public static function createView($viewName){
         self::createModule("top_html_tags", 0);
+<<<<<<< HEAD
 		require_once("views/header.module.php");
+=======
+        require_once("views/header.module.php");
+>>>>>>> d9d0aa51a09a818ff91b063558df721b8f2bbe1a
 		require_once('./views/'.$viewName.'.view.php');
 	    require_once("views/footer.module.php");
         self::createModule("bottom_html_tags", 0);
@@ -19,11 +23,19 @@ class Controller {
 	This function takes a module name as parameter and will get the file if it exists.
 	A module is a part of website that is used more than once and on different part of the website (Ex: The header)
 	*/
+<<<<<<< HEAD
 	public static function createModule($moduleName, $i) {
 		if ($i == 1) {
 			$information = self::$info;
 			self::$info = "";
 		}
+=======
+	public static function createModule($moduleName, $i){
+        if ($i == 1) {
+            $information = self::$info;
+            self::$info = [];
+        }
+>>>>>>> d9d0aa51a09a818ff91b063558df721b8f2bbe1a
         require_once('./views/'.$moduleName.'.module.php');
 	}
 
@@ -32,8 +44,14 @@ class Controller {
         self::createModule("header", 0);
         self::createModule("index", 1);
         self::createModule("footer", 0);
+<<<<<<< HEAD
         self::createModule("bottom_html_tags", 0);
 	}
+=======
+        self::createModule("script_likes", 0);
+        self::createModule("bottom_html_tags", 0);
+    }
+>>>>>>> d9d0aa51a09a818ff91b063558df721b8f2bbe1a
 
     public static function get_errors() {
 	    $all_errors = self::$errors;

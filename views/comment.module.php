@@ -5,10 +5,9 @@
 ?>
         <?php
         foreach ($information as $comment) {
-            echo "<p class='poster'>" . $comment['login'] . "</p>";
-            echo "<p class='comment'>" . $comment['message'] . "</p>";
+            echo "<p class='poster'>" . htmlspecialchars($comment['login']) . "</p>";
+            echo "<p class='comment'>" . htmlspecialchars($comment['message']) . "</p>";
         }
-
         ?>
 <?php
     } else {

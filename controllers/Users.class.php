@@ -5,52 +5,52 @@ require_once("models/User.class.php");
 class UsersController extends Controller {
 
     public static function template_sign_up() {
-        self::createModule("top_html_tags");
-        self::createModule("header");
-        self::createModule("create_user_form");
-        self::createModule("footer");
-        self::createModule("script");
-        self::createModule("bottom_html_tags");
+        self::createModule("top_html_tags", 0);
+        self::createModule("header", 0);
+        self::createModule("create_user_form", 1);
+        self::createModule("footer", 0);
+        self::createModule("script", 0);
+        self::createModule("bottom_html_tags", 0);
     }
 
     public static function template_login() {
-        self::createModule("top_html_tags");
-        self::createModule("header");
-        self::createModule("login");
-        self::createModule("footer");
-        self::createModule("script");
-        self::createModule("bottom_html_tags");
+        self::createModule("top_html_tags_grey", 0);
+        self::createModule("header", 0);
+        self::createModule("login", 1);
+        self::createModule("footer", 0);
+        self::createModule("script", 0);
+        self::createModule("bottom_html_tags", 0);
     }
 
     public static function template_profile() {
-        self::createModule("top_html_tags");
-        self::createModule("header");
-        self::createModule("profile");
+        self::createModule("top_html_tags", 0);
+        self::createModule("header", 0);
+        self::createModule("profile", 1);
         if (array_key_exists("update", $_GET) && !empty($_GET['update'])) {
             if ($_GET['update'] == 'login' || $_GET['update'] == 'email' || $_GET['update'] == 'password' || $_GET['update'] == 'notification_email' || $_GET['update'] == 'profile_pic')
-            UsersController::createModule('update_' . $_GET['update']);
+            UsersController::createModule('update_'. $_GET['update'], 0);
         }
-        self::createModule("footer");
-        self::createModule("script");
-        self::createModule("bottom_html_tags");
+        self::createModule("footer", 0);
+        self::createModule("script", 0);
+        self::createModule("bottom_html_tags", 0);
     }
 
     public static function template_password_recovery() {
-        self::createModule("top_html_tags");
-        self::createModule("header");
-        self::createModule('password_recovery');
-        self::createModule("script");
-        self::createModule("footer");
-        self::createModule("bottom_html_tags");
+        self::createModule("top_html_tags_grey", 0);
+        self::createModule("header", 0);
+        self::createModule('password_recovery', 1);
+        self::createModule("script", 0);
+        self::createModule("footer", 0);
+        self::createModule("bottom_html_tags", 0);
     }
 
     public static function template_password_change() {
-        self::createModule("top_html_tags");
-        self::createModule("header");
-        self::createModule('update_password_rec');
-        self::createModule("script");
-        self::createModule("footer");
-        self::createModule("bottom_html_tags");
+        self::createModule("top_html_tags", 0);
+        self::createModule("header", 0);
+        self::createModule('update_password_rec', 1);
+        self::createModule("script", 0);
+        self::createModule("footer", 0);
+        self::createModule("bottom_html_tags", 0);
     }
 
     private static function show_errors() {
@@ -165,14 +165,14 @@ class UsersController extends Controller {
                                             that has been sent to your email.<br /></p>";
                     return (1);
                 } else {
-                   $user = new User;
-                    try {
-                        $user->delete_user($arr['login'], $arr['password']);
-                    } catch (Exception $e) {
-                        self::fill_session_error(array(), "Error creation_user_response for deleting user" . $e->getMessage());
-                        return (0);
-                    }
-                    self::fill_session_error(array(), "The verification email wasn't sent");
+//                   $user = new User;
+//                    try {
+//                        $user->delete_user($arr['login'], $arr['password']);
+//                    } catch (Exception $e) {
+//                        self::fill_session_error(array(), "Error creation_user_response for deleting user" . $e->getMessage());
+//                        return (0);
+//                    }
+//                    self::fill_session_error(array(), "The verification email wasn't sent");
                     return (0);
                 }
             case EMAIL_EXISTS:
@@ -204,18 +204,17 @@ class UsersController extends Controller {
     */
     public static function create_user(array $kwargs) {
         try {
-            $keys = ["password", "password_verif", "login", "email", "profile_pic"];
+            $keys = ["password", "password_verif", "login", "email"];
             if ((self::info_creation_exists($keys, $kwargs)) == FALSE) {
                 self::fill_session_error($kwargs, "Empty fields");
                 return (0);
             }
             if ($kwargs["password"] == $kwargs["password_verif"]) {
-                $profile_pic = self::upload_profile_pic("profile_pic");
                 $kwargs_model = [
                     "email" => array_key_exists("email", $kwargs) ? $kwargs["email"] : "",
                     "login" => array_key_exists("login", $kwargs) ? $kwargs["login"] : "",
                     "password" => array_key_exists("password", $kwargs) ? hash("whirlpool", $kwargs["password"]) : "",
-                    "profile_pic" => empty($profile_pic) ? "assets/profile_pics/default.png" : $profile_pic,
+                    "profile_pic" =>"assets/profile_pics/default.png",
                     "verif_hash" => md5(rand(9101994, 11021994))
                 ];
                 $user = new User;
@@ -344,7 +343,7 @@ class UsersController extends Controller {
     }
 
 	public static function login(array $kwargs) {
-        if (array_key_exists("password", $kwargs) && !empty($kwargs["password"])) {
+        if (input_useable($kwargs, 'password')) {
             if (self::login_verif($kwargs)) {
                 return (1);
             } else {
@@ -388,6 +387,7 @@ class UsersController extends Controller {
             try {
                 if ($user->update_login($user_info['new_login'], $_SESSION['current_user'])) {
                     self::fill_current_user_login($user_info['new_login']);
+                    header("Location: profile");
                     return (1);
                 } else {
                     $_SESSION['refresh'] = "profile&update=login";
@@ -410,6 +410,7 @@ class UsersController extends Controller {
                 $profile_pic = self::upload_profile_pic("new_profile_pic");
                 if ($user->update_profile_pic($profile_pic, $_SESSION['current_user'])) {
                     self::fill_current_user_login($_SESSION['current_user']);
+                    header("Location: profile");
                     return (1);
                 } else {
                     $_SESSION['refresh'] = 'profile&update=profile_pic';
@@ -431,6 +432,7 @@ class UsersController extends Controller {
             try {
                 if ($user->update_email($user_info['new_email'], $_SESSION["current_user_email"], $_SESSION['current_user']) != USER_DONT_EXIST) {
                     self::fill_current_user_login($user_info['new_email']);
+                    header("Location: profile");
                 } else {
                     $_SESSION['refresh'] = "profile&update=email";
                     self::fill_session_error(array('email' => $user_info['new_email']), 'profile');
@@ -449,7 +451,8 @@ class UsersController extends Controller {
         if (self::email_valid($user_info['new_notification_email'])) {
             try {
                 if ($user->update_notification_email($user_info['new_notification_email'], $_SESSION["current_user_notification_email"], $_SESSION['current_user']) != USER_DONT_EXIST) {
-                    self::fill_current_user_login($_SESSION['current_user'], "profile");
+                    self::fill_current_user_login($_SESSION['current_user']);
+                    header("Location: profile");
                 } else {
                     self::fill_session_error(array('email' => $user_info['new_notification_email']), 'profile&update=notification_email');
                 }
