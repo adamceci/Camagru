@@ -317,7 +317,7 @@ class UsersController extends Controller {
     login_valid($login) take an user input and verify if the input is a well-formatted login.
 	*/
 	private static function login_valid($login) {
-        if (preg_match("/^(?=.{5,26}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$/",$login)) {
+        if (preg_match("/^(?=.{3,26}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$/",$login)) {
             return (1);
         }
 		return (0);

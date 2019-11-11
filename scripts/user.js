@@ -103,6 +103,8 @@ let createUserButton = document.querySelector(".create_user_submit");
 let loginButton = document.querySelector(".sign_in_submit");
 let passwordRecButton = document.querySelector(".pass_rec_submit");
 let passwordChangeRecButton = document.querySelector(".submit_change_password_rec");
+let createLoginInput = document.querySelector('.create_user_login_input');
+let createPasswordInput = document.querySelector('.create_user_password');
 
 if (loginButton !== null) {
     loginButton.addEventListener("click", function () {
@@ -125,5 +127,27 @@ if (passwordRecButton !== null) {
 if (passwordChangeRecButton !== null) {
     passwordChangeRecButton.addEventListener("click", function () {
         change_password_rec_status();
+    });
+}
+
+if (createLoginInput !== null) {
+    createLoginInput.addEventListener('focus', function () {
+       let loginFormat = document.querySelector('.format_login');
+       loginFormat.style.display = 'block';
+    });
+    createLoginInput.addEventListener('blur', function () {
+        let loginFormat = document.querySelector('.format_login');
+        loginFormat.style.display = 'none';
+    });
+}
+
+if (createPasswordInput !== null) {
+    createPasswordInput.addEventListener('focus', function () {
+        let passwordFormat = document.querySelector('.format_password');
+        passwordFormat.style.display = 'block';
+    });
+    createPasswordInput.addEventListener('blur', function () {
+        let passwordFormat = document.querySelector('.format_password');
+        passwordFormat.style.display = 'none';
     });
 }
