@@ -18,6 +18,15 @@
     color: darkgreen;
 }
 
+.success_msg {
+    border: 2px solid darkgreen;
+    border-radius: 5px;
+    padding: 10px;
+    text-align: center;
+    background-color: darkseagreen;
+    color: darkgreen;
+}
+
 .header {
     width: 90%;
     margin: auto;
@@ -39,46 +48,52 @@ div.header a {
     text-decoration: none;
 }
 
-.profile_pic_header {
-    position: relative;
-    width: 25px;
-    border-radius: 25px;
-    margin-left: 5px;
-    top: 5px;}
-
-.current_user_header {
-    display: inline;
-}
-
-div.header div:nth-child(1) {
+div.header #elem1 {
     flex-grow: 0.4;
     font-size: 25px;
     font-weight: bold;
 }
 
-div.header div:nth-child(1) a {
+div.header #elem1 a {
     color: rgb(15, 129, 158);
 }
 
-.header .blank {
+#elem2 {
     flex-grow: 6;
 }
 
-div.header div:nth-child(3) {
+.profile_pic_wrapper_header {
+    position: relative;
+    width: 25px;
+    border-radius: 25px;
+    margin-left: 5px;
+    display: inline-block;
+}
+
+.profile_pic_header {
+    width: 100%;
+    border-radius: 200px;
+}
+
+.current_user_header {
+    display: inline;
+}
+
+div.header #elem3 {
     flex-grow: 0.5;
     text-decoration: none;
     font-size: 17px;
 }
 
-div.header div:nth-child(3) a {
+div.header #elem3 a {
     color: rgb(104, 104, 104);
 }
 
-div.header div:nth-child(5) {
+div.header #elem4 {
     flex-grow: 0.5;
 }
 
-div.header div:nth-child(5) button {
+div.header #elem4 button {
     border: 1px solid rgb(15, 129, 158);
     border-radius: 5%;
     color: rgb(15, 129, 158);

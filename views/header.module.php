@@ -4,15 +4,17 @@ if (input_useable($_SESSION, 'current_user') && input_useable($_SESSION, 'curren
 
 ?>
 	<div class="header">
-        <div><a href="index">CAMAGRU</a></div>
-        <div class="blank"></div>
-        <div>
+        <div id="elem1"><a href="index">CAMAGRU</a></div>
+        <div id="elem2" class="blank"></div>
+        <div id="elem3">
             <a class="current_user_link_header" href="profile">
                 <p class="current_user_header"><?= htmlspecialchars(($_SESSION["current_user"])); ?></p>
-                <img class="profile_pic_header" src="./<?= htmlspecialchars($_SESSION['current_user_pic']) ;?>"
+                <div class="profile_pic_wrapper_header">
+                    <img class="profile_pic_header" src="./assets/profile_pics/<?= htmlspecialchars($_SESSION['current_user_pic']) ;?>" />
+                </div>
             </a>
         </div>
-        <div><a href="logout"><button class="clickeable" type="button">Log out</button></a></div>
+        <div id="elem4"><a href="logout"><button class="clickeable" type="button">Log out</button></a></div>
     </div>
 <?php
 
@@ -21,10 +23,10 @@ else {
 
 ?>
 	<div class="header">
-        <div><a href="index">CAMAGRU</a></div>
-		<div class="blank"></div>
-		<div><a class="current_user" href="sign_up">Sign up</a></div>
-        <div><a href="login"><button class="clickeable" type="button">Log in</button></a></div>
+        <div id="elem1"><a href="index">CAMAGRU</a></div>
+		<div id="elem2" class="blank"> </div>
+		<div id="elem3"><a class="current_user" href="sign_up">Sign up</a></div>
+        <div id="elem4"><a href="login"><button class="clickeable" type="button">Log in</button></a></div>
 	</div>
 <?php
 

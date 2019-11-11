@@ -214,7 +214,7 @@ class UsersController extends Controller {
                     "email" => array_key_exists("email", $kwargs) ? $kwargs["email"] : "",
                     "login" => array_key_exists("login", $kwargs) ? $kwargs["login"] : "",
                     "password" => array_key_exists("password", $kwargs) ? hash("whirlpool", $kwargs["password"]) : "",
-                    "profile_pic" =>"assets/profile_pics/default.png",
+                    "profile_pic" => "default.png",
                     "verif_hash" => md5(rand(9101994, 11021994))
                 ];
                 $user = new User;
