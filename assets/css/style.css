@@ -75,7 +75,6 @@ div.header div:nth-child(4) button {
     font-size: 15px;
     height: 50px;
     width: 75%;
-    cursor: pointer;
 }
 
 /* Index page */
@@ -247,6 +246,37 @@ div.header div:nth-child(4) button {
 
 .selected_filter {
     border: 5px solid rgb(15, 129, 158);
+}
+
+.flex {
+    display: flex;
+    /* justify-content: space-around; */
+}
+
+.right {
+    justify-content: flex-end;
+}
+
+#submit_btns {
+    width: 40%;
+    display: inline-block;
+}
+
+#submit_btns button {
+    border: 1px solid rgb(15, 129, 158);
+    color: rgb(15, 129, 158);
+    width: 40%;
+    height: 40px;
+    font-size: 13px;
+    outline: none;
+}
+
+#save_btn {
+    
+}
+
+#post_btn {
+
 }
 
 /* Plus button */

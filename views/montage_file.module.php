@@ -12,4 +12,13 @@
             <img class="filter unselected_filter" src="assets/filters/arnold.png" alt="">
         </div>
     </p>
+    <div class="flex right">
+        <div>
+
+        </div>
+        <p id="submit_btns">
+            <button class="clickeable" id="save_btn">Save</button>
+            <button class="clickeable" id="post_btn">Post</button>
+        </p>
+    </div>
 </div>

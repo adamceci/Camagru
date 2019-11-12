@@ -21,6 +21,7 @@ class PostsController extends Controller implements Comments, Likes {
 		self::createModule("close_container_tags", 0);
 		self::createModule("script_filters", 0);
 		self::createModule("script_montage_file", 0);
+		self::createModule("script_post_or_save", 0);
         self::createModule("footer", 0);
         self::createModule("bottom_html_tags", 0);
 	}

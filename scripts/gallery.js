@@ -71,7 +71,6 @@ function displayFile() {
 }
 
 function removeImage(data) {
-	console.log(data);
 	let divToRemove = data["path"][2];
 	let imageToRemove = divToRemove.querySelector("img").getAttribute("src");
 	let xhttp = new XMLHttpRequest();
@@ -129,6 +128,10 @@ let fileButton = document.querySelector("#file_button");
 let camButton = document.querySelector("#cam_button");
 
 fileButton.addEventListener("click", displayFileForm);
+// camButton.addEventListener("click", displayCamForm);
+
+
+
 
 
 // let fileButton;
