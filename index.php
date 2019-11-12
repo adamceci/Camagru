@@ -44,7 +44,8 @@ Route::set("index", function() {
 Route::set("profile", function () {
     UsersController::template_profile();
     if (array_key_exists('update', $_GET)) {
-        UsersController::update_user($_GET);
+        if (isset($_POST))
+            UsersController::update_user($_POST);
     }
 });
 

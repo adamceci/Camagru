@@ -105,6 +105,13 @@ let passwordRecButton = document.querySelector(".pass_rec_submit");
 let passwordChangeRecButton = document.querySelector(".submit_change_password_rec");
 let createLoginInput = document.querySelector('.create_user_login_input');
 let createPasswordInput = document.querySelector('.create_user_password');
+let createPasswordVerifInput = document.querySelector('.create_user_pass_verif');
+let updateLoginShow = document.querySelector('.profile_first_input');
+let updateEmailShow = document.querySelector('.profile_email_input');
+let updateNotifEmailShow = document.querySelector('.profile_notif_email_input');
+let updateProfilePicShow = document.querySelector('.profile_profile_pic');
+let updateLoginInput = document.querySelector('.profile_login_update');
+let updatePasswordInput = document.querySelector('.profile_password_update');
 
 if (loginButton !== null) {
     loginButton.addEventListener("click", function () {
@@ -130,6 +137,36 @@ if (passwordChangeRecButton !== null) {
     });
 }
 
+
+if (createPasswordInput !== null) {
+    createPasswordInput.addEventListener('focus', function () {
+        let passwordFormat = document.querySelector('.format_password');
+        passwordFormat.style.display = 'block';
+    });
+    createPasswordInput.addEventListener('blur', function () {
+        let passwordFormat = document.querySelector('.format_password');
+        passwordFormat.style.display = 'none';
+    });
+    if (createPasswordVerifInput !== null) {
+        createPasswordVerifInput.addEventListener('focus', function () {
+            let passwordFormat = document.querySelector('.format_password');
+            passwordFormat.style.display = 'block';
+        });
+    }
+}
+
+
+if (updatePasswordInput !== null) {
+    updatePasswordInput.addEventListener('focus', function () {
+        let passwordFormat = document.querySelector('.format_password');
+        passwordFormat.style.display = 'block';
+    });
+    updatePasswordInput.addEventListener('blur', function () {
+        let passwordFormat = document.querySelector('.format_password');
+        passwordFormat.style.display = 'none';
+    });
+}
+
 if (createLoginInput !== null) {
     createLoginInput.addEventListener('focus', function () {
        let loginFormat = document.querySelector('.format_login');
@@ -141,13 +178,74 @@ if (createLoginInput !== null) {
     });
 }
 
-if (createPasswordInput !== null) {
-    createPasswordInput.addEventListener('focus', function () {
-        let passwordFormat = document.querySelector('.format_password');
-        passwordFormat.style.display = 'block';
+if (updateLoginInput !== null) {
+    updateLoginInput.addEventListener('focus', function () {
+        let loginFormat = document.querySelector('.format_login');
+        loginFormat.style.display = 'block';
     });
-    createPasswordInput.addEventListener('blur', function () {
-        let passwordFormat = document.querySelector('.format_password');
-        passwordFormat.style.display = 'none';
+    updateLoginInput.addEventListener('blur', function () {
+        let loginFormat = document.querySelector('.format_login');
+        loginFormat.style.display = 'none';
     });
 }
+
+if (updateLoginShow !== null && updateProfilePicShow !== null) {
+    updateLoginShow.addEventListener('click', function () {
+        let buttonsInput = document.querySelector('.update_buttons_login');
+        let emailInput = document.querySelector('.profile_email_input');
+
+        if (!buttonsInput.classList.contains('opened')) {
+            buttonsInput.classList.add('opened');
+            emailInput.style.marginTop = '120px';
+        }
+        else {
+            buttonsInput.classList.remove('opened');
+            emailInput.style.marginTop = '0px';
+        }
+    });
+    updateProfilePicShow.addEventListener('click', function () {
+        let buttonsInput = document.querySelector('.update_buttons_login');
+        let emailInput = document.querySelector('.profile_email_input');
+
+        if (!buttonsInput.classList.contains('opened')) {
+            buttonsInput.classList.add('opened');
+            emailInput.style.marginTop = '120px';
+        }
+        else {
+            buttonsInput.classList.remove('opened');
+            emailInput.style.marginTop = '0px';
+        }
+    });
+}
+
+if (updateEmailShow !== null) {
+    updateEmailShow.addEventListener('click', function () {
+        let buttonsInput = document.querySelector('.update_buttons_email');
+        let emailNotifInput = document.querySelector('.profile_notif_email_input');
+
+        if (!buttonsInput.classList.contains('opened')) {
+            buttonsInput.classList.add('opened');
+            emailNotifInput.style.marginTop = '50px';
+        }
+        else {
+            buttonsInput.classList.remove('opened');
+            emailNotifInput.style.marginTop = '0px';
+        }
+    });
+}
+
+if (updateNotifEmailShow !== null) {
+    updateNotifEmailShow.addEventListener('click', function () {
+        let buttonsInput = document.querySelector('.update_button_notif');
+        let profileWrapper = document.querySelector('.profile_wrapper');
+        if (!buttonsInput.classList.contains('opened')){
+            buttonsInput.classList.add('opened');
+            profileWrapper.style.marginBottom = '80px';
+        }
+        else {
+            buttonsInput.classList.remove('opened');
+            profileWrapper.style.marginBottom = '0px';
+        }
+    });
+}
+

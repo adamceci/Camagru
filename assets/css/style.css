@@ -25,6 +25,8 @@
     text-align: center;
     background-color: darkseagreen;
     color: darkgreen;
+    width: 90%;
+    margin: auto;
 }
 
 .header {
@@ -358,7 +360,9 @@ div.header #elem4 button {
 }
 
 .format_login {
+    font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji;
     display:none;
+    margin-bottom: 5px;
     font-size: 12px;
     font-style: italic;
     border: 1px dotted green;
@@ -366,7 +370,9 @@ div.header #elem4 button {
 }
 
 .format_password {
+    font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji;
     display:none;
+    margin-bottom: 5px;
     font-size: 12px;
     font-style: italic;
     border: 1px dotted green;
@@ -382,6 +388,10 @@ div.header #elem4 button {
     padding-bottom: 4px;
     padding-left: 8px;
     border: 1px solid rgb(15, 129, 158);
+}
+
+.create_user_pass_verif {
+    margin-bottom: 10px;
 }
 
 .create_user_file_input {
@@ -708,4 +718,156 @@ Login view css start
         background-color: red;
         margin-bottom:10px;
     }
+}
+
+/* Profile css */
+
+.profile_wrapper {
+    width: 100%;
+    border: 2px solid rgb(15, 129, 158);
+    margin-top:50px;
+    position: relative;
+    font-size: 24px;
+    border-radius: 5px;
+}
+
+.profile_texts {
+    text-align: center;
+    border-bottom: 1px solid rgb(15, 129, 158);
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin: 0px;
+    background: linear-gradient(#ffffff, #efefef, #ffffff);
+}
+
+.profile_texts:hover {
+    background: linear-gradient(#efefef, #ffffff, #efefef);
+}
+
+.profile_profile_pic {
+    border-radius: 200px;
+    position: absolute;
+    width: 100px;
+    left: 36%;
+    top: -50px;
+    border: 2px solid rgb(15, 129, 158);
+    background-color: #ffffff;
+}
+
+.profile_first_input {
+    padding-top: 50px;
+
+}
+
+.update_buttons_login {
+    display: none;
+    font-size: 16px;
+    position: absolute;
+    border-bottom: 2px solid rgb(15, 129, 158);
+    width: 100%;
+    height: 115px;
+}
+
+
+.update_buttons_email {
+    display: none;
+    font-size: 16px;
+    position: absolute;
+    border-bottom: 2px solid rgb(15, 129, 158);
+    width: 100%;
+    height: 50px;
+    text-align: center;
+}
+
+.update_button_notif {
+    display: none;
+    font-size: 16px;
+    position: absolute;
+    border-bottom: 2px solid rgb(15, 129, 158);;
+    border-right: 2px solid rgb(15, 129, 158);;
+    border-left: 2px solid rgb(15, 129, 158);;
+    width: 100%;
+    height: 80px;
+    left: -2px;
+    text-align: center;
+}
+
+.profile_change_buttons {
+    font-size: 17px;
+    display: block;
+    margin: auto;
+    margin-top: 10px;
+    border: 2px solid rgb(15, 129, 158);
+}
+
+.update_buttons_login_animate {
+    display:block;
+}
+
+.profile_buttons_links {
+    background-color: red;
+    text-decoration: none;
+}
+
+.form_wrapper {
+    text-align: center;
+    padding-right: 15px;
+    padding-left: 5px;
+}
+
+.profile_inputs {
+    font-size: 20px;
+    width: 100%;
+    border-radius: 5px;
+    background-color: #efefef;
+    margin-bottom: 15px;
+}
+
+.profile_inputs_file {
+    color: rgb(15, 129, 158);
+    margin-bottom: 12px;
+    font-size: 16px;
+    border: 2px solid rgb(15, 129, 158);
+}
+
+.text_inputs {
+    font-size: 20px;
+    margin-bottom: 5px;
+}
+
+.submit_update {
+    width: 102%;
+    background: linear-gradient(rgb(15, 129, 158), rgb(45, 159, 188));
+    border: 1px solid rgb(15, 129, 158);
+    margin: auto;
+    font-size: 20px;
+    border-radius: 5px;
+    color: #ffffff;
+}
+.profile_submit_change_login:hover {
+    background: linear-gradient(rgb(45, 159, 188), rgb(15, 129, 158));
+}
+
+.opened {
+    display:block;
+}
+
+.format_login {
+    font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji;
+    display:none;
+    margin-bottom: 5px;
+    font-size: 16px;
+    font-style: italic;
+    border: 1px dotted green;
+    border-radius: 5px;
+}
+
+.format_password {
+    font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji;
+    display:none;
+    margin-bottom: 5px;
+    font-size: 16px;
+    font-style: italic;
+    border: 1px dotted green;
+    border-radius: 5px;
 }

@@ -201,7 +201,7 @@ class User extends Model {
     public function get_info($valid_field) {
         try {
             parent::db_connect();
-            $sql = "SELECT `login`, `email`, `user_id`, `profile_pic`, `notification_email`, `date_of_creation`
+            $sql = "SELECT `login`, `email`, `user_id`, `profile_pic`, `notification_email`, `date_of_creation`, `notification_active`
                     FROM `users` 
                     WHERE (LOWER(`email`)=? OR LOWER(`login`)=?)
                     AND `active`='1'";
