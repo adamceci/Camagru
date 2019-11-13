@@ -39,7 +39,64 @@ class PostsController extends Controller implements Comments, Likes {
 		catch (Exception $e) {
 			throw new Exception("Error while uploading in PostsController " . $e->getMessage());
 		}
+	}
 
+	private static function apply_filters($img_srcs, $extension) {
+		if ($extension == "png")
+			$base_img = imagecreatefrompng($img_srcs[0]);
+		else
+			$base_img = imagecreatefromjpeg($img_srcs[0]);
+		$final_img = imagecreatetruecolor(imagesx($base_img), imagesy($base_img));
+		imagealphablending($final_img, TRUE);
+		imagesavealpha($final_img, TRUE);
+		imagecopyresampled($final_img, $base_img, 0, 0, 0, 0, imagesx($base_img), imagesy($base_img), imagesx($base_img), imagesy($base_img));
+		array_shift($img_srcs);
+		if ($img_srcs) {
+			foreach($img_srcs as $img_src) {
+				$filter = imagecreatefrompng($img_src);
+				imagecopyresampled($final_img, $filter, 0, 0, 0, 0, imagesx($base_img), imagesy($base_img), imagesx($filter), imagesy($filter));
+				imagedestroy($filter);
+			}
+		}
+		imagedestroy($base_img);
+		return ($final_img);
+	}
+
+	private static function upload_to_folder($file, $path, $extension) {
+		if (!file_exists($path))
+			mkdir($path, 0755, true);
+		$now = time();
+		while(file_exists($path . $_SESSION["current_user_user_id"] . "-" . $now . "." . $extension))
+			$now++;
+		imagepng($file, $path . $_SESSION["current_user_user_id"] . "-" . $now . ".png");
+	}
+
+	private static function delete_from_tmp($img_srcs) {
+		$path = "assets/tmp_pics/";
+		$tmp_to_del = basename(array_shift($img_srcs));
+		if (file_exists($path . $tmp_to_del))
+			unlink($path . $tmp_to_del);
+	}
+
+	public static function create_montage() {
+		if (input_useable($_POST, "array_images")) {
+			$img_srcs = json_decode($_POST["array_images"]);
+			$img_srcs = $img_srcs->imagesArray;
+			$extension = pathinfo($img_srcs[0]["extention"]);
+			$final_img = self::apply_filters($img_srcs, $extension);
+			self::upload_to_folder($final_img, "assets/post_pics/", $extension);
+			die();
+			self::delete_from_tmp($img_srcs);
+			echo json_encode(array("final_img" => $final_img));
+		}
+	}
+
+	public static function superimpose($array_images) {
+		$final_img = imagecreatetruecolor(300, 300);
+		foreach ($array_images as $image) {
+			imagecopymerge($final_img, $image, 0, 0, 0, 0, 300, 300, 0);
+		}
+		return ($final_img);
 	}
 
 	public static function template_montage() {
@@ -134,69 +191,6 @@ class PostsController extends Controller implements Comments, Likes {
 		'     </div>'.
 		'</html>';
 		exit;
-	}
-
-	// upload post into /assets/post_pics
-	private function upload_post(array $kwargs) {
-
-		// Current working directory ("/Camagru-MVC-/")
-		$directory_self = str_replace(basename($_SERVER['PHP_SELF']), '', $_SERVER['PHP_SELF']);
-		// Directory that will receive uploaded files
-		$uploads_directory = $_SERVER['DOCUMENT_ROOT'] . $directory_self . 'assets/post_pics/';
-		// Location of index page
-		$index_page = "http://" . $_SERVER["HTTP_HOST"] . $directory_self;
-		// Location of the upload form
-		$upload_form = 'http://' . $_SERVER['HTTP_HOST'] . $directory_self . 'montage';
-		
-		// location of the success page
-		// $uploadSuccess = $upload_form;
-		
-		// fieldname used within the file <input> of the HTML form
-		$fieldname = "image";
-		// possible PHP upload errors
-		$errors = array(
-			1 => 'php.ini max file size exceeded',
-            2 => 'html form max file size exceeded',
-            3 => 'file upload was only partial',
-			4 => 'no file was attached'
-		);
-		// check the upload form was actually submitted else print the form 
-		if (!(isset($kwargs) && (array_key_exists("submit_create_post", $kwargs) || array_key_exists("save", $kwargs)))) {
-    		// check if user is logged in
-    		if (isset($_SESSION["current_user"]))
-        		self::error_post('the upload form is neaded', $upload_form);
-    		else
-				self::error_post('log in before accessing this page', $index_page);
-			// return (0);
-		}
-		// check for PHP's built-in uploading errors
-		if ($_FILES[$fieldname]['error'] !== 0) {
-			self::error_post($errors[$_FILES[$fieldname]['error']], $upload_form);
-		}
-		// check that the file we are working on really was the subject of an HTTP upload
-		if (!is_uploaded_file($_FILES[$fieldname]['tmp_name']))
-			self::error_post('not an HTTP upload', $upload_form);
-		// validation... since this is an image upload script we should run a check
-		// to make sure the uploaded file is in fact an image. Here is a simple check:
-		// getimagesize() returns false if the file tested is not an image.
-		if (!(getimagesize($_FILES[$fieldname]['tmp_name'])))
-			self::error_post('only image uploads are allowed', $upload_form);
-		// make a unique filename for the uploaded file and check it is not already
-		// taken... if it is already taken keep trying until we find a vacant one
-		// sample filename: 1140732936-filename.jpg
-		if (!file_exists($uploads_directory))
-			mkdir($uploads_directory, 0755, true);
-		$now = time();
-		while(file_exists($uploadFilename = $uploads_directory.$now.'-'.$_FILES[$fieldname]['name']))
-			$now++;
-		// now let's move the file to its final location and allocate the new filename to it
-		if (!(move_uploaded_file($_FILES[$fieldname]['tmp_name'], $uploadFilename)))
-			error('receiving directory insuffiecient permission', $upload_form);
-		$ret = basename($uploadFilename);
-		return ($ret);
-		// This far, everything has worked and the file has been successfully saved.
-		// We are now going to redirect the client to a success page.
-		// header('Location: ' . $uploadSuccess);
 	}
 
     // create post

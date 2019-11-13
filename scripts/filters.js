@@ -13,7 +13,7 @@ function drawCanvas() {
 	currentCanvas.remove();
 
 	let imagesToDisplay = document.querySelectorAll("#canvas_container img");
-	let imagesArray = Array.from(imagesToDisplay).reverse();
+	let imagesArray = [...imagesToDisplay].reverse();
 
 	for (let imageToDisplay of imagesArray) {
 		ctx.drawImage(imageToDisplay, 0, 0, newCanvas.width, newCanvas.height);

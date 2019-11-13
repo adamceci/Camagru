@@ -50,21 +50,28 @@
 
 
 function saveImage() {
+	let img = document.querySelector("#base_img");
 	let imagesToDisplay = document.querySelectorAll("#canvas_container img");
-	let imagesArray = Array.from(imagesToDisplay).reverse();
-	let xhttp = new XMLHttpRequest();
+	let imagesToDisplaySrc = [];
+	
+	imagesToDisplay.forEach((node) => imagesToDisplaySrc.push(node.src));
+	imagesToDisplaySrc.reverse();
 
+	let myJSON = JSON.stringify({"imagesArray":imagesToDisplaySrc});
+	let xhttp = new XMLHttpRequest();
+	
+	let resp;
 	xhttp.onreadystatechange = function() {
-		if (this.readyState == 4 && this.status == 200 && this.response == "OK")
-			divToRemove.remove();
+		if (this.readyState == 4 && this.status == 200)
+			resp = JSON.parse(this.response);
+			// console.log(resp);
 		};
-	xhttp.open("POST", "responses" + imageToRemove, true);
+	xhttp.open("POST", "responses", true);
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-	xhttp.send("");
+	xhttp.send("array_images=" + myJSON);
 }
 
 let saveBtn = document.querySelector("#save_btn");
 let postBtn = document.querySelector("#post_btn");
 
 saveBtn.addEventListener("click", saveImage);
-
