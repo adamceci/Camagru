@@ -50,7 +50,6 @@
 
 
 function saveImage() {
-	let img = document.querySelector("#base_img");
 	let imagesToDisplay = document.querySelectorAll("#canvas_container img");
 	let imagesToDisplaySrc = [];
 	
@@ -60,11 +59,9 @@ function saveImage() {
 	let myJSON = JSON.stringify({"imagesArray":imagesToDisplaySrc});
 	let xhttp = new XMLHttpRequest();
 	
-	let resp;
 	xhttp.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200)
-			resp = JSON.parse(this.response);
-			// console.log(resp);
+			window.location.replace("montage");
 		};
 	xhttp.open("POST", "responses", true);
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");

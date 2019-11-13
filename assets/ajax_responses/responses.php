@@ -23,6 +23,7 @@ if(isset($_GET)) {
 
 if (input_useable($_POST, "array_images")) {
     PostsController::create_montage();
+    PostsController::display_user_posts();
 
 
     // $img_srcs = json_decode($_POST["images"])->imagesArray;

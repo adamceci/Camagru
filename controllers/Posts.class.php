@@ -62,13 +62,14 @@ class PostsController extends Controller implements Comments, Likes {
 		return ($final_img);
 	}
 
-	private static function upload_to_folder($file, $path, $extension) {
+	private static function upload_to_folder($file, $path) {
 		if (!file_exists($path))
 			mkdir($path, 0755, true);
 		$now = time();
-		while(file_exists($path . $_SESSION["current_user_user_id"] . "-" . $now . "." . $extension))
+		while(file_exists($file_name = $path . $_SESSION["current_user_user_id"] . "-" . $now . ".png"))
 			$now++;
-		imagepng($file, $path . $_SESSION["current_user_user_id"] . "-" . $now . ".png");
+		imagepng($file, $file_name);
+		return ($file_name);
 	}
 
 	private static function delete_from_tmp($img_srcs) {
@@ -84,23 +85,18 @@ class PostsController extends Controller implements Comments, Likes {
 			$img_srcs = $img_srcs->imagesArray;
 			$extension = pathinfo($img_srcs[0]["extention"]);
 			$final_img = self::apply_filters($img_srcs, $extension);
-			self::upload_to_folder($final_img, "assets/post_pics/", $extension);
-			die();
+			$file_name = self::upload_to_folder($final_img, "assets/post_pics/");
 			self::delete_from_tmp($img_srcs);
-			echo json_encode(array("final_img" => $final_img));
+			$post = new Post;
+			$kwargs["user_id"] = $_SESSION["current_user_user_id"];
+			$kwargs["image"] = basename($file_name);
+			$post->create_post($kwargs);
+			echo $file_name;
 		}
-	}
-
-	public static function superimpose($array_images) {
-		$final_img = imagecreatetruecolor(300, 300);
-		foreach ($array_images as $image) {
-			imagecopymerge($final_img, $image, 0, 0, 0, 0, 300, 300, 0);
-		}
-		return ($final_img);
 	}
 
 	public static function template_montage() {
-        self::createModule("top_html_tags", 0);
+		self::createModule("top_html_tags", 0);
 		self::createModule("header", 0);
 		self::createModule("montage_title", 0);
 		self::createModule("open_container_tags", 0);
