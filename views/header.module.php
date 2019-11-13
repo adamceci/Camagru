@@ -26,7 +26,7 @@ else {
         <div id="elem1"><a href="index">CAMAGRU</a></div>
 		<div id="elem2" class="blank"> </div>
 		<div id="elem3"><a class="current_user" href="sign_up">Sign up</a></div>
-        <div id="elem4"><a href="login"><button class="clickeable" type="button">Log in</button></a></div>
+        <div id="elem4"><a href="login"><button class="clickeable" type="button">Sign in</button></a></div>
 	</div>
 <?php
 

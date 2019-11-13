@@ -8,7 +8,8 @@ class Comment extends Model {
             parent::db_connect();
             $sql = "SELECT `message`, users.login 
                     FROM `comments` INNER JOIN users 
-                    WHERE `post_id`=? AND comments.user_id=users.user_id";
+                    WHERE `post_id`=? AND comments.user_id=users.user_id
+                    ORDER DESC";
             $this->stmt = $this->pdo->prepare($sql);
             $this->stmt->execute(array($post_id));
             $arr = $this->stmt->fetchAll(PDO::FETCH_ASSOC);

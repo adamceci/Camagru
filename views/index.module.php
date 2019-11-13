@@ -48,7 +48,7 @@
                                 <a class="comment_post_link" href="comments&post_img=<?= $post["image"]; ?>&">
                                     <img class="post_index_heart" src="./assets/imgs/comment.png" />
                                     <p class="comment_post">
-                                        <?= isset($nb_comments) ? $nb_comments[$i] : "0 Comment";?>
+                                        <?= isset($nb_comments) ? htmlspecialchars($nb_comments[$i]) : "0 Comment";?>
                                     </p>
                                 </a>
                             </div>

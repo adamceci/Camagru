@@ -8,6 +8,11 @@
 
     if (isset($_SESSION) && array_key_exists('current_user', $_SESSION) && !empty($_SESSION['current_user'])) {
 ?>
+        <div class="profile_description">
+            <p>Welcome to your profile page!<br/>
+            <p>Here you can modify your data</p>
+            <img class="profile_cat_img" src="assets/imgs/tebe.png" />
+        </div>
         <div class="profile_wrapper">
             <p class="profile_texts profile_first_input"><?php echo htmlspecialchars($_SESSION['current_user']); ?></p>
             <div class="update_buttons_login">
