@@ -8,18 +8,20 @@
     if (isset($information)) {
         foreach($information as $arr_nb_likes_or_comments_per_post) {
             foreach($arr_nb_likes_or_comments_per_post as $nb_likes_or_comments_per_post) {
-                if (input_useable($nb_likes_or_comments_per_post, 'nb_comments')) {
+                if (array_key_exists( 'nb_comments', $nb_likes_or_comments_per_post)) {
                     if ($nb_likes_or_comments_per_post['nb_comments'] > 1) {
                         $nb_comments[] = $nb_likes_or_comments_per_post['nb_comments'] . " Comments";
                     } else {
                         $nb_comments[] = $nb_likes_or_comments_per_post['nb_comments'] . " Comment";
                     }
-                } else {
+                } else if (array_key_exists( 'nb_likes', $nb_likes_or_comments_per_post)) {
                     if ($nb_likes_or_comments_per_post['nb_likes'] > 1) {
                         $nb_likes[] = $nb_likes_or_comments_per_post['nb_likes'] . " Likes";
                     } else {
                         $nb_likes[] = $nb_likes_or_comments_per_post['nb_likes'] . " Like";
                     }
+                } else if (array_key_exists( 'user_likes_it', $nb_likes_or_comments_per_post)) {
+                    $user_likes_it[] = $nb_likes_or_comments_per_post['user_likes_it'];
                 }
             }
         }
@@ -41,8 +43,18 @@
                         ?>
                         <img src="assets/post_pics/<?= $post["image"]; ?>" alt="">
                         <div class="display_nb">
-                            <a href="comments&post_img=<?= $post["image"]; ?>&"><p><?= isset($nb_comments) ? $nb_comments[$i] : "0 Comment";?></p></a>
-                            <p class="like_post post_id_<?= $post['post_id']; ?>"><?= isset($nb_likes) ? $nb_likes[$i] : "0 Like";?></p>
+                            <div class="comment_wrapper">
+                                <a class="comment_post_link" href="comments&post_img=<?= $post["image"]; ?>&">
+                                    <img class="post_index_heart" src="./assets/imgs/comment.png" />
+                                    <p class="comment_post">
+                                        <?= isset($nb_comments) ? htmlspecialchars($nb_comments[$i]) : "0 Comment";?>
+                                    </p>
+                                </a>
+                            </div>
+                            <div class="like_wrapper">
+                                <p class="like_post post_id_<?= $post['post_id']; ?>"><?= isset($nb_likes[$i]) ? $nb_likes[$i] : "0 Like";?></p>
+                                <?= isset($user_likes_it[$i]) ? "<img class=\"post_index_heart\" src=\"./assets/imgs/heart_fill.png\" />" : "<img class=\"post_index_heart\" src=\"./assets/imgs/heart.png\" />" ; ?>
+                            </div>
                         </div>
                     <?php
                     }

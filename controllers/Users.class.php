@@ -91,10 +91,30 @@ class UsersController extends Controller {
             $_SESSION["current_user_pic"] = $content[0]["profile_pic"];
             $_SESSION["current_user_user_id"] = $content[0]["user_id"];
             $_SESSION["current_user_notification_email"] = $content[0]["notification_email"];
+            $_SESSION["current_user_notification_active"] = $content[0]["notification_active"];
             $_SESSION["current_user_date_of_creation"] = $content[0]["date_of_creation"];
             return (1);
         }
         return (0);
+    }
+
+    private static function manage_file_errors($nb_error) {
+        switch ($nb_error) {
+            case 1:
+                return ('The uploaded file exceeds the max size'); #from php.ini
+            case 2:
+                return ('The uploaded file exceeds the max size'); #from html form
+            case 3:
+                return ('The uploaded file was only partially uploaded.');
+            case 4:
+                return ('No file was uploaded');
+            case 6:
+                return ('Missing a temporary folder');
+            case 7:
+                return ('Failed to write file to disk.');
+            case 8:
+                return ('A PHP extension stopped the file upload.');
+        }
     }
 
     private function upload_profile_pic($key) {
@@ -120,14 +140,21 @@ class UsersController extends Controller {
             3 => 'file upload was only partial',
             4 => 'no file was attached'
         );
-        if (isset($_FILES) && array_key_exists($fieldname, $_FILES)) {
+        if (input_useable($_FILES, $fieldname)) {
             if ($_FILES[$fieldname]['error'] !== 0) {
-                self::$errors[] = $_FILES[$fieldname]['error'];
-                self::fill_session_error(array(), 'sign_up');
+                self::fill_session_error(array(), self::manage_file_errors($_FILES[$fieldname]['error']));
+                return (0);
             }
+            var_dump("test");
+            if (!input_useable($_FILES[$fieldname], 'tmp_name')) {
+                var_dump("test");
+                self::fill_session_error(array(), 'Can\'t upload a file with an empty name');
+                return (0);
+            }
+            var_dump("test");
             if (!is_uploaded_file($_FILES[$fieldname]['tmp_name'])) {
-                self::$errors[] = 'not an HTTP upload';
-                self::fill_session_error(array(), 'sign_up');
+                self::fill_session_error(array(), 'not an HTTP upload');
+                return (0);
             }
             // validation... since this is an image upload script we should run a check
             // to make sure the uploaded file is in fact an image. Here is a simple check:
@@ -152,7 +179,7 @@ class UsersController extends Controller {
             $ret = basename($uploadFilename);
             return ($ret);
         } else {
-            return ("");
+            return (0);
         }
     }
 
@@ -160,9 +187,9 @@ class UsersController extends Controller {
         switch ($return_val) {
             case 1:
                 if (self::send_verification_email($arr)) {
-                    $_SESSION['success'] = "<p class='success'>Your account has been made,<br />
+                    $_SESSION['success'] = "Your account has been made,<br />
                                             please verify it by clicking the activation link 
-                                            that has been sent to your email.<br /></p>";
+                                            that has been sent to your email.<br />";
                     return (1);
                 } else {
 //                   $user = new User;
@@ -214,7 +241,7 @@ class UsersController extends Controller {
                     "email" => array_key_exists("email", $kwargs) ? $kwargs["email"] : "",
                     "login" => array_key_exists("login", $kwargs) ? $kwargs["login"] : "",
                     "password" => array_key_exists("password", $kwargs) ? hash("whirlpool", $kwargs["password"]) : "",
-                    "profile_pic" =>"assets/profile_pics/default.png",
+                    "profile_pic" => "default.png",
                     "verif_hash" => md5(rand(9101994, 11021994))
                 ];
                 $user = new User;
@@ -242,7 +269,7 @@ class UsersController extends Controller {
     */
     private static function send_verification_email($user_info) {
         if (self::email_valid($user_info["email"]) && self::md5_valid($user_info["verif_hash"])) {
-            $to = "gabriele_Virga@hotmail.com";
+            $to = "ludovic.persin@protonmail.com";
             $from = "gvirga@student.s19.be";
             $headers = "MIME-Version: 1.0" . "\r\n"; 
             $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
@@ -317,7 +344,7 @@ class UsersController extends Controller {
     login_valid($login) take an user input and verify if the input is a well-formatted login.
 	*/
 	private static function login_valid($login) {
-        if (preg_match("/^(?=.{5,26}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$/",$login)) {
+        if (preg_match("/^(?=.{3,26}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$/",$login)) {
             return (1);
         }
 		return (0);
@@ -365,19 +392,28 @@ class UsersController extends Controller {
             try {
                 $user = new User;
                 if (!($user->auth_user($_SESSION['current_user'], hash('whirlpool', $user_info['old_password'])))) {
-                    echo "Wrong password";
-                    $_SESSION['refresh'] = "profile&update=password";
-                    self::fill_session_error(array(), 'Wrong password');
+                    self::fill_session_error(array(), 'The passwords doesn\'t match');
+                    $_SESSION['errors'] = self::get_errors();
+                    header('Location: profile&update=password');
+                    return (0);
                 }
                 if ($user->update_password(hash("whirlpool", $user_info['new_password']), $_SESSION['current_user']) != USER_DONT_EXIST) {
-                    echo "password changed";
+                    self::fill_current_user_login($_SESSION['current_user']);
+                    $_SESSION['success'] = "Password changed successfully";
+                    header('Location: profile');
                     return (1);
                 }
             } catch (Exception $e) {
-                echo "FATAL ERROR:" . $e->getMessage();
+                self::fill_session_error(array(), $e->getMessage());
+                $_SESSION['errors'] = self::get_errors();
+                header('Location: profile&update=password');
+                return (0);
             }
         } else {
-            echo "Password not well formatted";
+            self::fill_session_error(array(), 'Password not well formatted');
+            $_SESSION['errors'] = self::get_errors();
+            header('Location: profile&update=password');
+            return (0);
         }
     }
 
@@ -385,98 +421,168 @@ class UsersController extends Controller {
         $user = new User;
         if (self::login_valid($user_info['new_login'])) {
             try {
+                $user_exist = $user->get_user_id($user_info['new_login']);
+                if ($user_exist) {
+                    self::fill_session_error(array(), 'Username already exists');
+                    $_SESSION['errors'] = self::get_errors();
+                    header('Location: profile&update=login');
+                    return (0);
+                }
                 if ($user->update_login($user_info['new_login'], $_SESSION['current_user'])) {
                     self::fill_current_user_login($user_info['new_login']);
                     header("Location: profile");
                     return (1);
                 } else {
-                    $_SESSION['refresh'] = "profile&update=login";
-                    self::fill_session_error(array('login' => $user_info['new_login']), 'profile');
+                    self::fill_session_error(array(), 'Couldn\'t update username');
+                    $_SESSION['errors'] = self::get_errors();
+                    header('Location: profile&update=login');
                     return (0);
                 }
             } catch (Exception $e) {
-                echo "FATAL ERROR:" . $e->getMessage();
+                self::fill_session_error(array(), $e->getMessage());
+                $_SESSION['errors'] = self::get_errors();
+                header('Location: profile&update=login');
+                return (0);
             }
         } else {
-            self::fill_session_error(array('login' => $user_info['new_login']), "Login not well formatted");
+            self::fill_session_error(array(), 'Login not well formatted');
+            $_SESSION['errors'] = self::get_errors();
+            header('Location: profile&update=login');
             return (0);
         }
     }
 
     private static function update_profile_pic() {
         $user = new User;
-        if (isset($_FILES) && array_key_exists("new_profile_pic", $_FILES)) {
-            try {
-                $profile_pic = self::upload_profile_pic("new_profile_pic");
+        try {
+            $profile_pic = self::upload_profile_pic("new_profile_pic");
+            if ($profile_pic !== 0) {
                 if ($user->update_profile_pic($profile_pic, $_SESSION['current_user'])) {
                     self::fill_current_user_login($_SESSION['current_user']);
-                    header("Location: profile");
+                    header('Location: profile');
                     return (1);
                 } else {
-                    $_SESSION['refresh'] = 'profile&update=profile_pic';
                     self::fill_session_error(array(), "Couldn't update profile pic");
+                    $_SESSION['errors'] = self::get_errors();
+                    header('Location: profile&update=profile_pic');
                     return (0);
                 }
-            } catch (Exception $e) {
-                echo "FATAL ERROR:" . $e->getMessage();
+            } else {
+                $_SESSION['errors'] = self::get_errors();
+                header('Location: profile&update=profile_pic');
+                return (0);
             }
-        } else {
-            echo "Image not inserted";
-            self::fill_session_error(array(), "profile");
+        } catch (Exception $e) {
+            self::fill_session_error(array(), $e->getMessage());
+            $_SESSION['errors'] = self::get_errors();
+            header('Location: profile&update=profile_pic');
+            return (0);
         }
     }
 
     private static function update_email($user_info) {
-        $user = new User;
         if (self::email_valid($user_info['new_email'])) {
             try {
+                $user = new User;
+                $email_exist = $user->get_email($user_info['new_email']);
+                if ($email_exist) {
+                    self::fill_session_error(array('email' => $user_info['new_email']), 'Mail already exists');
+                    $_SESSION['errors'] = self::get_errors();
+                    header('Location: profile&update=email');
+                    return (0);
+                }
                 if ($user->update_email($user_info['new_email'], $_SESSION["current_user_email"], $_SESSION['current_user']) != USER_DONT_EXIST) {
                     self::fill_current_user_login($user_info['new_email']);
                     header("Location: profile");
+                    return (1);
                 } else {
-                    $_SESSION['refresh'] = "profile&update=email";
-                    self::fill_session_error(array('email' => $user_info['new_email']), 'profile');
+                    self::fill_session_error(array('email' => $user_info['new_email']), 'Error updating the email');
+                    $_SESSION['errors'] = self::get_errors();
+                    header('Location: profile&update=email');
+                    return (0);
                 }
             } catch (Exception $e) {
-                echo "FATAL ERROR:" . $e->getMessage();
+                self::fill_session_error(array('email' => $user_info['new_email']),$e->getMessage());
+                $_SESSION['errors'] = self::get_errors();
+                header('Location: profile&update=email');
+                return (0);
             }
         } else {
-            echo "Email not well formatted";
-            self::fill_session_error(array('email' => $user_info['new_email']), "profile");
+            self::fill_session_error(array('email' => $user_info['new_email']), 'Wrong format for the email');
+            $_SESSION['errors'] = self::get_errors();
+            header('Location: profile&update=email');
+            return (0);
         }
     }
 
     private static function update_notification_email($user_info) {
-        $user = new User;
         if (self::email_valid($user_info['new_notification_email'])) {
             try {
+                $user = new User;
                 if ($user->update_notification_email($user_info['new_notification_email'], $_SESSION["current_user_notification_email"], $_SESSION['current_user']) != USER_DONT_EXIST) {
                     self::fill_current_user_login($_SESSION['current_user']);
                     header("Location: profile");
+                    return (1);
                 } else {
-                    self::fill_session_error(array('email' => $user_info['new_notification_email']), 'profile&update=notification_email');
+                    self::fill_session_error(array(), 'Couldn\'t update email');
+                    $_SESSION['errors'] = self::get_errors();
+                    header('Location: profile&update=notification_email');
+                    return (0);
                 }
             } catch (Exception $e) {
-                echo "FATAL ERROR:" . $e->getMessage();
+                self::fill_session_error(array(), $e->getMessage());
+                $_SESSION['errors'] = self::get_errors();
+                header('Location: profile&update=notification_email');
+                return (0);
             }
         } else {
-            echo "Email not well formatted";
-            self::fill_session_error(array('email' => $user_info['new_notification_email']), "profile");
+            self::fill_session_error(array(), 'Email not well formatted');
+            $_SESSION['errors'] = self::get_errors();
+            header('Location: profile&update=notification_email');
+            return (0);
+        }
+    }
+
+    public static function update_notification_active() {
+        try {
+            if (input_useable($_SESSION, 'current_user_user_id') && array_key_exists('current_user_notification_active', $_SESSION)) {
+                $user = new User;
+                $res = $user->toggle_notification_active($_SESSION['current_user_user_id'], $_SESSION['current_user_notification_active']);
+                self::fill_current_user_login($_SESSION['current_user']);
+                if ($res == 2)
+                    $_SESSION['success'] = 'The notifications are turned off!<br/>You will no longer receive an email when someone comment on your posts';
+                else if ($res == 1)
+                    $_SESSION['success'] = 'The notifications are turned on!<br/>You will receive an email when someone comment on your posts';
+                header('Location: profile');
+                return (1);
+            } else {
+                self::fill_session_error(array(), 'Couldn\'t find user');
+                $_SESSION['errors'] = self::get_errors();
+                header('Location: profile');
+                return (0);
+            }
+        } catch (Exception $e) {
+            self::fill_session_error(array(), $e->getMessage());
+            $_SESSION['errors'] = self::get_errors();
+            header('Location: profile');
+            return (0);
         }
     }
 
     public static function update_user($column) {
+	    var_dump($column);
         if (array_key_exists("new_login", $column)) {
             self::update_login($column);
         } else if (array_key_exists("new_password", $column) && array_key_exists("old_password", $column)) {
             self::update_password($column);
-        } else if (array_key_exists("new_email", $column)) {
+        } else if (array_key_exists('new_email', $column)) {
             self::update_email($column);
         } else if (array_key_exists("new_notification_email", $column)) {
             self::update_notification_email($column);
         } else if (array_key_exists("new_profile_pic", $_FILES)) {
             self::update_profile_pic();
-        }
+        } else if (array_key_exists('update_notification_active', $column))
+            self::update_notification_active();
 	}
 
 	public static function password_recovery($info) {

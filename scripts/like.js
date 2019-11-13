@@ -1,10 +1,23 @@
-function create_like_status(post_info) {
+function click_like(likeImg) {
+    if (likeImg.offsetWidth < 30) {
+        likeImg.style.width = (likeImg.offsetWidth + 1) + "px";
+    } else {
+
+    }
+
+}
+
+
+
+function create_like_status(post_info_div) {
     let xhttp = new XMLHttpRequest();
+    let post_info = post_info_div.querySelector(".like_post");
     let post_img = post_info.className;
     let textLike = post_info.innerHTML;
     let post_img_id = post_img.substr(post_img.indexOf("post_id_")).substr(8);
     let nbLikes = textLike.substr(0, textLike.indexOf(" "));
     let errorWrapper = document.querySelector('.error_wrapper');
+    let likeImg = post_info_div.querySelector(".post_index_heart");
 
     xhttp.onreadystatechange = function() {
         if (this.readyState === 4 && this.status === 200) {
@@ -12,6 +25,9 @@ function create_like_status(post_info) {
                 if (this.response.substr(2, 4) === '+1') {
                     nbLikesInt = parseInt(nbLikes);
                     nbLikesInt += 1;
+                    likeImg.style.width
+                    likeImg.classList.add('animate');
+                    likeImg.src = "./assets/imgs/heart_fill.png";
                     if (nbLikesInt > 1)
                         post_info.innerHTML = nbLikesInt + " Likes";
                     else
@@ -19,6 +35,10 @@ function create_like_status(post_info) {
                 } else {
                     nbLikesInt = parseInt(nbLikes);
                     nbLikesInt -= 1;
+                    if (likeImg.classList.contains('animate')) {
+                        likeImg.classList.remove('animate');
+                    }
+                    likeImg.src = "./assets/imgs/heart.png";
                     if (nbLikesInt > 1)
                         post_info.innerHTML = nbLikesInt + " Likes";
                     else
@@ -34,12 +54,13 @@ function create_like_status(post_info) {
     xhttp.send("post_img=" + post_img_id);
 }
 
-let createLikeButtons = document.querySelectorAll(".like_post");
+let createLikeButtons = document.querySelectorAll(".like_wrapper");
 
 if (createLikeButtons !== null) {
     createLikeButtons.forEach(function (createLikeButton) {
         createLikeButton.addEventListener("click", function () {
             create_like_status(this);
+
         });
     });
 }

@@ -1,30 +1,54 @@
 <?php
+
+    if (input_useable($_SESSION, 'errors')) {
+        foreach ($_SESSION['errors'] as $error)
+            echo "<p class='error'>$error</p>";
+        $_SESSION['errors'] = "";
+    }
+
     if (isset($_SESSION) && array_key_exists('current_user', $_SESSION) && !empty($_SESSION['current_user'])) {
 ?>
-
-        <p class="profile_texts">Login: <?php echo htmlspecialchars($_SESSION['current_user']); ?></p>
-        <p class="profile_texts">Email: <?php echo htmlspecialchars($_SESSION['current_user_email']); ?></p>
-        <p class="profile_texts">Notification
-            Email: <?php echo htmlspecialchars($_SESSION['current_user_notification_email']); ?></p>
-        <p class="profile_texts">profile_pic: <img
-                    src="assets/profile_pics/<?php echo htmlspecialchars($_SESSION['current_user_pic']); ?>"/></p>
-        <a href="profile&update=password">
-            <button class="profile_change_buttons">Change password</button>
-        </a>
-        <a href="profile&update=login">
-            <button class="profile_change_buttons">Change login</button>
-        </a>
-        <a href="profile&update=email">
-            <button class="profile_change_buttons">Change email</button>
-        </a>
-        <a href="profile&update=notification_email">
-            <button class="profile_change_buttons">Change notification mail</button>
-        </a>
-        <a href="profile&update=profile_pic">
-            <button class="profile_change_buttons">Change profile picture</button>
-        </a>
+        <div class="profile_description">
+            <p>Welcome to your profile page!<br/>
+            <p>Here you can modify your data</p>
+            <img class="profile_cat_img" src="assets/imgs/tebe.png" />
+        </div>
+        <div class="profile_wrapper">
+            <p class="profile_texts profile_first_input"><?php echo htmlspecialchars($_SESSION['current_user']); ?></p>
+            <div class="update_buttons_login">
+                <a class="profile_buttons_links" href="profile&update=login">
+                    <button class="profile_change_buttons">Change login</button>
+                </a>
+                <a class="profile_buttons_links" href="profile&update=password">
+                    <button class="profile_change_buttons">Change password</button>
+                </a>
+                <a class="profile_buttons_links" href="profile&update=profile_pic">
+                    <button class="profile_change_buttons">Change profile picture</button>
+                </a>
+            </div>
+            <p class="profile_email_input profile_texts">Email<br/><?php echo htmlspecialchars($_SESSION['current_user_email']); ?></p>
+            <div class="update_buttons_email">
+                <a class="profile_buttons_links" href="profile&update=email">
+                    <button class="profile_change_buttons">Change email</button>
+                </a>
+            </div>
+            <p class="profile_notif_email_input profile_texts">Notification email<br/><?php echo htmlspecialchars($_SESSION['current_user_notification_email']); ?></p>
+            <div class="update_button_notif">
+                <a class="profile_buttons_links" href="profile&update=notification_email">
+                    <button class="profile_change_buttons">Change notification mail</button>
+                </a>
+                    <form method="POST" action="profile&update=notification_active">
+                    <?php if ($_SESSION['current_user_notification_active'] === '1') { ?>
+                        <input type="submit" name="update_notification_active" class="profile_change_buttons" value="Disable notifications">
+                    <?php } else {?>
+                        <input type="submit" name="update_notification_active" class="profile_change_buttons" value="Enable notifications">
+                    <?php } ?>
+                    </form>
+            </div>
+            <img class="profile_profile_pic" src="./assets/profile_pics/<?php echo htmlspecialchars($_SESSION['current_user_pic']); ?>">
+        </div>
 <?php
     } else {
-        echo "You don't have the rights to be here!";
+        header("Location: index");
     }
     ?>

@@ -70,7 +70,14 @@ class PostsController extends Controller implements Comments, Likes {
 			if (self::$info) {
 			    foreach (self::$info as $post) {
 			        self::$info[] = $comments->get_nbr_comments($post['post_id']);
-					self::$info[] = $likes->get_post_nblikes($post['post_id']);
+			        self::$info[] = $likes->get_post_nblikes($post['post_id']);
+			        if (input_useable($_SESSION, 'current_user')) {
+			            $user = new User;
+			            $user_id = $user->get_user_id($_SESSION['current_user']);
+                        self::$info[][]['user_likes_it'] = $likes->is_active($user_id['user_id'], $post['post_id']);
+                    } else {
+                        self::$info[][]['user_likes_it'] = 0;
+                    }
                 }
             }
 			parent::template_index();

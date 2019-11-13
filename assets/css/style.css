@@ -1,5 +1,9 @@
 /* Header */
 
+html {
+    font-family: Montserrat;
+}
+
 .error {
     border: 2px solid darkred;
     border-radius: 5px;
@@ -16,6 +20,17 @@
     text-align: center;
     background-color: darkseagreen;
     color: darkgreen;
+}
+
+.success_msg {
+    border: 2px solid darkgreen;
+    border-radius: 5px;
+    padding: 10px;
+    text-align: center;
+    background-color: darkseagreen;
+    color: darkgreen;
+    width: 90%;
+    margin: auto;
 }
 
 .header {
@@ -39,35 +54,74 @@ div.header a {
     text-decoration: none;
 }
 
-div.header div:nth-child(1) {
+div.header #elem1 {
     flex-grow: 0.4;
     font-size: 25px;
     font-weight: bold;
 }
 
-div.header div:nth-child(1) a {
+div.header #elem1 a {
     color: rgb(15, 129, 158);
 }
 
-.header .blank {
+#elem2 {
     flex-grow: 6;
 }
+.profile_pic_wrapper_header {
+    position: relative;
+    width: 35px;
+    border-radius: 25px;
+    margin-left: 5px;
+    top: 12px;
+    display: inline-block;
+}
 
-div.header div:nth-child(3) {
+.profile_pic_header {
+    width: 100%;
+    height: 35px;
+    border-radius: 200px;
+}
+
+.current_user_header {
+    display: inline;
+}
+
+@media screen and (max-width: 780px) {
+    .current_user_header {
+        display: none;
+    }
+    .profile_pic_wrapper_header {
+        position: relative;
+        width: 50px;
+        border-radius: 25px;
+        margin-left: 5px;
+        top: 19px;
+        display: inline-block;
+    }
+
+    .profile_pic_header {
+        width: 100%;
+        height: 50px;
+        border-radius: 200px;
+    }
+}
+
+div.header #elem3 {
+    display: block;
     flex-grow: 0.5;
     text-decoration: none;
     font-size: 17px;
 }
 
-div.header div:nth-child(3) a {
+div.header #elem3 a {
     color: rgb(104, 104, 104);
 }
 
-div.header div:nth-child(4) {
+div.header #elem4 {
     flex-grow: 0.5;
 }
 
-div.header div:nth-child(4) button {
+div.header #elem4 button {
     border: 1px solid rgb(15, 129, 158);
     border-radius: 5%;
     color: rgb(15, 129, 158);
@@ -104,10 +158,44 @@ div.header div:nth-child(4) button {
     width: 26%;
 }
 
-.post_index img {
+.post_index_img {
     width: 100%;
     border: 3px solid rgb(15, 129, 158);
     height: 250px;
+}
+
+.post_index_heart {
+    width: 20px;
+}
+
+.like_post {
+    display:inline-block;
+}
+
+.comment_post_link {
+    text-decoration: none;
+}
+
+.post_index_heart {
+    transform: scale(1);
+    width: 25px;
+    height: 25px;
+}
+
+.post_index_heart.animate {
+    animation-name: example;
+    animation-duration: 1s;
+}
+
+@keyframes example {
+    0%   {width: 25px; height: 25px;}
+    50%  {width: 50px; height: 50px;}
+    100% {width: 25px; height: 25px;}
+}
+
+.comment_post {
+    display: inline-block;
+    text-decoration: none;
 }
 
 .display_nb {
@@ -323,6 +411,26 @@ div.header div:nth-child(4) button {
     font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji;
 }
 
+.format_login {
+    font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji;
+    display:none;
+    margin-bottom: 5px;
+    font-size: 12px;
+    font-style: italic;
+    border: 1px dotted green;
+    border-radius: 5px;
+}
+
+.format_password {
+    font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji;
+    display:none;
+    margin-bottom: 5px;
+    font-size: 12px;
+    font-style: italic;
+    border: 1px dotted green;
+    border-radius: 5px;
+}
+
 .create_user_inputs{
     width: 100%;
     border-radius: 5px;
@@ -332,6 +440,10 @@ div.header div:nth-child(4) button {
     padding-bottom: 4px;
     padding-left: 8px;
     border: 1px solid rgb(15, 129, 158);
+}
+
+.create_user_pass_verif {
+    margin-bottom: 10px;
 }
 
 .create_user_file_input {
@@ -580,6 +692,98 @@ Login view css start
     }
 
     .sign_in_title {
+        font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;
+        font-size: 22px;
+        font-weight: 300;
+        left: 0;
+    }
+
+    .sign_in_absolute_form {
+        width: 100%;
+        max-width: 100%;
+        padding-right: 16px;
+        padding-left: 16px;
+        margin-left: 0%;
+    }
+
+    .sign_in_form {
+        padding: 20px;
+        padding-right: 30px;
+        border: 1px dotted blue;
+        border-radius: 5px;
+        background-color: #fff;
+    }
+
+    .sign_in_inputs {
+        width: 100%;
+        border-radius: 5px;
+        font-size: 22px;
+        background-color: #fff;
+        padding-top: 4px;
+        padding-bottom: 4px;
+        padding-left: 8px;
+        border: 1px solid rgb(15, 129, 158);
+    }
+
+    .sign_in_submit {
+        width: 100%;
+        background: linear-gradient(rgb(15, 129, 158), rgb(45, 159, 188));
+        border: 1px solid rgb(15, 129, 158);
+        border-radius: 4px;
+        font-size: 22px;
+        color: #fff;
+        margin-left: 4px;
+        margin-top: 30px;
+    }
+
+    .sign_in_submit:hover {
+        background: linear-gradient(rgb(45, 159, 188), rgb(15, 129, 158));
+    }
+
+    .pass_rec_submit {
+        width: 100%;
+        background: linear-gradient(rgb(15, 129, 158), rgb(45, 159, 188));
+        border: 1px solid rgb(15, 129, 158);
+        border-radius: 4px;
+        font-size: 22px;
+        color: #fff;
+        margin-left: 4px;
+        margin-top: 30px;
+    }
+
+    .submit_change_password_rec {
+        width: 100%;
+        background: linear-gradient(rgb(15, 129, 158), rgb(45, 159, 188));
+        border: 1px solid rgb(15, 129, 158);
+        border-radius: 4px;
+        font-size: 22px;
+        color: #fff;
+        margin-left: 4px;
+        margin-top: 30px;
+    }
+
+    .pass_rec_submit:hover {
+        background: linear-gradient(rgb(45, 159, 188), rgb(15, 129, 158));
+    }
+
+    .sign_in_error_msg {
+        background-color: red;
+        margin-bottom: 10px;
+    }
+}
+/* Profile css */
+
+@media screen and (max-width: 780px) {
+    .sign_in_absolute_title {
+        padding-right: 16px;
+        padding-left: 16px;
+        max-width: 100%;
+        width: 100%;
+        text-align: center;
+        margin-left: 0%;
+    }
+
+    .sign_in_title {
         font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji;
         font-size: 22px;
         font-weight: 300;
@@ -657,5 +861,428 @@ Login view css start
     .sign_in_error_msg {
         background-color: red;
         margin-bottom:10px;
+    }
+}
+
+
+@media screen and (max-width: 780px) {
+    .sign_in_absolute_title {
+        padding-right: 16px;
+        padding-left: 16px;
+        max-width: 100%;
+        width: 100%;
+        text-align: center;
+        margin-left: 0%;
+    }
+
+    .sign_in_title {
+        font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji;
+        font-size: 22px;
+        font-weight: 300;
+        left: 0;
+    }
+
+    .sign_in_absolute_form {
+        width: 100%;
+        max-width: 100%;
+        padding-right: 16px;
+        padding-left: 16px;
+        margin-left: 0%;
+    }
+
+    .sign_in_form {
+        padding: 20px;
+        padding-right: 30px;
+        border: 1px dotted blue;
+        border-radius: 5px;
+        background-color: #fff;
+    }
+
+    .sign_in_inputs{
+        width: 100%;
+        border-radius: 5px;
+        font-size: 22px;
+        background-color: #fff;
+        padding-top: 4px;
+        padding-bottom: 4px;
+        padding-left: 8px;
+        border: 1px solid rgb(15, 129, 158);
+    }
+
+    .sign_in_submit {
+        width: 100%;
+        background: linear-gradient(rgb(15, 129, 158), rgb(45, 159, 188));
+        border: 1px solid rgb(15, 129, 158);
+        border-radius: 4px;
+        font-size: 22px;
+        color: #fff;
+        margin-left: 4px;
+        margin-top: 30px;
+    }
+
+    .sign_in_submit:hover {
+        background: linear-gradient(rgb(45, 159, 188), rgb(15, 129, 158));
+    }
+
+    .pass_rec_submit {
+        width: 100%;
+        background: linear-gradient(rgb(15, 129, 158), rgb(45, 159, 188));
+        border: 1px solid rgb(15, 129, 158);
+        border-radius: 4px;
+        font-size: 22px;
+        color: #fff;
+        margin-left: 4px;
+        margin-top: 30px;
+    }
+
+    .submit_change_password_rec{
+        width: 100%;
+        background: linear-gradient(rgb(15, 129, 158), rgb(45, 159, 188));
+        border: 1px solid rgb(15, 129, 158);
+        border-radius: 4px;
+        font-size: 22px;
+        color: #fff;
+        margin-left: 4px;
+        margin-top: 30px;
+    }
+
+    .pass_rec_submit:hover {
+        background: linear-gradient(rgb(45, 159, 188), rgb(15, 129, 158));
+    }
+
+    .sign_in_error_msg {
+        background-color: red;
+        margin-bottom:10px;
+    }
+}
+
+/* Profile css */
+.profile_wrapper {
+    width: 30%;
+    max-width: 400px;
+    border: 2px solid rgb(15, 129, 158);
+    position: relative;
+    font-size: 16px;
+    border-radius: 5px;
+    margin: auto;
+}
+
+.profile_texts {
+    text-align: center;
+    border-bottom: 1px solid rgb(15, 129, 158);
+    padding-bottom: 10px;
+    padding-top: 25px;
+    margin: 0px;
+    background: linear-gradient(#ffffff, #efefef, #ffffff);
+}
+
+.profile_texts:hover {
+    background: linear-gradient(#efefef, #ffffff, #efefef);
+}
+
+.profile_profile_pic {
+    border-radius: 200px;
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    left: 37%;
+    top: -50px;
+    border: 2px solid rgb(15, 129, 158);
+    background-color: #ffffff;
+}
+
+.profile_first_input {
+    padding-top: 75px;
+}
+
+.profile_description {
+    display: block;
+    text-align: center;
+    font-size: 16px;
+    margin: auto;
+    margin-bottom: 60px;
+    position: relative;
+    width: 30%;
+    max-width: 400px;
+    border: 2px solid rgb(15, 129, 158);
+}
+
+.profile_cat_img {
+    height: 100px;
+    position: absolute;
+    right: -50px;
+    top: -70px;
+}
+
+.update_buttons_login {
+    display: none;
+    font-size: 16px;
+    position: absolute;
+    border-bottom: 2px solid rgb(15, 129, 158);
+    width: 100%;
+    height: 115px;
+}
+
+
+.update_buttons_email {
+    display: none;
+    font-size: 16px;
+    position: absolute;
+    border-bottom: 2px solid rgb(15, 129, 158);
+    width: 100%;
+    height: 50px;
+    text-align: center;
+}
+
+.update_button_notif {
+    display: none;
+    font-size: 16px;
+    position: absolute;
+    border-bottom: 2px solid rgb(15, 129, 158);;
+    border-right: 2px solid rgb(15, 129, 158);;
+    border-left: 2px solid rgb(15, 129, 158);;
+    width: 100%;
+    height: 80px;
+    left: -2px;
+    text-align: center;
+}
+
+.profile_change_buttons {
+    font-size: 17px;
+    display: block;
+    margin: auto;
+    margin-top: 10px;
+    border: 2px solid rgb(15, 129, 158);
+}
+
+.update_buttons_login_animate {
+    display:block;
+}
+
+.profile_buttons_links {
+    background-color: red;
+    text-decoration: none;
+}
+
+.form_wrapper {
+    text-align: center;
+    padding-right: 15px;
+    padding-left: 5px;
+}
+
+.profile_inputs {
+    font-size: 20px;
+    width: 100%;
+    border-radius: 5px;
+    background-color: #efefef;
+    margin-bottom: 15px;
+}
+
+.profile_inputs_file {
+    color: rgb(15, 129, 158);
+    margin-bottom: 12px;
+    font-size: 16px;
+    border: 2px solid rgb(15, 129, 158);
+}
+
+.text_inputs {
+    font-size: 20px;
+    margin-bottom: 5px;
+}
+
+.submit_update {
+    width: 102%;
+    background: linear-gradient(rgb(15, 129, 158), rgb(45, 159, 188));
+    border: 1px solid rgb(15, 129, 158);
+    margin: auto;
+    font-size: 20px;
+    border-radius: 5px;
+    color: #ffffff;
+}
+.profile_submit_change_login:hover {
+    background: linear-gradient(rgb(45, 159, 188), rgb(15, 129, 158));
+}
+
+.opened {
+    display:block;
+}
+
+.format_login {
+    font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji;
+    display:none;
+    margin-bottom: 5px;
+    font-size: 16px;
+    font-style: italic;
+    border: 1px dotted green;
+    border-radius: 5px;
+}
+
+.format_password {
+    font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji;
+    display:none;
+    margin-bottom: 5px;
+    font-size: 16px;
+    font-style: italic;
+    border: 1px dotted green;
+    border-radius: 5px;
+}
+
+
+/* Profile css */
+@media screen and (max-width: 550px) {
+    .profile_wrapper {
+        width: 100%;
+        max-width: 100%;
+        border: 2px solid rgb(15, 129, 158);
+        margin-top:50px;
+        position: relative;
+        font-size: 24px;
+        border-radius: 5px;
+    }
+
+    .profile_texts {
+        text-align: center;
+        border-bottom: 1px solid rgb(15, 129, 158);
+        padding-top: 10px;
+        padding-bottom: 10px;
+        margin: 0px;
+        background: linear-gradient(#ffffff, #efefef, #ffffff);
+    }
+
+    .profile_texts:hover {
+        background: linear-gradient(#efefef, #ffffff, #efefef);
+    }
+
+    .profile_profile_pic {
+        border-radius: 200px;
+        position: absolute;
+        width: 100px;
+        height: 100px;
+        left: 36%;
+        top: -50px;
+        border: 2px solid rgb(15, 129, 158);
+        background-color: #ffffff;
+    }
+
+    .profile_first_input {
+        padding-top: 50px;
+
+    }
+
+    .profile_description {
+        display:none;
+    }
+
+    .update_buttons_login {
+        display: none;
+        font-size: 16px;
+        position: absolute;
+        border-bottom: 2px solid rgb(15, 129, 158);
+        width: 100%;
+        height: 115px;
+    }
+
+
+    .update_buttons_email {
+        display: none;
+        font-size: 16px;
+        position: absolute;
+        border-bottom: 2px solid rgb(15, 129, 158);
+        width: 100%;
+        height: 50px;
+        text-align: center;
+    }
+
+    .update_button_notif {
+        display: none;
+        font-size: 16px;
+        position: absolute;
+        border-bottom: 2px solid rgb(15, 129, 158);;
+        border-right: 2px solid rgb(15, 129, 158);;
+        border-left: 2px solid rgb(15, 129, 158);;
+        width: 100%;
+        height: 80px;
+        left: -2px;
+        text-align: center;
+    }
+
+    .profile_change_buttons {
+        font-size: 17px;
+        display: block;
+        margin: auto;
+        margin-top: 10px;
+        border: 2px solid rgb(15, 129, 158);
+    }
+
+    .update_buttons_login_animate {
+        display:block;
+    }
+
+    .profile_buttons_links {
+        background-color: red;
+        text-decoration: none;
+    }
+
+    .form_wrapper {
+        text-align: center;
+        padding-right: 15px;
+        padding-left: 5px;
+    }
+
+    .profile_inputs {
+        font-size: 20px;
+        width: 100%;
+        border-radius: 5px;
+        background-color: #efefef;
+        margin-bottom: 15px;
+    }
+
+    .profile_inputs_file {
+        color: rgb(15, 129, 158);
+        margin-bottom: 12px;
+        font-size: 16px;
+        border: 2px solid rgb(15, 129, 158);
+    }
+
+    .text_inputs {
+        font-size: 20px;
+        margin-bottom: 5px;
+    }
+
+    .submit_update {
+        width: 102%;
+        background: linear-gradient(rgb(15, 129, 158), rgb(45, 159, 188));
+        border: 1px solid rgb(15, 129, 158);
+        margin: auto;
+        font-size: 20px;
+        border-radius: 5px;
+        color: #ffffff;
+    }
+    .profile_submit_change_login:hover {
+        background: linear-gradient(rgb(45, 159, 188), rgb(15, 129, 158));
+    }
+
+    .opened {
+        display:block;
+    }
+
+    .format_login {
+        font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji;
+        display:none;
+        margin-bottom: 5px;
+        font-size: 16px;
+        font-style: italic;
+        border: 1px dotted green;
+        border-radius: 5px;
+    }
+
+    .format_password {
+        font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji;
+        display:none;
+        margin-bottom: 5px;
+        font-size: 16px;
+        font-style: italic;
+        border: 1px dotted green;
+        border-radius: 5px;
     }
 }
