@@ -545,14 +545,27 @@ class UsersController extends Controller {
 
     public static function update_notification_active() {
         try {
-            $user = new User;
-            $user
+            if (input_useable($_SESSION, 'current_user_user_id') && array_key_exists('current_user_notification_active', $_SESSION)) {
+                $user = new User;
+                $res = $user->toggle_notification_active($_SESSION['current_user_user_id'], $_SESSION['current_user_notification_active']);
+                self::fill_current_user_login($_SESSION['current_user']);
+                if ($res == 2)
+                    $_SESSION['success'] = 'The notifications are turned off!<br/>You will no longer receive an email when someone comment on your posts';
+                else if ($res == 1)
+                    $_SESSION['success'] = 'The notifications are turned on!<br/>You will receive an email when someone comment on your posts';
+                header('Location: profile');
+                return (1);
+            } else {
+                self::fill_session_error(array(), 'Couldn\'t find user');
+                $_SESSION['errors'] = self::get_errors();
+                header('Location: profile');
+                return (0);
+            }
         } catch (Exception $e) {
             self::fill_session_error(array(), $e->getMessage());
             $_SESSION['errors'] = self::get_errors();
-            header('Location: profile&update=notification_email');
+            header('Location: profile');
             return (0);
-
         }
     }
 

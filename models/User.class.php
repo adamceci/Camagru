@@ -74,7 +74,7 @@ class User extends Model {
             return ($arr);
             parent::db_drop_connection();
         } catch (Exception $e) {
-            throw new Exception("Error user_email_exist in User Model:" . $e->getMessage());
+            throw new Exception("Error get_notification_email in User Model:" . $e->getMessage());
         }
     }
 
@@ -221,29 +221,6 @@ class User extends Model {
         }
     }
 
-
-//    public function get_verif_time($valid_field) {
-//        try {
-//            parent::db_connect();
-//            $sql = "SELECT `verif_time`
-//                    FROM `users`
-//                    WHERE (LOWER(`email`)=? AND LOWER(`hash`)=?)";
-//            $this->stmt = $this->pdo->prepare($sql);
-//            $email = $valid_field;
-//            $login = $valid_field;
-//            $this->stmt->execute(array($email, $login));
-//            $arr = $this->stmt->fetchAll(PDO::FETCH_ASSOC);
-//            parent::db_drop_connection();
-//            if (!$arr) {
-//                return (FALSE);
-//            } else {
-//                return ($arr);
-//            }
-//        } catch (Exception $e) {
-//            throw new Exception("Error user_login_or_email_exist in User Model:" . $e->getMessage());
-//        }
-//    }
-
     public function update_hash($login, $hash) {
         try {
             parent::db_connect();
@@ -367,6 +344,32 @@ class User extends Model {
             }
         } catch (PDOException $e) {
             throw new Exception("Error update_login in User Model:<br/>" . $e->getMessage());
+        }
+    }
+
+    public function toggle_notification_active($user_id, $notification_active) {
+        try {
+            if ($notification_active == 1) {
+                parent::db_connect();
+                $sql = "UPDATE `users`
+                        SET `notification_active`='0'
+                        WHERE `user_id`=?";
+                $this->stmt = $this->pdo->prepare($sql);
+                $this->stmt->execute(array($user_id));
+                parent::db_drop_connection();
+                return (2);
+            } else {
+                parent::db_connect();
+                $sql = "UPDATE `users`
+                        SET `notification_active`='1'
+                        WHERE `user_id`=?";
+                $this->stmt = $this->pdo->prepare($sql);
+                $this->stmt->execute(array($user_id));
+                parent::db_drop_connection();
+                return (1);
+            }
+        } catch (Exception $e) {
+            throw new Exception("Error toggle_notification_active in User Model:" . $e->getMessage());
         }
     }
 }
