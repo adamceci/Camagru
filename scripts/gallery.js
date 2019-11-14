@@ -83,19 +83,22 @@ function hasGetUserMedia() {
 }
 
 function displayCam() {
-	let toHideElem;
-	let camDiv;
-
-	//add elem left arrow
-	toHideElem = document.querySelector("#choice");
-	toHideElem.classList.add("hidden");
-	camDiv = document.querySelector("#cam_div");
-	camDiv.classList.remove("hidden");
+	let toDisplay = document.querySelector("#cam_div");
+	let toHide = document.querySelector("#choice");
+	let backButton = document.createElement("button");
+	
+	backButton.innerHTML = "Back";
+	backButton.addEventListener("click", function() {
+		backToOne(backButton, toHide, toDisplay);
+	});
+	toDisplay.classList.remove("hidden");
+	toHide.classList.add("hidden");
+	insertAfter(backButton, toHide);
 	if (hasGetUserMedia()) {
 		const constraints = {
 			video: {
 				width: { ideal: 720 },
-				height: { ideal: 500}
+				height: { ideal: 500 }
 			}
 		};
 
@@ -114,10 +117,17 @@ function displayCam() {
 			canvas.getContext('2d').drawImage(video, 0, 0);
 			// Other browsers will fall back to image/png
 			img.src = canvas.toDataURL('image/webp');
+			// console.log(img.src);
 		};
 
 		function handleSuccess(stream) {
-			console.log(stream);
+			streamReference = stream;
+			backButton.addEventListener("click", function() {
+				window.streamReference.getVideoTracks().forEach(function(track) {
+					track.stop();
+				});
+				window.streamReference = null;
+			});
 			screenshotButton.disabled = false;
 			video.srcObject = stream;
 		}
