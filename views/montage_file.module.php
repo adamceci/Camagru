@@ -6,10 +6,10 @@
     <p id="filters">
         Select filters (optional) :
         <div id="display_filters">
-            <img class="filter unselected_filter" src="assets/filters/moustache.png" alt="">
-            <img class="filter unselected_filter" src="assets/filters/bieber_hairs.png" alt="">
-            <img class="filter unselected_filter" src="assets/filters/sumo.png" alt="">
-            <img class="filter unselected_filter" src="assets/filters/arnold.png" alt="">
+            <img class="filter unselected_filter" src="assets/filters/curtains.png" alt="">
+            <img class="filter unselected_filter" src="assets/filters/frame.png" alt="">
+            <img class="filter unselected_filter" src="assets/filters/gate.png" alt="">
+            <img class="filter unselected_filter" src="assets/filters/grunge_banner.png" alt="">
         </div>
     </p>
     <div class="flex right">

@@ -21,7 +21,8 @@ class PostsController extends Controller implements Comments, Likes {
 		self::createModule("close_container_tags", 0);
 		self::createModule("script_filters", 0);
 		self::createModule("script_montage_file", 0);
-		self::createModule("script_post_or_save", 0);
+		self::createModule("script_save_post", 0);
+		self::createModule("script_post_delete", 0);
         self::createModule("footer", 0);
         self::createModule("bottom_html_tags", 0);
 	}
@@ -91,6 +92,11 @@ class PostsController extends Controller implements Comments, Likes {
 			$kwargs["user_id"] = $_SESSION["current_user_user_id"];
 			$kwargs["image"] = basename($file_name);
 			$post->create_post($kwargs);
+			if ($_POST["to_pub"] == 1) {
+				$kwargs["posted_time"] = date("Y-m-d H:i:s");
+				$kwargs["toPubSrc"] = $kwargs["image"];
+				$post->publish_post($kwargs);
+			}
 			echo $file_name;
 		}
 	}
@@ -104,6 +110,7 @@ class PostsController extends Controller implements Comments, Likes {
         self::createModule("montage_side", 1);
 		self::createModule("close_container_tags", 0);		
 		self::createModule("script_gallery", 0);
+		self::createModule("script_post_delete", 0);
         self::createModule("footer", 0);
         self::createModule("bottom_html_tags", 0);
     }
@@ -126,6 +133,7 @@ class PostsController extends Controller implements Comments, Likes {
 			$likes = new Like;
 			if (self::$info) {
 			    foreach (self::$info as $post) {
+					// var_dump($post['post_id']);
 			        self::$info[] = $comments->get_nbr_comments($post['post_id']);
 					self::$info[] = $likes->get_post_nblikes($post['post_id']);
                 }
