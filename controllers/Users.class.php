@@ -269,8 +269,8 @@ class UsersController extends Controller {
     */
     private static function send_verification_email($user_info) {
         if (self::email_valid($user_info["email"]) && self::md5_valid($user_info["verif_hash"])) {
-            $to = "ludovic.persin@protonmail.com";
-            $from = "gvirga@student.s19.be";
+            $to = "a.ceciora@gmail.com";
+            $from = "aceciora@student.s19.be";
             $headers = "MIME-Version: 1.0" . "\r\n"; 
             $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
             $headers .= 'From: '.$from. "\r\n"; 

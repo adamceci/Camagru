@@ -6,7 +6,7 @@ if(isset($_GET)) {
             PostsController::delete_post($_GET);
             echo "OK";
         }
-        catch (exception $e) {
+        catch (Exception $e) {
             echo "FAIL";
         }
     }
@@ -15,8 +15,19 @@ if(isset($_GET)) {
             PostsController::publish_post($_GET);
             echo "OK";
         }
-        catch (exception $e) {
+        catch (Exception $e) {
             echo "FAIL";
         }
+    }
+}
+
+if (input_useable($_POST, "array_images")) {
+    try {
+        PostsController::create_montage();
+        PostsController::display_user_posts();
+        echo "OK";
+    }
+    catch (Exception $e) {
+        echo "FAIL";
     }
 }

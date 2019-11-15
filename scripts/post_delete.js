@@ -8,14 +8,14 @@ function removeImage(data) {
 			if (this.readyState == 4 && this.status == 200 && this.response == "OK")
 				divToRemove.remove();
 		};
-		xhttp.open("GET", "assets/ajax_responses/responses.php?toDelSrc=" + imageToRemove, true);
+		xhttp.open("GET", "responses?toDelSrc=" + imageToRemove, true);
 		xhttp.send();
 	}
 }
 
 function publishImage(data) {
-	let buttonToRemove = data["path"][1];
-	let imageToPublish = data["path"][2]["children"][2]["src"];
+	let buttonToRemove = data["target"];
+	let imageToPublish = data.target.parentNode.parentNode.lastElementChild.src;
 	let xhttp = new XMLHttpRequest();
 
 	if (confirm("Are you sure you want to post this image ?")) {
@@ -23,8 +23,7 @@ function publishImage(data) {
 			if (this.readyState == 4 && this.status == 200 && this.response == "OK")
 				buttonToRemove.remove();
 		};
-		console.log(imageToPublish);
-		xhttp.open("GET", "assets/ajax_responses/responses.php?toPubSrc=" + imageToPublish, true);
+		xhttp.open("GET", "responses?toPubSrc=" + imageToPublish, true);
 		xhttp.send();
 	}
 }
@@ -34,7 +33,6 @@ let postButtons;
 
 removeButtons = document.querySelectorAll(".remove");
 postButtons = document.querySelectorAll(".post");
-
 
 if (removeButtons != null) {
 	for (let removeButton of removeButtons) {

@@ -1,0 +1,1 @@
+<script src="scripts/post_delete.js"></script>
