@@ -131,19 +131,24 @@ class PostsController extends Controller implements Comments, Likes {
 			self::$info = self::get_index_posts($page);
 			$comments = new Comment;
 			$likes = new Like;
-            foreach (self::$info as $post) {
-                $nb_like_output = $likes->get_post_nblikes($post['post_id']);
-                $nb_comments_output = $comments->get_nbr_comments($post['post_id']);
-                self::$info['nb_comments'][] = array_key_exists('nb_likes', $nb_comments_output) ? $nb_comments_output['nb_comments'] : "0";
-                self::$info['nb_likes'][] = array_key_exists('nb_likes', $nb_like_output) ? $nb_like_output['nb_likes'] : "0";
-                if (input_useable($_SESSION, 'current_user')) {
-                    $user = new User;
-                    $user_id = $user->get_user_id($_SESSION['current_user']);
-                    self::$info['users_likes_it'][] = $likes->is_active($user_id['user_id'], $post['post_id']);
-                } else {
-                    self::$info['user_likes_it'][] = 0;
-                    }
-            }
+			if (!empty(self::$info)) {
+				foreach (self::$info as $post) {
+					$nb_like_output = $likes->get_post_nblikes($post['post_id']);
+					$nb_comments_output = $comments->get_nbr_comments($post['post_id']);
+					$tmp['nb_comments'][] = array_key_exists('nb_likes', $nb_comments_output) ? $nb_comments_output['nb_comments'] : "0";
+					$tmp['nb_likes'][] = array_key_exists('nb_likes', $nb_like_output) ? $nb_like_output['nb_likes'] : "0";
+					if (input_useable($_SESSION, 'current_user')) {
+						$user = new User;
+						$user_id = $user->get_user_id($_SESSION['current_user']);
+						$tmp['users_likes_it'][] = $likes->is_active($user_id['user_id'], $post['post_id']);
+					} else {
+						$tmp['user_likes_it'][] = 0;
+					}
+				}
+			self::$info['nb_comments'] = $tmp['nb_comments'];
+			self::$info['nb_likes'] = $tmp['nb_likes'];
+			self::$info['users_likes_it'] = $tmp['users_likes_it'];
+			}
 			parent::template_index();
 		}
 		catch (Exception $e) {

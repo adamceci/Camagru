@@ -22,7 +22,7 @@ class Controller {
 	public static function createModule($moduleName, $i){
         if ($i == 1) {
 			$information = self::$info;
-            self::$info = [];
+            self::$info = array();
         }
         require_once('./views/'.$moduleName.'.module.php');
 	}

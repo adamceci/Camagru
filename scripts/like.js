@@ -29,9 +29,9 @@ function create_like_status(post_info_div) {
                     likeImg.classList.add('animate');
                     likeImg.src = "./assets/imgs/heart_fill.png";
                     if (nbLikesInt > 1)
-                        post_info.innerHTML = nbLikesInt + " Likes";
+                        post_info.innerHTML = toString(nbLikesInt);
                     else
-                        post_info.innerHTML = nbLikesInt + " Like";
+                        post_info.innerHTML = toString(nbLikesInt);
                 } else {
                     nbLikesInt = parseInt(nbLikes);
                     nbLikesInt -= 1;
@@ -40,9 +40,9 @@ function create_like_status(post_info_div) {
                     }
                     likeImg.src = "./assets/imgs/heart.png";
                     if (nbLikesInt > 1)
-                        post_info.innerHTML = nbLikesInt + " Likes";
+                        post_info.innerHTML = toString(nbLikesInt);
                     else
-                        post_info.innerHTML = nbLikesInt + " Like";
+                        post_info.innerHTML = toString(nbLikesInt);
                 }
             } else {
                 errorWrapper.innerHTML = this.response.substr(5);

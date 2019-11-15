@@ -10,33 +10,20 @@
             foreach ($information['nb_comments'] as $test) {
                 $nb_comments[] = $test;
             }
+            unset($information['nb_comments']);
         }
-        unset($information['nb_comments']);
         if (array_key_exists('nb_likes', $information)) {
             foreach ($information['nb_likes'] as $nb_likes_output) {
                 $nb_likes[] = $nb_likes_output;
             }
+            unset($information['nb_likes']);
         }
-        unset($information['nb_likes']);
-//        foreach($information as $arr_arr_nb_likes_or_comments_per_post) {
-//                var_dump($arr_arr_nb_likes_or_comments_per_post);
-//                if (array_key_exists( 'nb_comments', $nb_likes_or_comments_per_post)) {
-//                    if ($nb_likes_or_comments_per_post['nb_comments'] > 1) {
-//                        $nb_comments[] = $nb_likes_or_comments_per_post['nb_comments'] . " Comments";
-//                    } else {
-//                        $nb_comments[] = $nb_likes_or_comments_per_post['nb_comments'] . " Comment";
-//                    }
-//                } else if (array_key_exists( 'nb_likes', $nb_likes_or_comments_per_post)) {
-//                    if ($nb_likes_or_comments_per_post['nb_likes'] > 1) {
-//                        $nb_likes[] = $nb_likes_or_comments_per_post['nb_likes'] . " Likes";
-//                    } else {
-//                        $nb_likes[] = $nb_likes_or_comments_per_post['nb_likes'] . " Like";
-//                    }
-//                } else if (array_key_exists( 'user_likes_it', $nb_likes_or_comments_per_post)) {
-//                    $user_likes_it[] = $nb_likes_or_comments_per_post['user_likes_it'];
-//                }
-//            }
-//        }
+        if (array_key_exists('users_likes_it', $information)) {
+            foreach ($information['users_likes_it'] as $user_like_it) {
+                $user_likes_it[] = $user_like_it;
+            }
+            unset($information['users_likes_it']);
+        }
     }
 ?>
 
@@ -52,8 +39,6 @@
                 ?>
                 <div class="post_index">
                     <?php if (file_exists($uploads_directory . $post["image"])) {
-                        var_dump($post['image']);
-
                         ?>
                         <img src="assets/post_pics/<?= $post["image"]; ?>" alt="">
                         <div class="display_nb">
@@ -61,14 +46,13 @@
                                 <a class="comment_post_link" href="comments&post_img=<?= $post["image"]; ?>&">
                                     <img class="post_index_heart" src="./assets/imgs/comment.png" />
                                     <p class="comment_post">
-                                        <?= $i;?>
-                                        <?= isset($nb_comments[$u]) ? htmlspecialchars($nb_comments[$u]) : "0 Comment";?>
+                                        <?= isset($nb_comments[$u]) ? htmlspecialchars($nb_comments[$u]) : "0";?>
                                     </p>
                                 </a>
                             </div>
                             <div class="like_wrapper">
-                                <p class="like_post post_id_<?= $post['post_id']; ?>"><?= isset($nb_likes[$u]) ? $nb_likes[$u] : "0 Like";?></p>
-                                <?= isset($user_likes_it[$i]) ? "<img class=\"post_index_heart\" src=\"./assets/imgs/heart_fill.png\" />" : "<img class=\"post_index_heart\" src=\"./assets/imgs/heart.png\" />" ; ?>
+                                <p class="like_post post_id_<?= $post['post_id']; ?>"><?= isset($nb_likes[$u]) ? $nb_likes[$u] : "0";?></p>
+                                <?= isset($user_likes_it[$u]) ? "<img class=\"post_index_heart\" src=\"./assets/imgs/heart_fill.png\" />" : "<img class=\"post_index_heart\" src=\"./assets/imgs/heart.png\" />" ; ?>
                             </div>
                         </div>
                     <?php
