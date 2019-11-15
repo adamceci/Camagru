@@ -108,6 +108,8 @@ function displayCam() {
 
 		const canvas = document.createElement('canvas');
 
+		let okBtn = document.querySelector("input[name='upload_cam_image'");
+
 		navigator.mediaDevices.getUserMedia(constraints).
 		then(handleSuccess).catch(handleError);
 
@@ -117,7 +119,7 @@ function displayCam() {
 			canvas.getContext('2d').drawImage(video, 0, 0);
 			// Other browsers will fall back to image/png
 			img.src = canvas.toDataURL('image/webp');
-			// console.log(img.src);
+			okBtn.classList.remove("hidden");
 		};
 
 		function handleSuccess(stream) {
@@ -135,6 +137,13 @@ function displayCam() {
 		function handleError() {
 			alert("error.name : error.message");
 		}
+
+		function sendCamPic() {
+			console.log(img.src);
+		}
+
+		okBtn.addEventListener("click", sendCamPic);
+
 	}
 	else {
 		alert('getUserMedia() is not supported by your browser');

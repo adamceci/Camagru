@@ -31,6 +31,6 @@
         <p>
             <button id="screenshot-button">Take screenshot</button>
         </p>
-        <input type="submit" name="upload_cam_image" value="OK">
+        <input class="hidden" type="submit" name="upload_cam_image" value="OK">
     </div>
 </div>
