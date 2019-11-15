@@ -133,9 +133,9 @@ class PostsController extends Controller implements Comments, Likes {
 			$likes = new Like;
 			if (self::$info) {
 			    foreach (self::$info as $post) {
-					// var_dump($post['post_id']);
-			        self::$info[] = $comments->get_nbr_comments($post['post_id']);
-					self::$info[] = $likes->get_post_nblikes($post['post_id']);
+					var_dump($post['post_id']);
+			        // self::$info[] = $comments->get_nbr_comments($post['post_id']);
+					// self::$info[] = $likes->get_post_nblikes($post['post_id']);
                 }
             }
 			parent::template_index();

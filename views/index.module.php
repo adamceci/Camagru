@@ -5,25 +5,25 @@
     // Directory that will receive uploaded files
     $uploads_directory = $_SERVER['DOCUMENT_ROOT'] . $directory_self . 'assets/post_pics/';
     $i = 0;
-    if (isset($information)) {
-        foreach($information as $arr_nb_likes_or_comments_per_post) {
-            foreach($arr_nb_likes_or_comments_per_post as $nb_likes_or_comments_per_post) {
-                if (input_useable($nb_likes_or_comments_per_post, 'nb_comments')) {
-                    if ($nb_likes_or_comments_per_post['nb_comments'] > 1) {
-                        $nb_comments[] = $nb_likes_or_comments_per_post['nb_comments'] . " Comments";
-                    } else {
-                        $nb_comments[] = $nb_likes_or_comments_per_post['nb_comments'] . " Comment";
-                    }
-                } else {
-                    if ($nb_likes_or_comments_per_post['nb_likes'] > 1) {
-                        $nb_likes[] = $nb_likes_or_comments_per_post['nb_likes'] . " Likes";
-                    } else {
-                        $nb_likes[] = $nb_likes_or_comments_per_post['nb_likes'] . " Like";
-                    }
-                }
-            }
-        }
-    }
+    // if (isset($information)) {
+    //     foreach($information as $arr_nb_likes_or_comments_per_post) {
+    //         foreach($arr_nb_likes_or_comments_per_post as $nb_likes_or_comments_per_post) {
+    //             if (input_useable($nb_likes_or_comments_per_post, 'nb_comments')) {
+    //                 if ($nb_likes_or_comments_per_post['nb_comments'] > 1) {
+    //                     $nb_comments[] = $nb_likes_or_comments_per_post['nb_comments'] . " Comments";
+    //                 } else {
+    //                     $nb_comments[] = $nb_likes_or_comments_per_post['nb_comments'] . " Comment";
+    //                 }
+    //             } else {
+    //                 if ($nb_likes_or_comments_per_post['nb_likes'] > 1) {
+    //                     $nb_likes[] = $nb_likes_or_comments_per_post['nb_likes'] . " Likes";
+    //                 } else {
+    //                     $nb_likes[] = $nb_likes_or_comments_per_post['nb_likes'] . " Like";
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
 ?>
 
     <div id="container_title">

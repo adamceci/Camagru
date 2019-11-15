@@ -8,17 +8,16 @@ function saveImage(data) {
 
 	let imagesToDisplay = document.querySelectorAll("#canvas_container img");
 	let imagesToDisplaySrc = [];
-	
+
 	imagesToDisplay.forEach((node) => imagesToDisplaySrc.push(node.src));
 	imagesToDisplaySrc.reverse();
 
 	let myJSON = JSON.stringify({"imagesArray":imagesToDisplaySrc});
 	let xhttp = new XMLHttpRequest();
-	
+
 	xhttp.onreadystatechange = function() {
-		if (this.readyState == 4 && this.status == 200)
-			console.log("this.respoonse");
-			// window.location.replace("montage");
+		if (this.readyState == 4 && this.status == 200 && this.response.substr(-2) == "OK")
+			window.location.replace("montage");
 		};
 	xhttp.open("POST", "responses", true);
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
