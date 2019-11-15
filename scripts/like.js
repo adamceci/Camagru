@@ -15,7 +15,7 @@ function create_like_status(post_info_div) {
     let post_img = post_info.className;
     let textLike = post_info.innerHTML;
     let post_img_id = post_img.substr(post_img.indexOf("post_id_")).substr(8);
-    let nbLikes = textLike.substr(0, textLike.indexOf(" "));
+    let nbLikes = textLike;
     let errorWrapper = document.querySelector('.error_wrapper');
     let likeImg = post_info_div.querySelector(".post_index_heart");
 
@@ -25,13 +25,12 @@ function create_like_status(post_info_div) {
                 if (this.response.substr(2, 4) === '+1') {
                     nbLikesInt = parseInt(nbLikes);
                     nbLikesInt += 1;
-                    likeImg.style.width
                     likeImg.classList.add('animate');
                     likeImg.src = "./assets/imgs/heart_fill.png";
                     if (nbLikesInt > 1)
-                        post_info.innerHTML = toString(nbLikesInt);
+                        post_info.innerHTML = nbLikesInt;
                     else
-                        post_info.innerHTML = toString(nbLikesInt);
+                        post_info.innerHTML = nbLikesInt;
                 } else {
                     nbLikesInt = parseInt(nbLikes);
                     nbLikesInt -= 1;
@@ -40,9 +39,9 @@ function create_like_status(post_info_div) {
                     }
                     likeImg.src = "./assets/imgs/heart.png";
                     if (nbLikesInt > 1)
-                        post_info.innerHTML = toString(nbLikesInt);
+                        post_info.innerHTML = nbLikesInt;
                     else
-                        post_info.innerHTML = toString(nbLikesInt);
+                        post_info.innerHTML = nbLikesInt;
                 }
             } else {
                 errorWrapper.innerHTML = this.response.substr(5);

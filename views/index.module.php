@@ -25,7 +25,8 @@
             unset($information['users_likes_it']);
         }
     }
-?>
+
+    ?>
 
     <div id="container_title">
         <h1>GALLERY</h1>
@@ -51,8 +52,8 @@
                                 </a>
                             </div>
                             <div class="like_wrapper">
-                                <p class="like_post post_id_<?= $post['post_id']; ?>"><?= isset($nb_likes[$u]) ? $nb_likes[$u] : "0";?></p>
-                                <?= isset($user_likes_it[$u]) ? "<img class=\"post_index_heart\" src=\"./assets/imgs/heart_fill.png\" />" : "<img class=\"post_index_heart\" src=\"./assets/imgs/heart.png\" />" ; ?>
+                                <p class="like_post post_id_<?= $post['post_id']; ?>"><?= !empty($nb_likes[$u]) ? $nb_likes[$u] : "0";?></p>
+                                <?= !empty($user_likes_it[$u]) ? "<img class=\"post_index_heart\" src=\"./assets/imgs/heart_fill.png\" />" : "<img class=\"post_index_heart\" src=\"./assets/imgs/heart.png\" />" ; ?>
                             </div>
                         </div>
                     <?php
