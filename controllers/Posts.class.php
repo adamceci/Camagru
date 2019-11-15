@@ -84,7 +84,7 @@ class PostsController extends Controller implements Comments, Likes {
 		if (input_useable($_POST, "array_images")) {
 			$img_srcs = json_decode($_POST["array_images"]);
 			$img_srcs = $img_srcs->imagesArray;
-			$extension = pathinfo($img_srcs[0]["extention"]);
+			$extension = pathinfo($img_srcs[0])["extension"];
 			$final_img = self::apply_filters($img_srcs, $extension);
 			$file_name = self::upload_to_folder($final_img, "assets/post_pics/");
 			self::delete_from_tmp($img_srcs);

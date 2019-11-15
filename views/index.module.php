@@ -40,7 +40,7 @@
                 <div class="post_index">
                     <?php if (file_exists($uploads_directory . $post["image"])) {
                         ?>
-                        <img src="assets/post_pics/<?= $post["image"]; ?>" alt="">
+                        <img class="post_index_img" src="assets/post_pics/<?= $post["image"]; ?>" alt="">
                         <div class="display_nb">
                             <div class="comment_wrapper">
                                 <a class="comment_post_link" href="comments&post_img=<?= $post["image"]; ?>&">
