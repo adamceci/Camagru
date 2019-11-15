@@ -8,6 +8,6 @@ if (isset($_SESSION) && array_key_exists('post_creator', $_SESSION) && !empty($_
 ?>
 
 <div class="post_description_wrapper">
-<p class="post_creator_login"><?= isset($creator) ? $creator : ""; ?></p>
-<img class="post_description_img" src="assets/post_imgs/<?= isset($img_src) ? $img_src : ""; ?>" />
+<p class="post_creator_login"><?= isset($creator) ? htmlspecialchars($creator) : ""; ?></p>
+<img class="post_description_img" src="assets/post_pics/<?= isset($img_src) ? htmlspecialchars($img_src) : ""; ?>" />
 </div>

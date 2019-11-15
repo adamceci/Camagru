@@ -69,7 +69,9 @@ class PostsController extends Controller implements Comments, Likes {
 		$now = time();
 		while(file_exists($file_name = $path . $_SESSION["current_user_user_id"] . "-" . $now . ".png"))
 			$now++;
+		echo "ici";
 		imagepng($file, $file_name);
+        echo "la";
 		return ($file_name);
 	}
 
@@ -84,7 +86,7 @@ class PostsController extends Controller implements Comments, Likes {
 		if (input_useable($_POST, "array_images")) {
 			$img_srcs = json_decode($_POST["array_images"]);
 			$img_srcs = $img_srcs->imagesArray;
-			$extension = pathinfo($img_srcs[0]["extention"]);
+			$extension = pathinfo($img_srcs[0])['extension'];
 			$final_img = self::apply_filters($img_srcs, $extension);
 			$file_name = self::upload_to_folder($final_img, "assets/post_pics/");
 			self::delete_from_tmp($img_srcs);
@@ -135,19 +137,25 @@ class PostsController extends Controller implements Comments, Likes {
 				foreach (self::$info as $post) {
 					$nb_like_output = $likes->get_post_nblikes($post['post_id']);
 					$nb_comments_output = $comments->get_nbr_comments($post['post_id']);
-					$tmp['nb_comments'][] = array_key_exists('nb_likes', $nb_comments_output) ? $nb_comments_output['nb_comments'] : "0";
-					$tmp['nb_likes'][] = array_key_exists('nb_likes', $nb_like_output) ? $nb_like_output['nb_likes'] : "0";
+					if (array_key_exists('nb_comments', $nb_comments_output[0]))
+    					$tmp['nb_comments'][] = $nb_comments_output[0]['nb_comments'];
+                    else
+                        $tmp['nb_comments'][] = "0";
+                    if (array_key_exists('nb_likes', $nb_like_output[0]))
+                        $tmp['nb_likes'][] = $nb_like_output[0]['nb_likes'];
+                    else
+                        $tmp['nb_likes'][] = "0";
 					if (input_useable($_SESSION, 'current_user')) {
 						$user = new User;
 						$user_id = $user->get_user_id($_SESSION['current_user']);
-						$tmp['users_likes_it'][] = $likes->is_active($user_id['user_id'], $post['post_id']);
+                        $tmp['users_likes_it'][] = $likes->is_active($user_id['user_id'], $post['post_id']);
 					} else {
 						$tmp['user_likes_it'][] = 0;
 					}
 				}
-			self::$info['nb_comments'] = $tmp['nb_comments'];
-			self::$info['nb_likes'] = $tmp['nb_likes'];
-			self::$info['users_likes_it'] = $tmp['users_likes_it'];
+                self::$info['nb_comments'] = $tmp['nb_comments'];
+                self::$info['nb_likes'] = $tmp['nb_likes'];
+                self::$info['users_likes_it'] = $tmp['users_likes_it'];
 			}
 			parent::template_index();
 		}
