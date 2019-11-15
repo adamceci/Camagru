@@ -83,7 +83,7 @@ class PostsController extends Controller implements Comments, Likes {
 	}
 
 	public static function create_montage() {
-		if (input_useable($_POST, "array_images")) {
+		if (input_useable($_POST, 'array_images')) {
 			$img_srcs = json_decode($_POST["array_images"]);
 			$img_srcs = $img_srcs->imagesArray;
 			$extension = pathinfo($img_srcs[0])['extension'];

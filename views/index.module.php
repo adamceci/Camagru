@@ -25,7 +25,8 @@
             unset($information['users_likes_it']);
         }
     }
-?>
+
+    ?>
 
     <div id="container_title">
         <h1>GALLERY</h1>
@@ -40,7 +41,7 @@
                 <div class="post_index">
                     <?php if (file_exists($uploads_directory . $post["image"])) {
                         ?>
-                        <img src="assets/post_pics/<?= $post["image"]; ?>" alt="">
+                        <img class="post_index_img" src="assets/post_pics/<?= $post["image"]; ?>" alt="">
                         <div class="display_nb">
                             <div class="comment_wrapper">
                                 <a class="comment_post_link" href="comments&post_img=<?= $post["image"]; ?>&">
