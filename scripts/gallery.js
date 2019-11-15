@@ -118,7 +118,7 @@ function displayCam() {
 			canvas.height = video.videoHeight;
 			canvas.getContext('2d').drawImage(video, 0, 0);
 			// Other browsers will fall back to image/png
-			img.src = canvas.toDataURL('image/webp');
+			img.src = canvas.toDataURL();
 			okBtn.classList.remove("hidden");
 		};
 
@@ -139,7 +139,15 @@ function displayCam() {
 		}
 
 		function sendCamPic() {
-			console.log(img.src);
+			let xhttp = new XMLHttpRequest();
+			xhttp.onreadystatechange = function() {
+				if (this.readyState == 4 && this.status == 200 && this.response == "OK")
+					window.location.replace("montage_two");
+			};
+			xhttp.open("POST", "responses", true);
+			xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+			xhttp.send("src_cam_img=" + img.src);
+			
 		}
 
 		okBtn.addEventListener("click", sendCamPic);
