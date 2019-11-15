@@ -1008,10 +1008,9 @@ Login view css start
 }
 
 .profile_cat_img {
-    height: 100px;
-    position: absolute;
-    right: -50px;
-    top: -70px;
+    height: 39px;
+    position: relative;
+    top: 9px;
 }
 
 .update_buttons_login {
@@ -1130,6 +1129,10 @@ Login view css start
 
 /* Profile css */
 @media screen and (max-width: 550px) {
+    .profile_cat_img {
+        display: none;
+    }
+
     .profile_wrapper {
         width: 100%;
         max-width: 100%;
