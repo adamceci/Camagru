@@ -4,22 +4,31 @@ function create_comment_status() {
     let message = message_box.value;
     let errorWrapper = document.querySelector(".error_wrapper");
     let commentWrapper = document.querySelector('.comments_wrapper');
-    let login = document.querySelector(".current_user").innerHTML;
+    let loginWrapper = document.querySelector(".current_user_header");
     let textarea = document.querySelector('.message');
+    let noComments = document.querySelector('.no_comments');
 
     xhttp.onreadystatechange = function() {
         if (this.readyState === 4 && this.status === 200) {
-            if (this.response.substr(0,2) === "OK") {
+            if (this.response.substr(0,2) === "OK" && loginWrapper !== null) {
+                let login = loginWrapper.innerHTML;
                 let loginNode = document.createElement("p");
                 let loginTextNode = document.createTextNode(login);
                 let commentNode = document.createElement("p");
                 let commentTextNode = document.createTextNode(this.response.substr(2));
+                let imgNode = document.createElement("img");
+
                 loginNode.className = 'poster';
                 commentNode.className = 'comment';
-                loginNode.appendChild(loginTextNode);
-                commentNode.appendChild(commentTextNode);
-                commentWrapper.appendChild(loginNode);
-                commentWrapper.appendChild(commentNode);
+                imgNode.className = 'comment_profile_pic';
+                imgNode.src = document.querySelector('.profile_pic_header').src;
+                if (noComments !== null)
+                    noComments.remove();
+                commentNode.prepend(commentTextNode);
+                loginNode.prepend(loginTextNode);
+                commentWrapper.prepend(commentNode);
+                commentWrapper.prepend(loginNode);
+                commentWrapper.prepend(imgNode);
                 textarea.value = '';
             } else {
                 errorWrapper.innerHTML = this.response.substr(5);

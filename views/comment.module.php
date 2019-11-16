@@ -1,10 +1,11 @@
+<h3 class="comment_title">Comments section</h3>
 <div class="comments_wrapper">
-
 <?php
     if (isset($information) && !empty($information)) {
 ?>
         <?php
         foreach ($information as $comment) {
+            echo "<img class='comment_profile_pic' src='assets/profile_pics/" . htmlspecialchars($comment['profile_pic']) . "' />";
             echo "<p class='poster'>" . htmlspecialchars($comment['login']) . "</p>";
             echo "<p class='comment'>" . htmlspecialchars($comment['message']) . "</p>";
         }
@@ -14,6 +15,6 @@
         echo "<p class='no_comments'>No comments posted yet</p>";
     }
 ?>
+    <textarea class="message" placeholder="Write your comment here..."></textarea>
+    <button class="create_comment_submit">Comment</button>
 </div>
-<textarea class="message"></textarea>
-<button class="create_comment_submit">Create Comment</button>

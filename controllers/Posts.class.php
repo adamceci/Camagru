@@ -150,7 +150,7 @@ class PostsController extends Controller implements Comments, Likes {
 						$user_id = $user->get_user_id($_SESSION['current_user']);
                         $tmp['users_likes_it'][] = $likes->is_active($user_id['user_id'], $post['post_id']);
 					} else {
-						$tmp['user_likes_it'][] = 0;
+						$tmp['users_likes_it'][] = 0;
 					}
 				}
                 self::$info['nb_comments'] = $tmp['nb_comments'];
