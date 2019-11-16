@@ -110,9 +110,9 @@ Route::set("success_upload", function() {
 //     PostsController::upload("tmp_pics/");
 // }
 
-if (isset($_POST) && (array_key_exists("submit_create_post", $_POST) || array_key_exists("save", $_POST))) {
-    PostsController::create_post($_POST);
-}
+// if (isset($_POST) && (array_key_exists("submit_create_post", $_POST) || array_key_exists("save", $_POST))) {
+//     PostsController::create_post($_POST);
+// }
 
 if (!in_array($_GET["url"], Route::$validRoutes)) {
     PostsController::display_index_posts($_SESSION["current_page"]);
