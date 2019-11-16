@@ -12,7 +12,7 @@ function login_status() {
                 errorWrapper.innerHTML = this.response.substr(5);
             } else {
                 setTimeout(function () {
-                    // window.location.replace('index');
+                    window.location.replace('index');
                 }, 5);
             }
         }
