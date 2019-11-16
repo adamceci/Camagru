@@ -73,46 +73,32 @@ Route::set("logout", function () {
     UsersController::logout();
 });
 
-// Route::set("only_to_members", function() {
-    // Controller::createView("")
-// });
 
 Route::set("montage", function() {
-    if (!isset($_SESSION["current_user"]))
+    if (!input_useable($_SESSION, "current_user"))
         Controller::createView("only_to_members");
     else
         PostsController::display_user_posts();
 });
 
 Route::set("montage_two", function() {
-    if (!isset($_SESSION["current_user"]))
-        Controller::createView("only_to_members");
-    else
-        PostsController::upload("tmp_pics/");
+    if (array_key_exists('webcam', $_GET)) {
+        PostsController::template_file_filters();
+    }
+    else {
+        if (!input_useable($_SESSION, "current_user"))
+            Controller::createView("only_to_members");
+        else
+            PostsController::upload("tmp_pics/");
+    }
 });
 
 Route::set("success_upload", function() {
-    if (!isset($_SESSION["current_user"]))
+    if (!input_useable($_SESSION, "current_user"))
         Controller::createView("only_to_members");
     else
         Controller::createView("success_upload");
 });
-
-// Route::set("webcam", function () {
-//    Webcam::createView("webcam");
-// });
-
-// Route::set("update", function() {
-
-// });
-
-// if (isset($_POST) && array_key_exists("upload_image", $_POST)) {
-//     PostsController::upload("tmp_pics/");
-// }
-
-// if (isset($_POST) && (array_key_exists("submit_create_post", $_POST) || array_key_exists("save", $_POST))) {
-//     PostsController::create_post($_POST);
-// }
 
 if (!in_array($_GET["url"], Route::$validRoutes)) {
     PostsController::display_index_posts($_SESSION["current_page"]);

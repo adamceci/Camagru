@@ -48,6 +48,13 @@ class Controller {
         return $return_str;
 	}
 
+	protected static function generate_unique_name($dir, $file_name) {
+		$now = time();
+		while(file_exists($upload_file_name = $dir.$now.'-'.$file_name))
+			$now++;
+		return($upload_file_name);
+	}
+
 	//upload image
 	private static function upload_image($dir_name) {
 
@@ -97,13 +104,11 @@ class Controller {
 		// sample filename: 1140732936-filename.jpg
 		if (!file_exists($uploads_directory))
 			mkdir($uploads_directory, 0755, true);
-		$now = time();
-		while(file_exists($uploadFilename = $uploads_directory.$now.'-'.$_FILES[$fieldname]['name']))
-			$now++;
+		$upload_file_name = self::generate_unique_name($uploads_directory, $_FILES[$fieldname]['name']);
 		// now let's move the file to its final location and allocate the new filename to it
-		if (!(move_uploaded_file($_FILES[$fieldname]['tmp_name'], $uploadFilename)))
+		if (!(move_uploaded_file($_FILES[$fieldname]['tmp_name'], $upload_file_name)))
 			error('receiving directory insuffiecient permission', $upload_form);
-		$file_name = basename($uploadFilename);
+		$file_name = basename($upload_file_name);
 		return ($file_name);
 		// This far, everything has worked and the file has been successfully saved.
 		// We are now going to redirect the client to a success page.
@@ -114,4 +119,3 @@ class Controller {
 		$_SESSION["tmp_file_name"] = self::upload_image($dir_name);
 	}
 }
-

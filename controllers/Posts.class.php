@@ -34,6 +34,17 @@ class PostsController extends Controller implements Comments, Likes {
 				self::$info = self::get_user_images();
 				self::template_file_filters();
 			}
+			else if (input_useable($_POST, "src_cam_img")) {
+				$baseFromJavascript = $_POST["src_cam_img"];
+				$data = explode(',', $baseFromJavascript);
+				$data_64 = str_replace(' ', '+', $data[1]);
+				$bin = base64_decode(strval($data_64));
+				$file_name = basename(parent::generate_unique_name("assets/tmp_pics/", "cam.png"));
+				file_put_contents("assets/tmp_pics/" . $file_name, $bin);
+				$_SESSION["tmp_file_name"] = $file_name;
+				self::$info = self::get_user_images();
+				self::template_file_filters();
+			}
 			else
 				echo "upload_image vide"; // in self errors
 		}
@@ -102,14 +113,7 @@ class PostsController extends Controller implements Comments, Likes {
 	}
 
 	public static function upload_base_64() {
-		if (input_useable($_POST, "src_cam_img")) {
-			$baseFromJavascript = $_POST["src_cam_img"];
-			$data = explode(',', $baseFromJavascript);
-			$data_64 = str_replace(' ', '+', $data[1]);
-			$bin = base64_decode(strval($data_64));
-			// $now = time();
-			file_put_contents("assets/tmp_pics/" . 'lol2.png', $bin);
-		}
+		
 	}
 
 	public static function template_montage() {

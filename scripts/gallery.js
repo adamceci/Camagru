@@ -141,8 +141,8 @@ function displayCam() {
 		function sendCamPic() {
 			let xhttp = new XMLHttpRequest();
 			xhttp.onreadystatechange = function() {
-				if (this.readyState == 4 && this.status == 200 && this.response == "OK")
-					window.location.replace("montage_two");
+				if (this.readyState == 4 && this.status == 200 && this.response.substr(-2) == "OK")
+					window.location.replace("montage_two&webcam=1");
 			};
 			xhttp.open("POST", "responses", true);
 			xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
@@ -163,27 +163,3 @@ let camButton = document.querySelector("#cam_button");
 
 fileButton.addEventListener("click", displayFileForm);
 camButton.addEventListener("click", displayCam);
-
-
-
-
-
-// let fileButton;
-// let videoButton;
-// let removeButtons;
-// let postButtons;
-
-// fileButton = document.querySelector("#chose_file");
-// videoButton = document.querySelector("#chose_vid");
-// removeButtons = document.querySelectorAll(".remove");
-// postButtons = document.querySelectorAll(".post");
-
-// videoButton.addEventListener("click", displayVid);
-// fileButton.addEventListener("click", displayFile);
-
-// for (let removeButton of removeButtons) {
-// 	removeButton.addEventListener("click", removeImage);
-// }
-// for (let postButton of postButtons) {
-// 	postButton.addEventListener("click", publishImage);
-// }

@@ -34,7 +34,7 @@ if (isset($_POST)) {
     }
     if (input_useable($_POST, "src_cam_img")) {
         try {
-            PostsController::upload_base_64();
+            PostsController::upload("tmp_pics/");
             echo "OK";
         }
         catch (Exception $e) {
