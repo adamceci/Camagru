@@ -10,7 +10,11 @@
 ?>
         <?php
         foreach ($information as $comment) {
-            echo "<img class='comment_profile_pic' src='assets/profile_pics/" . htmlspecialchars($comment['profile_pic']) . "' />";
+            if (file_exists("./assets/profile_pics/" . htmlspecialchars($comment['profile_pic']))) {
+                echo "<img class='comment_profile_pic' src='assets/profile_pics/" . htmlspecialchars($comment['profile_pic']) . "' />";
+            } else {
+                echo "<img class='comment_profile_pic' src='assets/profile_pics/default.png' />";
+            }
             echo "<p class='poster'>" . htmlspecialchars($comment['login']) . "</p>";
             echo "<p class='comment'>" . htmlspecialchars($comment['message']) . "</p>";
         }
