@@ -83,6 +83,7 @@ Route::set("montage", function() {
 
 Route::set("montage_two", function() {
     if (array_key_exists('webcam', $_GET)) {
+        PostsController::$info = PostsController::get_user_images();
         PostsController::template_file_filters();
     }
     else {

@@ -40,10 +40,10 @@ class PostsController extends Controller implements Comments, Likes {
 				$data_64 = str_replace(' ', '+', $data[1]);
 				$bin = base64_decode(strval($data_64));
 				$file_name = basename(parent::generate_unique_name("assets/tmp_pics/", "cam.png"));
+				if (!file_exists("assets/tmp_pics/"))
+					mkdir("assets/tmp_pics/", 0755, true);
 				file_put_contents("assets/tmp_pics/" . $file_name, $bin);
 				$_SESSION["tmp_file_name"] = $file_name;
-				self::$info = self::get_user_images();
-				self::template_file_filters();
 			}
 			else
 				echo "upload_image vide"; // in self errors
@@ -112,10 +112,6 @@ class PostsController extends Controller implements Comments, Likes {
 		}
 	}
 
-	public static function upload_base_64() {
-		
-	}
-
 	public static function template_montage() {
 		self::createModule("top_html_tags", 0);
 		self::createModule("header", 0);
@@ -177,7 +173,7 @@ class PostsController extends Controller implements Comments, Likes {
 		}
 	}
 
-	private static function get_user_images() {
+	public static function get_user_images() {
 		$post = new Post;
 		$current_user_images = $post->get_user_images();
 		return ($current_user_images);
