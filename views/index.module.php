@@ -25,7 +25,6 @@
             unset($information['users_likes_it']);
         }
     }
-
     ?>
 
     <div id="container_title">

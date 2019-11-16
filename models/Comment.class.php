@@ -6,10 +6,9 @@ class Comment extends Model {
     public function get_post_comments($post_id) {
         try {
             parent::db_connect();
-            $sql = "SELECT `message`, users.login 
-                    FROM `comments` INNER JOIN users 
-                    WHERE `post_id`=? AND comments.user_id=users.user_id
-                    ORDER DESC";
+            $sql = "SELECT `message`, users.login, users.profile_pic
+                    FROM `comments` INNER JOIN users
+                    WHERE `post_id`=? ORDER BY comment_id DESC";
             $this->stmt = $this->pdo->prepare($sql);
             $this->stmt->execute(array($post_id));
             $arr = $this->stmt->fetchAll(PDO::FETCH_ASSOC);
