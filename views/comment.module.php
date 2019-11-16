@@ -1,4 +1,9 @@
 <h3 class="comment_title">Comments section</h3>
+
+<div class="message_wrapper">
+    <textarea class="message" placeholder="Write your comment here..."></textarea>
+    <button class="create_comment_submit">Comment</button>
+</div>
 <div class="comments_wrapper">
 <?php
     if (isset($information) && !empty($information)) {
@@ -15,6 +20,4 @@
         echo "<p class='no_comments'>No comments posted yet</p>";
     }
 ?>
-    <textarea class="message" placeholder="Write your comment here..."></textarea>
-    <button class="create_comment_submit">Comment</button>
 </div>

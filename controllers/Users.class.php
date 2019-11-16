@@ -117,61 +117,33 @@ class UsersController extends Controller {
         }
     }
 
-    private function upload_profile_pic($key) {
+    private static function upload_profile_pic($key) {
 
-        // Current working directory ("/Camagru-MVC-/")
         $directory_self = str_replace(basename($_SERVER['PHP_SELF']), '', $_SERVER['PHP_SELF']);
-        // Directory that will receive uploaded files
         $uploads_directory = $_SERVER['DOCUMENT_ROOT'] . $directory_self . 'assets/profile_pics/';
-        // Location of index page
-        $index_page = "http://" . $_SERVER["HTTP_HOST"] . $directory_self;
-        // Location of the upload form
-        $upload_form = 'http://' . $_SERVER['HTTP_HOST'] . $directory_self . 'sign_up';
-
-        // location of the success page
-        // $uploadSuccess = $upload_form;
-
-        // fieldname used within the file <input> of the HTML form
         $fieldname = $key;
-        // possible PHP upload errors
-        $errors = array(
-            1 => 'php.ini max file size exceeded',
-            2 => 'html form max file size exceeded',
-            3 => 'file upload was only partial',
-            4 => 'no file was attached'
-        );
         if (input_useable($_FILES, $fieldname)) {
             if ($_FILES[$fieldname]['error'] !== 0) {
                 self::fill_session_error(array(), self::manage_file_errors($_FILES[$fieldname]['error']));
                 return (0);
             }
-            var_dump("test");
             if (!input_useable($_FILES[$fieldname], 'tmp_name')) {
-                var_dump("test");
                 self::fill_session_error(array(), 'Can\'t upload a file with an empty name');
                 return (0);
             }
-            var_dump("test");
             if (!is_uploaded_file($_FILES[$fieldname]['tmp_name'])) {
                 self::fill_session_error(array(), 'not an HTTP upload');
                 return (0);
             }
-            // validation... since this is an image upload script we should run a check
-            // to make sure the uploaded file is in fact an image. Here is a simple check:
-            // getimagesize() returns false if the file tested is not an image.
             if (!(getimagesize($_FILES[$fieldname]['tmp_name']))) {
                 self::$errors[] = 'Only image uploads are allowed';
                 self::fill_session_error(array(), 'sign_up');
             }
-            // make a unique filename for the uploaded file and check it is not already
-            // taken... if it is already taken keep trying until we find a vacant one
-            // sample filename: 1140732936-filename.jpg
             if (!file_exists($uploads_directory))
                 mkdir($uploads_directory, 0755, true);
             $now = time();
             while (file_exists($uploadFilename = $uploads_directory . $now . '-' . $_FILES[$fieldname]['name']))
                 $now++;
-            // now let's move the file to its final location and allocate the new filename to it
             if (!(move_uploaded_file($_FILES[$fieldname]['tmp_name'], $uploadFilename))) {
                 self::$errors[] = 'Receiving directory insufficient permission';
                 self::fill_session_error(array(), 'sign_up');
@@ -192,14 +164,14 @@ class UsersController extends Controller {
                                             that has been sent to your email.<br />";
                     return (1);
                 } else {
-//                   $user = new User;
-//                    try {
-//                        $user->delete_user($arr['login'], $arr['password']);
-//                    } catch (Exception $e) {
-//                        self::fill_session_error(array(), "Error creation_user_response for deleting user" . $e->getMessage());
-//                        return (0);
-//                    }
-//                    self::fill_session_error(array(), "The verification email wasn't sent");
+                   $user = new User;
+                    try {
+                        $user->delete_user($arr['login'], $arr['password']);
+                    } catch (Exception $e) {
+                        self::fill_session_error(array(), "Error creation_user_response for deleting user" . $e->getMessage());
+                        return (0);
+                    }
+                    self::fill_session_error(array(), "The verification email wasn't sent");
                     return (0);
                 }
             case EMAIL_EXISTS:
@@ -226,9 +198,6 @@ class UsersController extends Controller {
         }
     }
 
-    /*
-    create_user(array $kwargs)
-    */
     public static function create_user(array $kwargs) {
         try {
             $keys = ["password", "password_verif", "login", "email"];
@@ -263,15 +232,11 @@ class UsersController extends Controller {
         }
     }
 
-    /*
-    send_verification_email($email, $hash) verify if the hash and the email sent by the user correspond to a verification email.
-    Then, it'll send the user logged on the index.
-    */
     private static function send_verification_email($user_info) {
         if (self::email_valid($user_info["email"]) && self::md5_valid($user_info["verif_hash"])) {
-            $to = "a.ceciora@gmail.com";
-            $from = "aceciora@student.s19.be";
-            $headers = "MIME-Version: 1.0" . "\r\n"; 
+            $to = $user_info['email'];
+            $from = "gvirga@student.s19.be";
+            $headers = "MIME-Version: 1.0" . "\r\n";
             $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
             $headers .= 'From: '.$from. "\r\n"; 
             $subject = "Verification mail Camagru";
@@ -289,8 +254,7 @@ class UsersController extends Controller {
     }
 
     private static function send_recovery_email($login, $email, $hash) {
-        $to = "gabriele_Virga@hotmail.com";
-        //$to = $email;
+        $to = $email;
         $from = "gvirga@student.s19.be";
         $headers = "MIME-Version: 1.0" . "\r\n";
         $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
@@ -322,27 +286,20 @@ class UsersController extends Controller {
     } 
     
 
-	/*
-	email_valid($email) take an user input and verify if the input is a well-formatted email.
-	*/
 	private static function email_valid($email) {
         if (preg_match('/^(?!(?:(?:\x22?\x5C[\x00-\x7E]\x22?)|(?:\x22?[^\x5C\x22]\x22?)){255,})(?!(?:(?:\x22?\x5C[\x00-\x7E]\x22?)|(?:\x22?[^\x5C\x22]\x22?)){65,}@)(?:(?:[\x21\x23-\x27\x2A\x2B\x2D\x2F-\x39\x3D\x3F\x5E-\x7E]+)|(?:\x22(?:[\x01-\x08\x0B\x0C\x0E-\x1F\x21\x23-\x5B\x5D-\x7F]|(?:\x5C[\x00-\x7F]))*\x22))(?:\.(?:(?:[\x21\x23-\x27\x2A\x2B\x2D\x2F-\x39\x3D\x3F\x5E-\x7E]+)|(?:\x22(?:[\x01-\x08\x0B\x0C\x0E-\x1F\x21\x23-\x5B\x5D-\x7F]|(?:\x5C[\x00-\x7F]))*\x22)))*@(?:(?:(?!.*[^.]{64,})(?:(?:(?:xn--)?[a-z0-9]+(?:-[a-z0-9]+)*\.){1,126}){1,}(?:(?:[a-z][a-z0-9]*)|(?:(?:xn--)[a-z0-9]+))(?:-[a-z0-9]+)*)|(?:\[(?:(?:IPv6:(?:(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){7})|(?:(?!(?:.*[a-f0-9][:\]]){7,})(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,5})?::(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,5})?)))|(?:(?:IPv6:(?:(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){5}:)|(?:(?!(?:.*[a-f0-9]:){5,})(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,3})?::(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,3}:)?)))?(?:(?:25[0-5])|(?:2[0-4][0-9])|(?:1[0-9]{2})|(?:[1-9]?[0-9]))(?:\.(?:(?:25[0-5])|(?:2[0-4][0-9])|(?:1[0-9]{2})|(?:[1-9]?[0-9]))){3}))\]))$/iD',$email)) {
             return (1);
         }
         return (0);
     }
-    /*
-    md5_valid($md5_hash) takes an hash and verify if it has only the char authorized for md5. 
-    */
+
     private static function md5_valid($hash) {
         if (preg_match('/^[0-9A-F]+$/iD', $hash)) {
             return (1);
         }
         return (0);
     }
-    /*
-    login_valid($login) take an user input and verify if the input is a well-formatted login.
-	*/
+
 	private static function login_valid($login) {
         if (preg_match("/^(?=.{3,26}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$/",$login)) {
             return (1);
@@ -543,7 +500,7 @@ class UsersController extends Controller {
         }
     }
 
-    public static function update_notification_active() {
+    private static function update_notification_active() {
         try {
             if (input_useable($_SESSION, 'current_user_user_id') && array_key_exists('current_user_notification_active', $_SESSION)) {
                 $user = new User;
@@ -570,7 +527,6 @@ class UsersController extends Controller {
     }
 
     public static function update_user($column) {
-	    var_dump($column);
         if (array_key_exists("new_login", $column)) {
             self::update_login($column);
         } else if (array_key_exists("new_password", $column) && array_key_exists("old_password", $column)) {
