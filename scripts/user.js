@@ -163,7 +163,7 @@ if (updatePasswordInput !== null) {
     });
     updatePasswordInput.addEventListener('blur', function () {
         let passwordFormat = document.querySelector('.format_password');
-        passwordFormat.style.display = 'none';
+        passwordFormat.style.display = 'block';
     });
 }
 
@@ -185,7 +185,7 @@ if (updateLoginInput !== null) {
     });
     updateLoginInput.addEventListener('blur', function () {
         let loginFormat = document.querySelector('.format_login');
-        loginFormat.style.display = 'none';
+        loginFormat.style.display = 'block';
     });
 }
 
