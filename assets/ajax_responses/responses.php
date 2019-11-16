@@ -21,13 +21,24 @@ if(isset($_GET)) {
     }
 }
 
-if (input_useable($_POST, "array_images")) {
-    try {
-        PostsController::create_montage();
-        PostsController::display_user_posts();
-        echo "OK";
+if (isset($_POST)) {
+    if (input_useable($_POST, "array_images")) {
+        try {
+            PostsController::create_montage();
+            PostsController::display_user_posts();
+            echo "OK";
+        }
+        catch (Exception $e) {
+            echo "FAIL";
+        }
     }
-    catch (Exception $e) {
-        echo "FAIL";
+    if (input_useable($_POST, "src_cam_img")) {
+        try {
+            PostsController::upload_base_64();
+            echo "OK";
+        }
+        catch (Exception $e) {
+            echo "FAIL";
+        }
     }
 }

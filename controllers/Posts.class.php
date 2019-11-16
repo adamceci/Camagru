@@ -69,9 +69,7 @@ class PostsController extends Controller implements Comments, Likes {
 		$now = time();
 		while(file_exists($file_name = $path . $_SESSION["current_user_user_id"] . "-" . $now . ".png"))
 			$now++;
-		echo "ici";
 		imagepng($file, $file_name);
-        echo "la";
 		return ($file_name);
 	}
 
@@ -100,6 +98,17 @@ class PostsController extends Controller implements Comments, Likes {
 				$post->publish_post($kwargs);
 			}
 			echo $file_name;
+		}
+	}
+
+	public static function upload_base_64() {
+		if (input_useable($_POST, "src_cam_img")) {
+			$baseFromJavascript = $_POST["src_cam_img"];
+			$data = explode(',', $baseFromJavascript);
+			$data_64 = str_replace(' ', '+', $data[1]);
+			$bin = base64_decode(strval($data_64));
+			// $now = time();
+			file_put_contents("assets/tmp_pics/" . 'lol2.png', $bin);
 		}
 	}
 
