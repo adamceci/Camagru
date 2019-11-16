@@ -117,7 +117,7 @@ class UsersController extends Controller {
         }
     }
 
-    private function upload_profile_pic($key) {
+    private static function upload_profile_pic($key) {
 
         // Current working directory ("/Camagru-MVC-/")
         $directory_self = str_replace(basename($_SERVER['PHP_SELF']), '', $_SERVER['PHP_SELF']);
@@ -145,13 +145,10 @@ class UsersController extends Controller {
                 self::fill_session_error(array(), self::manage_file_errors($_FILES[$fieldname]['error']));
                 return (0);
             }
-            var_dump("test");
             if (!input_useable($_FILES[$fieldname], 'tmp_name')) {
-                var_dump("test");
                 self::fill_session_error(array(), 'Can\'t upload a file with an empty name');
                 return (0);
             }
-            var_dump("test");
             if (!is_uploaded_file($_FILES[$fieldname]['tmp_name'])) {
                 self::fill_session_error(array(), 'not an HTTP upload');
                 return (0);
@@ -570,7 +567,6 @@ class UsersController extends Controller {
     }
 
     public static function update_user($column) {
-	    var_dump($column);
         if (array_key_exists("new_login", $column)) {
             self::update_login($column);
         } else if (array_key_exists("new_password", $column) && array_key_exists("old_password", $column)) {
