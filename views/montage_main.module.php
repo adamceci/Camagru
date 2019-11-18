@@ -29,7 +29,7 @@
         <img id="screenshot-img">
         <canvas style="display: none;"></canvas>
         <p>
-            <button id="screenshot-button">Take screenshot</button>
+            <button class="hidden" id="screenshot-button">Take screenshot</button>
         </p>
         <input class="hidden" type="submit" name="upload_cam_image" value="OK">
     </div>

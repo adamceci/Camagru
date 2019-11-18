@@ -1,52 +1,3 @@
-// function displayImage(data) {
-// 	console.log(data);
-// }
-
-// function displayFile() {
-// 	let toHideElem;
-// 	let form;
-// 	let fileChosen;
-
-// 	toHideElem = document.querySelector("#choice");
-// 	toHideElem.classList.add("hidden");
-// 	form = document.querySelector("#form_file");
-// 	form.classList.remove("hidden");
-// 	fileChosen = document.querySelector("input[type=file]");
-// 	fileChosen.addEventListener("change", displayImage);
-
-// }
-
-// function removeImage(data) {
-// 	let divToRemove = data["path"][2];
-// 	let imageToRemove = divToRemove.querySelector("img").getAttribute("src");
-// 	let xhttp = new XMLHttpRequest();
-
-// 	if (confirm("Are you sure you want to delete this image ?")) {
-// 		xhttp.onreadystatechange = function() {
-// 			if (this.readyState == 4 && this.status == 200 && this.response == "OK")
-// 				divToRemove.remove();
-// 		};
-// 		xhttp.open("GET", "responses?toDelSrc=" + imageToRemove, true);
-// 		xhttp.send();
-// 	}
-// }
-
-// function publishImage(data) {
-// 	let buttonToRemove = data["target"];
-// 	let imageToPublish = data["path"][2]["children"][2]["src"];
-// 	let xhttp = new XMLHttpRequest();
-
-// 	if (confirm("Are you sure you want to post this image ?")) {
-// 		xhttp.onreadystatechange = function() {
-// 			if (this.readyState == 4 && this.status == 200 && this.response == "OK")
-// 				buttonToRemove.remove();
-// 		};
-// 		xhttp.open("GET", "responses?toPubSrc=" + imageToPublish, true);
-// 		xhttp.send();
-// 	}
-// }
-
-
 // Utils fct
 
 function backToOne(backButton, toDisplay, toHide) {
@@ -108,12 +59,12 @@ function displayCam() {
 
 		const canvas = document.createElement('canvas');
 
-		let okBtn = document.querySelector("input[name='upload_cam_image'");
+		let okBtn = document.querySelector("input[name='upload_cam_image']");
 
 		navigator.mediaDevices.getUserMedia(constraints).
 		then(handleSuccess).catch(handleError);
 
-		screenshotButton.onclick = video.onclick = function() {
+		screenshotButton.onclick = function() {
 			canvas.width = video.videoWidth;
 			canvas.height = video.videoHeight;
 			canvas.getContext('2d').drawImage(video, 0, 0);
@@ -132,6 +83,7 @@ function displayCam() {
 			});
 			screenshotButton.disabled = false;
 			video.srcObject = stream;
+			screenshotButton.classList.remove("hidden");
 		}
 
 		function handleError() {
@@ -139,15 +91,16 @@ function displayCam() {
 		}
 
 		function sendCamPic() {
-			let xhttp = new XMLHttpRequest();
-			xhttp.onreadystatechange = function() {
-				if (this.readyState == 4 && this.status == 200 && this.response.substr(-2) == "OK")
-					window.location.replace("montage_two&webcam=1");
-			};
-			xhttp.open("POST", "responses", true);
-			xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-			xhttp.send("src_cam_img=" + img.src);
-			
+			if (img.src != "data:,") {
+				let xhttp = new XMLHttpRequest();
+				xhttp.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200 && this.response.substr(-2) == "OK")
+						window.location.replace("montage_two&webcam=1");
+				};
+				xhttp.open("POST", "responses", true);
+				xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+				xhttp.send("src_cam_img=" + img.src);
+			}
 		}
 
 		okBtn.addEventListener("click", sendCamPic);
