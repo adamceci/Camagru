@@ -94,8 +94,12 @@ function displayCam() {
 			if (img.src != "data:,") {
 				let xhttp = new XMLHttpRequest();
 				xhttp.onreadystatechange = function() {
-					if (this.readyState == 4 && this.status == 200 && this.response.substr(-2) == "OK")
-						window.location.replace("montage_two&webcam=1");
+					if (this.readyState == 4 && this.status == 200) {
+						if (this.response.substr(-2) == "OK")
+							window.location.replace("montage_two&webcam=1");
+						else
+							errorWrapper.innerHTML = this.response.substr(0, this.response.length - 2);
+					}
 				};
 				xhttp.open("POST", "responses", true);
 				xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");

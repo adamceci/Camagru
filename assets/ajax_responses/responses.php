@@ -19,6 +19,14 @@ if(isset($_GET)) {
             echo "FAIL";
         }
     }
+    else if (array_key_exists("changePageTo", $_GET)) {
+        try {
+            // PostsController
+        }
+        catch (Exception $e) {
+            echo "FAIL";
+        }
+    }
 }
 
 if (isset($_POST)) {
@@ -38,7 +46,7 @@ if (isset($_POST)) {
             echo "OK";
         }
         catch (Exception $e) {
-            echo "FAIL";
+            echo "Couldn't upload this picture";
         }
     }
 }

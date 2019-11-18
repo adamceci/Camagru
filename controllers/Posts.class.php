@@ -48,10 +48,12 @@ class PostsController extends Controller implements Comments, Likes {
 				$_SESSION["tmp_file_name"] = $file_name;
 			}
 			else
-				echo "upload_image vide"; // in self errors
+				self::$errors[] = 'upload_image vide';
+				// return (0);
 		}
 		catch (Exception $e) {
-			throw new Exception("Error while uploading in PostsController " . $e->getMessage());
+			self::$errors[] = $e->getMessage();
+			$_SESSION['errors'] = self::get_errors();
 		}
 	}
 
@@ -94,23 +96,29 @@ class PostsController extends Controller implements Comments, Likes {
 	}
 
 	public static function create_montage() {
-		if (input_useable($_POST, 'array_images')) {
-			$img_srcs = json_decode($_POST["array_images"]);
-			$img_srcs = $img_srcs->imagesArray;
-			$extension = pathinfo($img_srcs[0])['extension'];
-			$final_img = self::apply_filters($img_srcs, $extension);
-			$file_name = self::upload_to_folder($final_img, "assets/post_pics/");
-			self::delete_from_tmp($img_srcs);
-			$post = new Post;
-			$kwargs["user_id"] = $_SESSION["current_user_user_id"];
-			$kwargs["image"] = basename($file_name);
-			$post->create_post($kwargs);
-			if ($_POST["to_pub"] == 1) {
-				$kwargs["posted_time"] = date("Y-m-d H:i:s");
-				$kwargs["toPubSrc"] = $kwargs["image"];
-				$post->publish_post($kwargs);
+		try {
+			if (input_useable($_POST, 'array_images')) {
+				$img_srcs = json_decode($_POST["array_images"]);
+				$img_srcs = $img_srcs->imagesArray;
+				$extension = pathinfo($img_srcs[0])['extension'];
+				$final_img = self::apply_filters($img_srcs, $extension);
+				$file_name = self::upload_to_folder($final_img, "assets/post_pics/");
+				self::delete_from_tmp($img_srcs);
+				$post = new Post;
+				$kwargs["user_id"] = $_SESSION["current_user_user_id"];
+				$kwargs["image"] = basename($file_name);
+				$post->create_post($kwargs);
+				if ($_POST["to_pub"] == 1) {
+					$kwargs["posted_time"] = date("Y-m-d H:i:s");
+					$kwargs["toPubSrc"] = $kwargs["image"];
+					$post->publish_post($kwargs);
+				}
 			}
-			echo $file_name;
+			else
+				echo "<p class='error'>'array_image' key might not exist in " . '$_POST ' . "variable or be empty</p>";
+		}
+		catch (Exception $e) {
+			echo "<p class='error'>Error : " . $e->getMessage() . "</p>";
 		}
 	}
 
@@ -171,7 +179,10 @@ class PostsController extends Controller implements Comments, Likes {
 			parent::template_index();
 		}
 		catch (Exception $e) {
-			throw new Exception("Error while getting the index posts in PostsController " . $e->getMessage());
+			self::$errors[] = $e->getMessage();
+			$_SESSION['errors'] = self::get_errors();
+			// return (0);
+			// throw new Exception("Error while getting the index posts in PostsController " . $e->getMessage());
 		}
 	}
 
@@ -188,9 +199,14 @@ class PostsController extends Controller implements Comments, Likes {
 				self::$info = self::get_user_images();
 				self::template_montage();
 			}
+			// else {
+			// 	self::$errors[] = "You need to be logged in to access your own gallery";
+			//	$_SESSION['errors'] = self::get_errors();
+			// }
 		}
 		catch (Exception $e) {
-			throw new Exception("Error while getting the user posts in PostsController" . $e->getMessage());
+			self::$errors[] = $e->getMessage();
+			$_SESSION['errors'] = self::get_errors();
 		}
 	}
 
@@ -205,56 +221,7 @@ class PostsController extends Controller implements Comments, Likes {
         self::createModule("bottom_html_tags", 0);
     }
 
-	// error handling for post creation
-	private function error_post($error, $location, $seconds = 5) {
-		header("Refresh: $seconds; URL=$location");
-		echo '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"'.
-		'"http://www.w3.org/TR/html4/strict.dtd">'.
-		'<html lang="en">'.
-		'    <head>'.
-		'        <meta http-equiv="content-type" content="text/html; charset=iso-8859-1">'.
-		'        <link rel="stylesheet" type="text/css" href="stylesheet.css">'.
-		'    <title>Upload error</title>'.
-		'    </head>'.
-		'    <body>'.
-		'    <div id="Upload">'.
-		'        <h1>Upload failure</h1>'.
-		'        <p>An error has occurred: '.
-		'        <span class="red">' . $error . '...</span>'.
-		'         The upload form is reloading</p>'.
-		'     </div>'.
-		'</html>';
-		exit;
-	}
-
-    // create post
-    public static function create_post(array $kwargs) {
-		try {
-			if (isset($_SESSION["current_user"])) {
-				$kwargs["image"] = self::upload_post($kwargs);
-				if (isset($kwargs["image"])) {
-					$post = new Post;
-					$kwargs["user_id"] = (int)$_SESSION["current_user_user_id"];
-					$post->create_post($kwargs);
-				}
-				else
-					self::error_post("Please select an image", "montage");
-				// if filter doesn't exist ? -> todo
-				// require_once(post_view.php);
-				if (isset($kwargs["submit_create_post"])) {
-					$kwargs["toPubSrc"] = $kwargs["image"];
-					$kwargs["posted_time"] = date("Y-m-d H:i:s");
-					$post->publish_post($kwargs);
-				}
-			}
-			else
-				self::error_post("Log in before posting", "montage");
-		}
-		catch (Exception $e) {
-            throw new Exception("Error while creating the post in controller " . $e->getMessage());
-        }
-	}
-
+	// publish post
 	public static function publish_post(array $kwargs) {
 		try {
 			if (isset($_SESSION["current_user"])) {
@@ -264,10 +231,10 @@ class PostsController extends Controller implements Comments, Likes {
 					$post->publish_post($kwargs);
 				}
 				else
-					echo "Missing source of the image to be published";
+					echo "<p class='error'>Missing source of the image to be published</p>";
 			}
 			else
-				echo "Need to connect before publishing a post";
+				echo "<p class='error'>Need to connect before publishing a post</p>";
 		}
 		catch (Exception $e) {
 			throw new Exception("Error while deleting the post in controller " . $e->getMessage());
@@ -288,10 +255,10 @@ class PostsController extends Controller implements Comments, Likes {
 				}
 			}
 			else
-				echo "Need to connect before publishing a post";
+				echo "<p class='error'>Need to connect before publishing a post</p>";
 		}
 		catch (Exception $e) {
-			throw new Exception("Error while deleting the post in controller " . $e->getMessage());
+			echo "<p class='error'>Error : " . $e->getMessage() . "</p>";
 		}
 	}
 

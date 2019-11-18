@@ -16,9 +16,13 @@ function saveImage(data) {
 	let xhttp = new XMLHttpRequest();
 
 	xhttp.onreadystatechange = function() {
-		if (this.readyState == 4 && this.status == 200 && this.response.substr(-2) == "OK")
-			window.location.replace("montage");
-		};
+		if (this.readyState == 4 && this.status == 200) {
+			if (this.response.substr(-2) == "OK")
+				window.location.replace("montage");
+			else
+				errorWrapper.innerHTML = this.response.substr(0, this.response.length - 2);
+		}
+	};
 	xhttp.open("POST", "responses", true);
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	xhttp.send("array_images=" + myJSON + "&to_pub=" + toPub);
