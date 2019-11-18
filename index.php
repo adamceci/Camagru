@@ -89,8 +89,8 @@ Route::set("montage_two", function() {
     else {
         if (!input_useable($_SESSION, "current_user"))
             Controller::createView("only_to_members");
-        else
-            PostsController::upload("tmp_pics/");
+        else if (PostsController::upload('tmp_pics/') == 0)
+            header('Location: montage');
     }
 });
 

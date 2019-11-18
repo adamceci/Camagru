@@ -30,9 +30,11 @@ class PostsController extends Controller implements Comments, Likes {
 	public static function upload($dir_name) {
 		try {
 			if (input_useable($_POST, "upload_image")) {
-				parent::upload_file($dir_name);
+				if (parent::upload_file($dir_name) == 0)
+					return (0);
 				self::$info = self::get_user_images();
 				self::template_file_filters();
+				return (1);
 			}
 			else if (input_useable($_POST, "src_cam_img")) {
 				$baseFromJavascript = $_POST["src_cam_img"];
