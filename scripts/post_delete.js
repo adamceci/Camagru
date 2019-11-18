@@ -5,8 +5,12 @@ function removeImage(data) {
 	
 	if (confirm("Are you sure you want to delete this image ?")) {
 		xhttp.onreadystatechange = function() {
-			if (this.readyState == 4 && this.status == 200 && this.response == "OK")
-				divToRemove.remove();
+			if (this.readyState == 4 && this.status == 200) {
+				if (this.response == "OK")
+					divToRemove.remove();
+				else
+					errorWrapper.innerHTML = this.response.substr(0, this.response.length - 2);
+			}
 		};
 		xhttp.open("GET", "responses?toDelSrc=" + imageToRemove, true);
 		xhttp.send();
@@ -28,11 +32,9 @@ function publishImage(data) {
 	}
 }
 
-let removeButtons;
-let postButtons;
-
-removeButtons = document.querySelectorAll(".remove");
-postButtons = document.querySelectorAll(".post");
+let removeButtons = document.querySelectorAll(".remove");
+let postButtons = document.querySelectorAll(".post");
+let errorWrapper = document.querySelector(".error_wrapper");
 
 if (removeButtons != null) {
 	for (let removeButton of removeButtons) {

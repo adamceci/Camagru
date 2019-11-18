@@ -21,7 +21,7 @@ class Post extends Model {
     public function get_post_info($post_img) {
         try {
             parent::db_connect();
-            $sql = "SELECT users.login, `image` FROM posts INNER JOIN users WHERE posts.user_id=users.user_id AND `image`=?";
+            $sql = "SELECT users.login, `image`, users.profile_pic FROM posts INNER JOIN users WHERE posts.user_id=users.user_id AND `image`=?";
             $this->stmt = $this->pdo->prepare($sql);
             $this->stmt->execute(array($post_img));
             $arr = $this->stmt->fetch(PDO::FETCH_ASSOC);

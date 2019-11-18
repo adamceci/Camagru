@@ -1,10 +1,5 @@
 <?php
 
-    if (input_useable($_SESSION, 'errors')) {
-        foreach ($_SESSION['errors'] as $error)
-            echo "<p class='error'>$error</p>";
-        $_SESSION['errors'] = "";
-    }
 
     if (isset($_SESSION) && array_key_exists('current_user', $_SESSION) && !empty($_SESSION['current_user'])) {
 ?>
@@ -44,7 +39,11 @@
                     <?php } ?>
                     </form>
             </div>
-            <img class="profile_profile_pic" src="./assets/profile_pics/<?php echo htmlspecialchars($_SESSION['current_user_pic']); ?>">
+            <?php if (file_exists("./assets/profile_pics/" . $_SESSION['current_user_pic'])) { ?>
+                <img class="profile_profile_pic" src="./assets/profile_pics/<?php echo htmlspecialchars($_SESSION['current_user_pic']); ?>">
+            <?php } else { ?>
+                <img class="profile_profile_pic" src="./assets/profile_pics/default.png">
+            <?php } ?>
         </div>
 <?php
     } else {

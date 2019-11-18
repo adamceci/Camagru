@@ -53,16 +53,8 @@ class UsersController extends Controller {
         self::createModule("bottom_html_tags", 0);
     }
 
-    private static function show_errors() {
-        $errors = self::get_errors();
-        echo "<div class=\"errors_box\">";
-        foreach ($errors as $error) {
-            echo "<p class=\"error\">". $error . "</p>";
-        }
-        echo "</div>";
-    }
     /*
-    This function takes an array and fill the session 
+    This function takes an array and fill the session
     */
     private static function fill_session_error(array $arr, $error_msg) {
         $_SESSION['last_email'] = (array_key_exists("email", $arr)) ? $arr["email"] : "";
@@ -123,6 +115,14 @@ class UsersController extends Controller {
         $uploads_directory = $_SERVER['DOCUMENT_ROOT'] . $directory_self . 'assets/profile_pics/';
         $fieldname = $key;
         if (input_useable($_FILES, $fieldname)) {
+            if (substr($_FILES[$fieldname]['type'], 0, 5) !== 'image') {
+                self::fill_session_error(array(), "Not an image file");
+                return (0);
+            }
+            if (filesize($_FILES[$fieldname]['tmp_name']) > 500000) {
+                self::fill_session_error(array(), "SIZE TOO BIG TO ENTER IN");
+                return (0);
+            }
             if ($_FILES[$fieldname]['error'] !== 0) {
                 self::fill_session_error(array(), self::manage_file_errors($_FILES[$fieldname]['error']));
                 return (0);
@@ -554,8 +554,8 @@ class UsersController extends Controller {
                         self::$errors[] = 'The email wasn\'t send';
                         return (0);
                     }
-                    $_SESSION['success'] = "<p class='success'>Password recovery email sent,<br />
-                                            check your email to see the activation link.</p>";
+                    $_SESSION['success'] = "Password recovery email sent,<br />
+                                            check your email to see the activation link.";
                     return (1);
                 }
             }

@@ -280,13 +280,9 @@ class PostsController extends Controller implements Comments, Likes {
 					if ($_SESSION["current_user_user_id"] == substr(basename($kwargs["toDelSrc"]), 0, 1)) {
 						$post = new Post;
 						$post->delete_post($kwargs);
-						// if (posted = 1)
-						// 	$_SESSION["index_posts"] = "";
 					}
-					else {
-						self::$errors[] = "You can't delete another user's post !";
-						echo "You can't delete another user's post !";
-					}
+					else
+						echo "<p class='error'>You can't delete another user's post !</p>";
 				}
 			}
 			else
@@ -308,6 +304,7 @@ class PostsController extends Controller implements Comments, Likes {
         if ($post_info) {
             $_SESSION['post_img'] = $post_info['image'];
             $_SESSION['post_creator'] = $post_info['login'];
+            $_SESSION['post_creator_pic'] = $post_info['profile_pic'];
             return (1);
         } else {
             header("Location: index");
@@ -319,8 +316,7 @@ class PostsController extends Controller implements Comments, Likes {
         $allowed_notif = $user->get_notification_active($creator_id);
         if ($allowed_notif) {
             $creator_notif_email = $user->get_notification_email($creator_id);
-            $to = "gabriele_Virga@hotmail.com";
-            // $to = $creator_notif_email;
+            $to = $creator_notif_email;
             $from = "gvirga@student.s19.be";
             $headers = "MIME-Version: 1.0" . "\r\n";
             $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";

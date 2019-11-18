@@ -83,22 +83,22 @@ class Controller {
 		if (!(isset($_POST) && (array_key_exists("upload_image", $_POST)))) {
     		// check if user is logged in
     		if (isset($_SESSION["current_user"]))
-        		self::error_post('the upload form is neaded', $upload_form);
+        		self::$error_post('the upload form is neaded', $upload_form);
     		else
-				self::error_post('log in before accessing this page', $index_page);
+				self::$error_post('log in before accessing this page', $index_page);
 		}
 		// check for PHP's built-in uploading errors
 		if ($_FILES[$fieldname]['error'] !== 0) {
-			self::error_post($errors[$_FILES[$fieldname]['error']], $upload_form);
+			self::$error_post($errors[$_FILES[$fieldname]['error']], $upload_form);
 		}
 		// check that the file we are working on really was the subject of an HTTP upload
 		if (!is_uploaded_file($_FILES[$fieldname]['tmp_name']))
-			self::error_post('not an HTTP upload', $upload_form);
+			self::$error_post('not an HTTP upload', $upload_form);
 		// validation... since this is an image upload script we should run a check
 		// to make sure the uploaded file is in fact an image. Here is a simple check:
 		// getimagesize() returns false if the file tested is not an image.
 		if (!(getimagesize($_FILES[$fieldname]['tmp_name'])))
-			self::error_post('only image uploads are allowed', $upload_form);
+			self::$error_post('only image uploads are allowed', $upload_form);
 		// make a unique filename for the uploaded file and check it is not already
 		// taken... if it is already taken keep trying until we find a vacant one
 		// sample filename: 1140732936-filename.jpg
