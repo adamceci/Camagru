@@ -275,12 +275,18 @@ class PostsController extends Controller implements Comments, Likes {
     // delete post
 	public static function delete_post(array $kwargs) {
 		try {
-			if (isset($_SESSION["current_user"]) && $_SESSION["current_user_user_id"]) {
+			if (isset($_SESSION["current_user"])) {
 				if (isset($kwargs["toDelSrc"])) {
-					$post = new Post;
-					$post->delete_post($kwargs);
-					// if (posted = 1)
-					// 	$_SESSION["index_posts"] = "";
+					if ($_SESSION["current_user_user_id"] == substr(basename($kwargs["toDelSrc"]), 0, 1)) {
+						$post = new Post;
+						$post->delete_post($kwargs);
+						// if (posted = 1)
+						// 	$_SESSION["index_posts"] = "";
+					}
+					else {
+						self::$errors[] = "You can't delete another user's post !";
+						echo "You can't delete another user's post !";
+					}
 				}
 			}
 			else
