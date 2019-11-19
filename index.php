@@ -29,6 +29,8 @@ if (input_useable($_GET, 'url') && $_GET['url'] == 'password_reset'
     });
 }
 
+var_dump($_SERVER);
+
 Route::set("ajax", function() {
     require_once("assets/ajax_responses/status_ajax.php");
 });

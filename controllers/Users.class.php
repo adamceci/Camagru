@@ -240,7 +240,7 @@ class UsersController extends Controller {
             $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
             $headers .= 'From: '.$from. "\r\n"; 
             $subject = "Verification mail Camagru";
-            $link = "http://localhost:8080/Camagru/index.php?email=" . $user_info['email'] . "&hash=" . $user_info["verif_hash"] . "&login=" . $user_info['login'];
+            $link = "http://localhost:8080" . $_SERVER['PHP_SELF'] . "?email=" . $user_info['email'] . "&hash=" . $user_info["verif_hash"] . "&login=" . $user_info['login'];
             $message = '<h1>Welcome in Camagru</h1>
                         <p>Account: ' . $user_info['login'] . '</p>
                         <p>Email: ' . $user_info['email'] . '</p>
@@ -260,7 +260,7 @@ class UsersController extends Controller {
         $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
         $headers .= 'From: '.$from. "\r\n";
         $subject = "Verification mail Camagru";
-        $link = "http://localhost:8080/Camagru/index.php?url=password_reset&email=" . $login . "&hash=" . $hash;
+        $link = "http://localhost:8080" . $_SERVER['PHP_SELF'] . "?url=password_reset&email=" . $login . "&hash=" . $hash;
         $message = '<h1>Have you asked a new password ?</h1>
                     <p>Account: ' . $login . '</p>
                     <p>If it is the case, click the link below to get a new password</p>
