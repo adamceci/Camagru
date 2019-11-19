@@ -1,16 +1,31 @@
 function changePage(data) {
-    pageNumber = data.target.childNodes[0];
+    let targetPage = data.target;
+    let targetPageNb;
+    let currentPageNbDiv = document.querySelector(".active");
+    if (targetPage.innerHTML == "»")
+        targetPageNb = parseInt(currentPageNbDiv.innerHTML) + 1;
+    else if (targetPage.innerHTML == "«")
+        targetPageNb = parseInt(currentPageNbDiv.innerHTML) - 1;
+    else
+        targetPageNb = parseInt(targetPage.innerHTML);
+
+    let xhttp = new XMLHttpRequest();
 
     xhttp.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200 && this.response == "OK")
-            buttonToRemove.remove();
+        if (this.readyState == 4 && this.status == 200) {
+            if (this.response.substr(-2) == "OK") {
+                currentPageNbDiv.classList.remove("active");
+                targetPage.classList.add("active");
+                window.location.replace("index");
+            }
+        }
     };
-    xhttp.open("GET", "responses?changePageTo=" + pageNumber, true);
+    xhttp.open("GET", "responses?changePageTo=" + targetPageNb.toString(), true);
     xhttp.send();
 }
 
-paginationDiv = document.querySelector(".pagination");
-paginationElems = document.querySelectorAll(".pagination p");
+let paginationDiv = document.querySelector(".pagination");
+let paginationElems = document.querySelectorAll(".pagination p");
 
 paginationElems.forEach(paginationElem => {
     paginationElem.addEventListener("click", changePage);    

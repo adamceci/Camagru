@@ -11,8 +11,11 @@ require_once("controllers/Webcam.class.php");
 require("controllers/Routes.class.php");
 require_once("assets/utils_functions/input_verification.php");
 
-$_SESSION["current_page"] = 1;
-$_SESSION["nb_pages"] = 1;
+if (!isset($_SESSION["current_page"]))
+    $_SESSION["current_page"] = 1;
+
+if (!isset($_SESSION["nb_pages"]))
+    $_SESSION["nb_pages"] = 1;
 
 
 if (input_useable($_GET, 'email')

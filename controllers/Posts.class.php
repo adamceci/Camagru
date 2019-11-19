@@ -199,10 +199,6 @@ class PostsController extends Controller implements Comments, Likes {
 				self::$info = self::get_user_images();
 				self::template_montage();
 			}
-			// else {
-			// 	self::$errors[] = "You need to be logged in to access your own gallery";
-			//	$_SESSION['errors'] = self::get_errors();
-			// }
 		}
 		catch (Exception $e) {
 			self::$errors[] = $e->getMessage();
@@ -237,7 +233,7 @@ class PostsController extends Controller implements Comments, Likes {
 				echo "<p class='error'>Need to connect before publishing a post</p>";
 		}
 		catch (Exception $e) {
-			throw new Exception("Error while deleting the post in controller " . $e->getMessage());
+			echo "<p class='error'>Error: " . $e->getMessage() . "</p>";
 		}
 	}
 
@@ -255,7 +251,7 @@ class PostsController extends Controller implements Comments, Likes {
 				}
 			}
 			else
-				echo "<p class='error'>Need to connect before publishing a post</p>";
+				echo "<p class='error'>Need to connect before deleting a post</p>";
 		}
 		catch (Exception $e) {
 			echo "<p class='error'>Error : " . $e->getMessage() . "</p>";

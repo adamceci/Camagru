@@ -21,7 +21,9 @@ if(isset($_GET)) {
     }
     else if (array_key_exists("changePageTo", $_GET)) {
         try {
-            // PostsController
+            $_SESSION['current_page'] = $_GET["changePageTo"];
+            PostsController::display_index_posts($_SESSION['current_page']);
+            echo "OK";
         }
         catch (Exception $e) {
             echo "FAIL";

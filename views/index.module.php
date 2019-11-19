@@ -73,7 +73,7 @@
         <?php
             if ($_SESSION["current_page"] > 1) {
             ?>
-                <a href="#">&laquo;</a>
+                <p><a id="left_arrow" href="#">&laquo;</a></p>
             <?php
 
             }
@@ -91,7 +91,7 @@
                 }
                 if ($_SESSION["current_page"] != $_SESSION["nb_pages"] && $_SESSION["nb_pages"] > 1) {
                     ?>
-                    <p><a href="#">&raquo;</a></p>
+                    <p><a id="right_arrow" href="#">&raquo;</a></p>
                     <?php
                 }
 
