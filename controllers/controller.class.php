@@ -62,13 +62,6 @@ class Controller {
 		$directory_self = str_replace(basename($_SERVER['PHP_SELF']), '', $_SERVER['PHP_SELF']);
 		// Directory that will receive uploaded files
 		$uploads_directory = $_SERVER['DOCUMENT_ROOT'] . $directory_self . 'assets/' . $dir_name;
-		// Location of index page
-		$index_page = "http://" . $_SERVER["HTTP_HOST"] . $directory_self;
-		// Location of the upload form
-		$upload_form = 'http://' . $_SERVER['HTTP_HOST'] . $directory_self . 'montage';
-
-		// location of the success page
-		// $uploadSuccess = $upload_form;
 
 		// fieldname used within the file <input> of the HTML form
 		$fieldname = "image";
@@ -82,23 +75,37 @@ class Controller {
 		// check the upload form was actually submitted else print the form 
 		if (!(isset($_POST) && (array_key_exists("upload_image", $_POST)))) {
     		// check if user is logged in
-    		if (isset($_SESSION["current_user"]))
-        		self::$error_post('the upload form is neaded', $upload_form);
-    		else
-				self::$error_post('log in before accessing this page', $index_page);
+    		if (isset($_SESSION["current_user"])) {
+				self::$errors[] = 'the upload form is neaded';
+				$_SESSION['errors'] = self::get_errors();
+				return (0);
+			}
+    		else {
+				self::$errors[] = 'log in before accessing this page';
+				$_SESSION['errors'] = self::get_errors();
+				return (0);
+			}
 		}
 		// check for PHP's built-in uploading errors
 		if ($_FILES[$fieldname]['error'] !== 0) {
-			self::$error_post($errors[$_FILES[$fieldname]['error']], $upload_form);
+			self::$errors[] = $errors[$_FILES[$fieldname]['error']];
+			$_SESSION['errors'] = self::get_errors();
+			return (0);
 		}
 		// check that the file we are working on really was the subject of an HTTP upload
-		if (!is_uploaded_file($_FILES[$fieldname]['tmp_name']))
-			self::$error_post('not an HTTP upload', $upload_form);
+		if (!is_uploaded_file($_FILES[$fieldname]['tmp_name'])) {
+			self::$errors[] = 'not an HTTP upload';
+			$_SESSION['errors'] = self::get_errors();
+			return (0);
+		}
 		// validation... since this is an image upload script we should run a check
 		// to make sure the uploaded file is in fact an image. Here is a simple check:
 		// getimagesize() returns false if the file tested is not an image.
-		if (!(getimagesize($_FILES[$fieldname]['tmp_name'])))
-			self::$error_post('only image uploads are allowed', $upload_form);
+		if (!(getimagesize($_FILES[$fieldname]['tmp_name']))) {
+			self::$errors[] = 'only image uploads are allowed';
+			$_SESSION['errors'] = self::get_errors();
+			return (0);
+		}
 		// make a unique filename for the uploaded file and check it is not already
 		// taken... if it is already taken keep trying until we find a vacant one
 		// sample filename: 1140732936-filename.jpg
@@ -106,16 +113,19 @@ class Controller {
 			mkdir($uploads_directory, 0755, true);
 		$upload_file_name = self::generate_unique_name($uploads_directory, $_FILES[$fieldname]['name']);
 		// now let's move the file to its final location and allocate the new filename to it
-		if (!(move_uploaded_file($_FILES[$fieldname]['tmp_name'], $upload_file_name)))
-			error('receiving directory insuffiecient permission', $upload_form);
+		if (!(move_uploaded_file($_FILES[$fieldname]['tmp_name'], $upload_file_name))) {
+			self::$errors[] = 'receiving directory insuffiecient permission';
+			$_SESSION['errors'] = self::get_errors();
+			return (0);
+		}
 		$file_name = basename($upload_file_name);
 		return ($file_name);
-		// This far, everything has worked and the file has been successfully saved.
-		// We are now going to redirect the client to a success page.
-		// header('Location: ' . $uploadSuccess);
 	}
 
 	public static function upload_file($dir_name) {
 		$_SESSION["tmp_file_name"] = self::upload_image($dir_name);
+		if ($_SESSION["tmp_file_name"] == 0)
+			return (0);
+		return (1);
 	}
 }
