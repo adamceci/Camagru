@@ -284,7 +284,7 @@ class PostsController extends Controller implements Comments, Likes {
         $user = new User;
         $allowed_notif = $user->get_notification_active($creator_id);
         if ($allowed_notif) {
-            $creator_notif_email = $user->get_notification_email($creator_id);
+            $creator_notif_email = $user->get_notification_email($creator_id)['notification_email'];
             $to = $creator_notif_email;
             $from = "gvirga@student.s19.be";
             $headers = "MIME-Version: 1.0" . "\r\n";
