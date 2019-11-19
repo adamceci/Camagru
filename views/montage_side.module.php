@@ -8,13 +8,13 @@
             ?>
             <div class="user_posts">
                 <div class="hidden remove">
-                    <button>-</button>
+                    <button class="delete_btn">DELETE</button>
                 </div>
                 <?php
                     if ($post["posted"] == 0) {
                         ?>
                         <div class="hidden post">
-                            <button>POST</button>
+                            <button class="post_btn">POST</button>
                         </div>
                         <?php
                     }

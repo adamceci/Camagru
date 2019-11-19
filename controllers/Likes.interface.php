@@ -1,6 +1,5 @@
 <?php
 
-
 interface Likes
 {
     public static function create_like();

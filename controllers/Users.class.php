@@ -1,4 +1,5 @@
 <?php
+
 require_once("models/Model.class.php");
 require_once("models/User.class.php");
 

@@ -11,12 +11,9 @@
 
 ?>
 
-<!-- <input type="submit" name="submit_create_post" value="Post" />
-<input type="submit" name="save" value="Save" /> -->
 <div id="main">
     <p id="choice">
-        <button id="file_button">Upload file</button>
-        or
+        <button id="file_button">Upload a file</button>
         <button id="cam_button">Take a picture</button>
     </p>
     <form class="hidden" id="form_file" enctype="multipart/form-data" action="montage_two" method="post">

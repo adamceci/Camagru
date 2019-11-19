@@ -2,13 +2,12 @@
 
 session_start();
 require_once("assets/macros/errors.php");
-require("controllers/Controller.class.php");
+require_once("controllers/Controller.class.php");
 require_once("controllers/Comments.interface.php");
 require_once("controllers/Likes.interface.php");
 require_once("controllers/Users.class.php");
 require_once("controllers/Posts.class.php");
-require_once("controllers/Webcam.class.php");
-require("controllers/Routes.class.php");
+require_once("controllers/Routes.class.php");
 require_once("assets/utils_functions/input_verification.php");
 
 if (!isset($_SESSION["current_page"]))

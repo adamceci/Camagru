@@ -8,7 +8,7 @@ if (input_useable($_SESSION, 'current_user') && input_useable($_SESSION, 'curren
 	<div class="header">
         <div id="elem1">
             <a href="index"><img class="profile_cat_img" src="assets/imgs/tebe.png" /></a>
-            <a href="index">CAMAGRU</a>
+            <a id="camagru" href="index">CAMAGRU</a>
         </div>
         <div id="elem2" class="blank"></div>
         <div id="elem3">

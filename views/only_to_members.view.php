@@ -8,7 +8,7 @@
 
 	<?php
 
-	header("Refresh: 5; URL=index");
+	header("Refresh: 4; URL=index");
 	
 	?>
 

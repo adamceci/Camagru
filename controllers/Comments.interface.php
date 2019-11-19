@@ -1,6 +1,5 @@
 <?php
 
-
 interface Comments
 {
     public static function create_comment();

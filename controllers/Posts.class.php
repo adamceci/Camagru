@@ -9,8 +9,6 @@ date_default_timezone_set("Europe/Brussels");
 
 class PostsController extends Controller implements Comments, Likes {
 
-	private static $offset;
-
 	public static function template_file_filters() {
 		self::createModule("top_html_tags", 0);
 		self::createModule("header", 0);
@@ -30,8 +28,11 @@ class PostsController extends Controller implements Comments, Likes {
 	public static function upload($dir_name) {
 		try {
 			if (input_useable($_POST, "upload_image")) {
-				if (parent::upload_file($dir_name) == 0)
+				if (parent::upload_file($dir_name) == 0) {
+					self::$errors[] = "couldn't upload image";
+					$_SESSION['errors'] = self::get_errors();
 					return (0);
+				}
 				self::$info = self::get_user_images();
 				self::template_file_filters();
 				return (1);
@@ -46,10 +47,12 @@ class PostsController extends Controller implements Comments, Likes {
 					mkdir("assets/tmp_pics/", 0755, true);
 				file_put_contents("assets/tmp_pics/" . $file_name, $bin);
 				$_SESSION["tmp_file_name"] = $file_name;
+				return (1);
 			}
 			else
 				self::$errors[] = 'upload_image vide';
-				// return (0);
+				$_SESSION['errors'] = self::get_errors();
+				return (0);
 		}
 		catch (Exception $e) {
 			self::$errors[] = $e->getMessage();
@@ -139,8 +142,8 @@ class PostsController extends Controller implements Comments, Likes {
 	private static function get_index_posts($page) {
 		$post = new Post;
 		$_SESSION["nb_pages"] = (int)$post->get_nb_pages();
-		self::$offset = 6 * ($page - 1);
-		$index_posts = $post->get_index_posts(self::$offset);
+		$offset = 6 * ($page - 1);
+		$index_posts = $post->get_index_posts($offset);
 		return ($index_posts);
 	} 
 
@@ -181,8 +184,6 @@ class PostsController extends Controller implements Comments, Likes {
 		catch (Exception $e) {
 			self::$errors[] = $e->getMessage();
 			$_SESSION['errors'] = self::get_errors();
-			// return (0);
-			// throw new Exception("Error while getting the index posts in PostsController " . $e->getMessage());
 		}
 	}
 
@@ -309,7 +310,7 @@ class PostsController extends Controller implements Comments, Likes {
             $all_comments = $comment->get_post_comments($post_id['post_id']);
             return ($all_comments);
         } catch (Exception $e) {
-	        self::$errors[] = $e->getMessage();
+			self::$errors[] = $e->getMessage();
 	        return (0);
         }
     }

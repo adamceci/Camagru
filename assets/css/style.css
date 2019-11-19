@@ -259,6 +259,43 @@ div.header #elem4 button {
     width: 80%;
 }
 
+#cam_div video {
+    width: 90%;
+    max-width: 600px;
+}
+
+#screenshot-img {
+    width: 90%;
+    max-width: 600px;
+}
+
+#choice {
+    width: 50%;
+    margin: auto;
+    display: flex;
+    justify-content: space-around;
+}
+
+#file_button {
+    border: 1px solid rgb(15, 129, 158);
+    color: rgb(15, 129, 158);
+    width: 45%;
+    height: 40px;
+    font-size: 13px;
+    outline: none;
+    background-color: #ffffff;
+}
+
+#cam_button {
+    border: 1px solid rgb(15, 129, 158);
+    color: rgb(15, 129, 158);
+    width: 45%;
+    height: 40px;
+    font-size: 13px;
+    outline: none;
+    background-color: #ffffff;
+}
+
 #side {
     width: 20%;
     border: 1px solid rgb(15, 129, 158);
@@ -270,6 +307,7 @@ div.header #elem4 button {
 
 #side h2 {
     color: rgb(15, 129, 158);
+    font-size: 26px;
     font-weight: bold;
     text-decoration: underline;
 }
@@ -300,11 +338,26 @@ div.header #elem4 button {
     position: absolute;
     top: 0px;
     right: 0px;
-    width: 25px;
+    width: 40%;
 }
 
 .post {
     position: absolute;
+    width: 40%;
+}
+
+.post_btn {
+    width: 100%;
+    border: none;
+    background-color: rgba(15, 129, 158, 0.8);
+    color: white;
+}
+
+.delete_btn {
+    width: 100%;
+    border: none;
+    background-color: rgba(15, 129, 158, 0.8);
+    color: white;
 }
 
 #canvas_container {
@@ -364,14 +417,6 @@ div.header #elem4 button {
 
 .profile_wrapper p {
     word-break: break-all;
-}
-
-#save_btn {
-    
-}
-
-#post_btn {
-
 }
 
 /* Plus button */
@@ -1157,12 +1202,16 @@ Login view css start
 
 /* Profile css */
 @media screen and (max-width: 550px) {
-    .profile_cat_img {
+    /* .profile_cat_img {
+        display: none;
+    } */
+
+    div.header #elem1 #camagru {
         display: none;
     }
 
     .profile_wrapper {
-        width: 100%;
+        width: 97%;
         max-width: 100%;
         border: 2px solid rgb(15, 129, 158);
         margin-top:50px;
@@ -1414,8 +1463,8 @@ Login view css start
     .comments_wrapper {
         border: 1px solid rgb(15, 129, 158);
         border-radius: 5px;
-        max-width: 100%;
-        min-width: 100%;
+        max-width: 97%;
+        min-width: 97%;
         margin: auto;
         width: 100%;
         padding: 2px;
@@ -1443,6 +1492,65 @@ Login view css start
         width: 99.8%;
         height: 45px;
         border: 1px solid rgb(15, 129, 158);
+    }
+
+}
+
+@media screen and (max-width: 780px) {
+    #side h2 {
+        font-size: 16px;
+    }
+}
+@media screen and (max-width: 550px) {
+
+    #container {
+        flex-direction: column;
+    }
+
+    #main {
+        width: 100%;
+    }
+
+    #choice {
+        margin-bottom: 15px;
+    }
+
+    #file_button {
+        height: 50px;
+    }
+    
+    #cam_button {
+        height: 50px;
+    }
+    #cam_div {
+        width: 100%;
+    }
+
+    #cam_div video {
+        width: 100%;
+    }
+
+    #display_filters {
+        height: 110px;
+    }
+
+    #screenshot-img {
+        width: 100%;
+    }
+
+    #side {
+        width: 100%;
+        flex-direction: row;
+        flex-wrap: wrap;
+        border: none;
+    }
+
+    #side h2 {
+        display: none;
+    }
+
+    .user_posts {
+        width: 100%;
     }
 
 }
