@@ -12,7 +12,7 @@
 ?>
 
 <div id="main">
-    <p id="choice">
+    <p class="flex" id="choice">
         <button id="file_button">Upload a file</button>
         <button id="cam_button">Take a picture</button>
     </p>

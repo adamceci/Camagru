@@ -302,7 +302,7 @@ class UsersController extends Controller {
     }
 
 	private static function login_valid($login) {
-        if (preg_match("/^(?=.{3,26}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$/",$login)) {
+        if (preg_match("/^(?=.{3,26}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$/", $login)) {
             return (1);
         }
 		return (0);

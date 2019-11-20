@@ -1,6 +1,6 @@
 <?php
 if (isset($_SESSION) && array_key_exists("last_login", $_SESSION) && !empty($_SESSION["last_login"]) &&
-    isset($_SESSION) && array_key_exists("last_email", $_SESSION) && !empty($_SESSION["last_email"])) {
+    array_key_exists("last_email", $_SESSION) && !empty($_SESSION["last_email"])) {
         $last_login = $_SESSION["last_login"];
         $last_email = $_SESSION["last_email"];
     }

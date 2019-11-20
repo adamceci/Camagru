@@ -5,7 +5,6 @@ function login_status() {
     let password = all_inputs[1].value;
     let errorWrapper = document.querySelector(".error_wrapper");
 
-
     xhttp.onreadystatechange = function() {
         if (this.readyState === 4 && this.status === 200) {
             if (this.response.substr(0, 2) !== 'OK') {

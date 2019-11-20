@@ -4,15 +4,23 @@ function backToOne(backButton, toDisplay, toHide) {
 	backButton.classList.add("hidden");
 	toDisplay.classList.remove("hidden");
 	toHide.classList.add("hidden");
+	document.querySelector("#choice").style.display = "flex";
 }
 
 function insertAfter(el, referenceNode) {
 	referenceNode.parentNode.insertBefore(el, referenceNode.nextSibling);
 }
 
+function hideChoice() {
+	document.querySelector("#choice").style.display = "none";
+}
+
 // FILE
 
 function displayFileForm() {
+
+	hideChoice();
+
 	let toDisplay = document.querySelector("#form_file");
 	let toHide = document.querySelector("#choice");
 	let backButton = document.createElement("button");
@@ -34,6 +42,9 @@ function hasGetUserMedia() {
 }
 
 function displayCam() {
+
+	hideChoice();
+
 	let toDisplay = document.querySelector("#cam_div");
 	let toHide = document.querySelector("#choice");
 	let backButton = document.createElement("button");

@@ -272,7 +272,7 @@ div.header #elem4 button {
 #choice {
     width: 50%;
     margin: auto;
-    display: flex;
+    /* display: flex; */
     justify-content: space-around;
 }
 
@@ -393,7 +393,6 @@ div.header #elem4 button {
 
 .flex {
     display: flex;
-    /* justify-content: space-around; */
 }
 
 .right {
