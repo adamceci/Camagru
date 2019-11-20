@@ -59,6 +59,8 @@ let baseImage = document.querySelector("#base_img");
 let canvasContainer = document.querySelector("#canvas_container");
 let filters = document.querySelectorAll(".filter");
 
-for (let filter of filters) {
-	filter.addEventListener("click", border);
+if (filters != null) {
+	for (let filter of filters) {
+		filter.addEventListener("click", border);
+	}
 }

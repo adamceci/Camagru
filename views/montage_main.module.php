@@ -30,4 +30,7 @@
         </p>
         <input class="hidden" type="submit" name="upload_cam_image" value="OK">
     </div>
+    <?php
+        require_once("filters.module.php");
+    ?>
 </div>
