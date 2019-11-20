@@ -201,11 +201,11 @@ class UsersController extends Controller {
 
     public static function create_user(array $kwargs) {
         try {
-            $keys = ["password", "password_verif", "login", "email"];
-            if ((self::info_creation_exists($keys, $kwargs)) == FALSE) {
-                self::fill_session_error($kwargs, "Empty fields");
-                return (0);
-            }
+            // $keys = ["password", "password_verif", "login", "email"];
+            // if ((self::info_creation_exists($keys, $kwargs)) == FALSE) {
+            //     self::fill_session_error($kwargs, "Empty fields");
+            //     return (0);
+            // }
             if ($kwargs["password"] == $kwargs["password_verif"]) {
                 $kwargs_model = [
                     "email" => array_key_exists("email", $kwargs) ? $kwargs["email"] : "",

@@ -29,12 +29,11 @@
 
     <div id="container_title">
         <h1>GALLERY</h1>
-        <!-- <a href="montage">Create a new post</a> -->
         <a href="montage"><button class="buttonplus">+</button></a>
     </div>
     <div id="container_box">
     <?php
-        if (file_exists($uploads_directory) && isset($information)) {
+        if (file_exists($uploads_directory) && isset($information) && !empty($information)) {
             foreach($information as $post) {
                 ?>
                 <div class="post_index">
@@ -64,7 +63,7 @@
             }
         }
         else {
-            echo "<h1>There are currently no posts to show</h1>"; // make a better html tag. !
+            echo "<h1 style='color:rgb(15, 129, 158);'>There are currently no posts to show</h1>";
         }
 
     ?>
