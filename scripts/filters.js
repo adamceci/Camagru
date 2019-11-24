@@ -41,7 +41,6 @@ function removeFromCanvas(srcFilter) {
 }
 
 function border(data) {
-	let screenshotButton = document.querySelector("#screenshot-button");
 	let selectedFilter = data.target;
 
 	if (selectedFilter.classList.contains("selected_filter")) {
@@ -54,20 +53,6 @@ function border(data) {
 		selectedFilter.classList.remove("unselected_filter");        
 		applyOnCanvas(selectedFilter);
 	}
-
-	let filters = document.querySelectorAll(".filter");
-	let displayScreenshotButton = 0;
-	
-	filters.forEach(filter => {
-		if (filter.classList.contains("selected_filter")) {
-			displayScreenshotButton = 1;
-			return ;
-		}
-	});
-	if (displayScreenshotButton == 1)
-		screenshotButton.classList.remove("hidden");
-	else
-		screenshotButton.classList.add("hidden");
 }
 
 let baseImage = document.querySelector("#base_img");
