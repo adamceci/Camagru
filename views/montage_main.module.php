@@ -11,26 +11,24 @@
 
 ?>
 
-<div id="main">
-    <p class="flex" id="choice">
-        <button id="file_button">Upload a file</button>
-        <button id="cam_button">Take a picture</button>
-    </p>
-    <form class="hidden" id="form_file" enctype="multipart/form-data" action="montage_two" method="post">
-        <input type="hidden" name="MAX_FILE_SIZE" value="<?=$max_file_size;?>" />
-        <input type="file" name="image" value="upload_pic" /><br />
-        <input type="submit" name="upload_image" value="OK" />
-    </form>
-    <div class="hidden" id="cam_div">
-        <video autoplay></video>
-        <img id="screenshot-img">
-        <canvas style="display: none;"></canvas>
-        <p>
-            <button class="hidden" id="screenshot-button">Take screenshot</button>
-        </p>
-        <input class="hidden" type="submit" name="upload_cam_image" value="OK">
+<p class="flex" id="choice">
+    <button id="file_button">Upload a file</button>
+    <button id="cam_button">Take a picture</button>
+</p>
+<form class="hidden" id="form_file" enctype="multipart/form-data" action="montage_two" method="post">
+    <input type="hidden" name="MAX_FILE_SIZE" value="<?=$max_file_size;?>" />
+    <input type="file" name="image" value="upload_pic" /><br />
+    <input type="submit" name="upload_image" value="OK" />
+</form>
+<div class="hidden" id="cam_div">
+    <div class="filters_to_display">
+    
+    <video autoplay></video>
     </div>
-    <?php
-        require_once("filters.module.php");
-    ?>
+    <img id="screenshot-img">
+    <canvas style="display: none;"></canvas>
+    <p>
+        <button class="hidden" id="screenshot-button">Take screenshot</button>
+    </p>
+    <input class="hidden" type="submit" name="upload_cam_image" value="OK">
 </div>

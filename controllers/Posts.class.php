@@ -14,14 +14,17 @@ class PostsController extends Controller implements Comments, Likes {
 		self::createModule("header", 0);
 		self::createModule("montage_title", 0);
 		self::createModule("open_container_tags", 0);
+		self::createModule("open_main_tag", 0);
 		self::createModule("montage_file", 0);
+		self::createModule("filters", 0);
+		self::createModule("close_main_tag", 0);
         self::createModule("montage_side", 1);
 		self::createModule("close_container_tags", 0);
+		self::createModule("footer", 0);
 		self::createModule("script_filters", 0);
 		self::createModule("script_montage_file", 0);
 		self::createModule("script_save_post", 0);
 		self::createModule("script_post_delete", 0);
-        self::createModule("footer", 0);
         self::createModule("bottom_html_tags", 0);
 	}
 
@@ -130,12 +133,15 @@ class PostsController extends Controller implements Comments, Likes {
 		self::createModule("header", 0);
 		self::createModule("montage_title", 0);
 		self::createModule("open_container_tags", 0);
+		self::createModule("open_main_tag", 0);
         self::createModule("montage_main", 0);
+		self::createModule("filters", 0);
+		self::createModule("close_main_tag", 0);
         self::createModule("montage_side", 1);
 		self::createModule("close_container_tags", 0);		
-		self::createModule("script_gallery", 0);
-		self::createModule("script_post_delete", 0);
         self::createModule("footer", 0);
+		self::createModule("scripts_gallery", 0);
+		self::createModule("script_post_delete", 0);
         self::createModule("bottom_html_tags", 0);
     }
 

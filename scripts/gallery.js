@@ -5,6 +5,7 @@ function backToOne(backButton, toDisplay, toHide) {
 	toDisplay.classList.remove("hidden");
 	toHide.classList.add("hidden");
 	document.querySelector("#choice").style.display = "flex";
+	document.querySelector("#filters_div").classList.add("hidden");
 }
 
 function insertAfter(el, referenceNode) {
@@ -44,17 +45,20 @@ function hasGetUserMedia() {
 function displayCam() {
 
 	hideChoice();
+	document.querySelector("#div_save_post").style.display = "none";
+
+	let filters = document.querySelector("#filters_div");
+	filters.classList.remove("hidden");
+
+	let backButton = document.createElement("button");
+	backButton.innerHTML = "Back";
+	backButton.addEventListener("click", function () {
+		backToOne(backButton, toHide, toDisplay);
+	});
 
 	let toDisplay = document.querySelector("#cam_div");
 	let toHide = document.querySelector("#choice");
-	let backButton = document.createElement("button");
-	
-	backButton.innerHTML = "Back";
-	backButton.addEventListener("click", function() {
-		backToOne(backButton, toHide, toDisplay);
-	});
 	toDisplay.classList.remove("hidden");
-	toHide.classList.add("hidden");
 	insertAfter(backButton, toHide);
 	if (hasGetUserMedia()) {
 		const constraints = {
@@ -67,21 +71,27 @@ function displayCam() {
 		const screenshotButton = document.querySelector('#screenshot-button');
 		const img = document.querySelector('#screenshot-img');
 		const video = document.querySelector('#main video');
-
 		const canvas = document.createElement('canvas');
-
 		let okBtn = document.querySelector("input[name='upload_cam_image']");
 
 		navigator.mediaDevices.getUserMedia(constraints).
 		then(handleSuccess).catch(handleError);
 
 		screenshotButton.onclick = function() {
-			canvas.width = video.videoWidth;
-			canvas.height = video.videoHeight;
-			canvas.getContext('2d').drawImage(video, 0, 0);
-			// Other browsers will fall back to image/png
-			img.src = canvas.toDataURL();
-			okBtn.classList.remove("hidden");
+			let imagesToDisplay = document.querySelectorAll(".selected_filter");
+			if (imagesToDisplay.length === 0)
+				document.querySelector(".error_wrapper").innerHTML = "<p class='error'>You need to select a filter before taking a picture</p>";
+			else {
+				canvas.width = video.videoWidth;
+				canvas.height = video.videoHeight;
+				canvas.getContext('2d').drawImage(video, 0, 0);
+				imagesToDisplay.forEach(imageToDisplay => {
+					canvas.getContext('2d').drawImage(imageToDisplay, 0, 0, canvas.width, canvas.height);
+				});
+				// Other browsers will fall back to image/png
+				img.src = canvas.toDataURL();
+				okBtn.classList.remove("hidden");
+			}
 		};
 
 		function handleSuccess(stream) {
@@ -94,7 +104,7 @@ function displayCam() {
 			});
 			screenshotButton.disabled = false;
 			video.srcObject = stream;
-			screenshotButton.classList.remove("hidden");
+			// screenshotButton.classList.remove("hidden");
 		}
 
 		function handleError() {

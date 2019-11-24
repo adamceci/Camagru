@@ -1,1 +1,0 @@
-<script src="scripts/gallery.js"></script>

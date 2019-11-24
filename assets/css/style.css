@@ -259,6 +259,10 @@ div.header #elem4 button {
     width: 80%;
 }
 
+#cam_div {
+    position: relative;
+}
+
 #cam_div video {
     width: 90%;
     max-width: 600px;
@@ -267,6 +271,19 @@ div.header #elem4 button {
 #screenshot-img {
     width: 90%;
     max-width: 600px;
+}
+
+.filters_to_display {
+    position: relative;
+}
+
+.filters_to_display img {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 90%;
+    max-width: 600px;
+    height: 99%;
 }
 
 #choice {
@@ -1523,6 +1540,7 @@ Login view css start
     }
     #cam_div {
         width: 100%;
+        position: relative;
     }
 
     #cam_div video {

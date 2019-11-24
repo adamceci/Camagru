@@ -41,6 +41,7 @@ function removeFromCanvas(srcFilter) {
 }
 
 function border(data) {
+	let screenshotButton = document.querySelector("#screenshot-button");
 	let selectedFilter = data.target;
 
 	if (selectedFilter.classList.contains("selected_filter")) {
@@ -53,13 +54,35 @@ function border(data) {
 		selectedFilter.classList.remove("unselected_filter");        
 		applyOnCanvas(selectedFilter);
 	}
+
+	let filters = document.querySelectorAll(".filter");
+	let displayScreenshotButton = 0;
+	
+	filters.forEach(filter => {
+		if (filter.classList.contains("selected_filter")) {
+			displayScreenshotButton = 1;
+			return ;
+		}
+	});
+	if (displayScreenshotButton == 1)
+		screenshotButton.classList.remove("hidden");
+	else
+		screenshotButton.classList.add("hidden");
 }
 
 let baseImage = document.querySelector("#base_img");
 let canvasContainer = document.querySelector("#canvas_container");
 let filters = document.querySelectorAll(".filter");
+let filtersDiv = document.querySelector("#filters_div");
 
-if (filters != null) {
+filtersDiv.classList.remove("hidden");
+
+if (window.location.href.substr(-8, 6) === "webcam") {
+	document.querySelector("#filters").style.display = "none";
+	document.querySelector("#display_filters").style.display = "none";
+}
+	
+if (filters.length != 0) {
 	for (let filter of filters) {
 		filter.addEventListener("click", border);
 	}
