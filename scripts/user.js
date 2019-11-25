@@ -101,7 +101,9 @@ function change_password_rec_status() {
 let createUserButton = document.querySelector(".create_user_submit");
 let loginButton = document.querySelector(".sign_in_submit");
 let passwordRecButton = document.querySelector(".pass_rec_submit");
+console.log(passwordRecButton);
 let passwordChangeRecButton = document.querySelector(".submit_change_password_rec");
+console.log(passwordChangeRecButton);
 let createLoginInput = document.querySelector('.create_user_login_input');
 let createPasswordInput = document.querySelector('.create_user_password');
 let createPasswordVerifInput = document.querySelector('.create_user_pass_verif');

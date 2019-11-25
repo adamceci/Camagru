@@ -104,7 +104,6 @@ function displayCam() {
 			});
 			screenshotButton.disabled = false;
 			video.srcObject = stream;
-			// screenshotButton.classList.remove("hidden");
 		}
 
 		function handleError() {

@@ -1,10 +1,7 @@
 function click_like(likeImg) {
     if (likeImg.offsetWidth < 30) {
         likeImg.style.width = (likeImg.offsetWidth + 1) + "px";
-    } else {
-
     }
-
 }
 
 

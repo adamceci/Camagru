@@ -3,7 +3,6 @@
     <?php
     $i = 0;
     if (isset($information)) {
-        // var_dump($_SESSION["user_posts"]); // array(0) {} il rentre dans le isset.... (faudrait unset())
         foreach($information as $post) {
             ?>
             <div class="user_posts">
@@ -25,7 +24,7 @@
         }
     }
     else {
-        echo "There are no posts to show"; // faire une balise html !
+        echo "There are no posts to show";
     }
     ?>
 </div>
