@@ -8,14 +8,14 @@
 
 	<?php
 
-	header("Refresh: 4; URL=index");
+	header("Refresh: 4; URL=login");
 	
 	?>
 
 	<div class="wrapper">
 		<p>This page is accessible only to members.</p>
 		<p>Please, log in or create an account</p>
-		<p>Redirecting to home page</p>
+		<p>Redirecting to Sign in page</p>
 	</div>
 
 </body>
