@@ -31,6 +31,10 @@ if (input_useable($_GET, 'url') && $_GET['url'] == 'password_reset'
     });
 }
 
+Route::set('setup', function() {
+    require_once("config/setup.php");
+});
+
 Route::set("ajax", function() {
     require_once("assets/ajax_responses/status_ajax.php");
 });

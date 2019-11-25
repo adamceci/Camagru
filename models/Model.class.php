@@ -6,7 +6,7 @@ class Model {
 
     protected function db_connect() {
         try {
-            require("models/password.php");
+            require("config/database.php");
             $this->pdo = new PDO($dsn, $user, $password);
             $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         }

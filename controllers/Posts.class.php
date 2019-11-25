@@ -4,6 +4,7 @@ require_once("models/Model.class.php");
 require_once("models/Comment.class.php");
 require_once("models/Like.class.php");
 require_once("models/PostsModel.class.php");
+
 date_default_timezone_set("Europe/Brussels");
 
 
@@ -285,8 +286,8 @@ class PostsController extends Controller implements Comments, Likes {
 
     public static function send_notification_email($creator_id, $post_img) {
         $user = new User;
-        $allowed_notif = $user->get_notification_active($creator_id);
-        if ($allowed_notif) {
+		$allowed_notif = $user->get_notification_active($creator_id);
+        if ($allowed_notif["notification_active"] !== "0") {
             $creator_notif_email = $user->get_notification_email($creator_id)['notification_email'];
             $to = $creator_notif_email;
             $from = "aceciora@student.s19.be";

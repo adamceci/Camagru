@@ -191,7 +191,7 @@ class UsersController extends Controller {
         switch ($return_val) {
             case 1:
                 self::fill_current_user_login($email);
-                $_SESSION['success'] = 'The account has been activated. Welcome to the BDClub';
+                $_SESSION['success'] = 'The account has been activated. Welcome to the family';
                 return (1);
             case USER_DONT_EXIST:
                 echo "The email or the hash doesn't exist";
@@ -201,11 +201,6 @@ class UsersController extends Controller {
 
     public static function create_user(array $kwargs) {
         try {
-            // $keys = ["password", "password_verif", "login", "email"];
-            // if ((self::info_creation_exists($keys, $kwargs)) == FALSE) {
-            //     self::fill_session_error($kwargs, "Empty fields");
-            //     return (0);
-            // }
             if ($kwargs["password"] == $kwargs["password_verif"]) {
                 $kwargs_model = [
                     "email" => array_key_exists("email", $kwargs) ? $kwargs["email"] : "",
@@ -508,9 +503,9 @@ class UsersController extends Controller {
                 $res = $user->toggle_notification_active($_SESSION['current_user_user_id'], $_SESSION['current_user_notification_active']);
                 self::fill_current_user_login($_SESSION['current_user']);
                 if ($res == 2)
-                    $_SESSION['success'] = 'The notifications are turned off!<br/>You will no longer receive an email when someone comment on your posts';
+                    $_SESSION['success'] = 'The notifications are turned off !<br/>You will no longer receive an email when someone comments on your posts';
                 else if ($res == 1)
-                    $_SESSION['success'] = 'The notifications are turned on!<br/>You will receive an email when someone comment on your posts';
+                    $_SESSION['success'] = 'The notifications are turned on !<br/>You will receive an email when someone comments on your posts';
                 header('Location: profile');
                 return (1);
             } else {

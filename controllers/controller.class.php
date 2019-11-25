@@ -78,25 +78,21 @@ class Controller {
     		// check if user is logged in
     		if (isset($_SESSION["current_user"])) {
 				self::$errors[] = 'the upload form is neaded';
-				// $_SESSION['errors'] = self::get_errors();
 				return (0);
 			}
     		else {
 				self::$errors[] = 'log in before accessing this page';
-				// $_SESSION['errors'] = self::get_errors();
 				return (0);
 			}
 		}
 		// check for PHP's built-in uploading errors
 		if ($_FILES[$fieldname]['error'] !== 0) {
 			self::$errors[] = $errors[$_FILES[$fieldname]['error']];
-			// $_SESSION['errors'] = self::get_errors();
 			return (0);
 		}
 		// check that the file we are working on really was the subject of an HTTP upload
 		if (!is_uploaded_file($_FILES[$fieldname]['tmp_name'])) {
 			self::$errors[] = 'not an HTTP upload';
-			// $_SESSION['errors'] = self::get_errors();
 			return (0);
 		}
 		// validation... since this is an image upload script we should run a check
@@ -104,7 +100,6 @@ class Controller {
 		// getimagesize() returns false if the file tested is not an image.
 		if (!(getimagesize($_FILES[$fieldname]['tmp_name']))) {
 			self::$errors[] = 'only image uploads are allowed';
-			// $_SESSION['errors'] = self::get_errors();
 			return (0);
 		}
 		// make a unique filename for the uploaded file and check it is not already
@@ -116,7 +111,6 @@ class Controller {
 		// now let's move the file to its final location and allocate the new filename to it
 		if (!(move_uploaded_file($_FILES[$fieldname]['tmp_name'], $upload_file_name))) {
 			self::$errors[] = 'receiving directory insuffiecient permission';
-			// $_SESSION['errors'] = self::get_errors();
 			return (0);
 		}
 		$file_name = basename($upload_file_name);

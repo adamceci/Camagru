@@ -55,8 +55,8 @@ class User extends Model {
             $this->stmt = $this->pdo->prepare($sql);
             $this->stmt->execute(array($login, $login, $login));
             $arr = $this->stmt->fetch(PDO::FETCH_ASSOC);
-            return ($arr);
             parent::db_drop_connection();
+            return ($arr);
         } catch (Exception $e) {
             throw new Exception("Error user_email_exist in User Model:" . $e->getMessage());
         }
@@ -71,8 +71,8 @@ class User extends Model {
             $this->stmt = $this->pdo->prepare($sql);
             $this->stmt->execute(array($login, $login, $login));
             $arr = $this->stmt->fetch(PDO::FETCH_ASSOC);
-            return ($arr);
             parent::db_drop_connection();
+            return ($arr);
         } catch (Exception $e) {
             throw new Exception("Error get_notification_email in User Model:" . $e->getMessage());
         }
@@ -87,8 +87,8 @@ class User extends Model {
             $this->stmt = $this->pdo->prepare($sql);
             $this->stmt->execute(array($login, $login));
             $arr = $this->stmt->fetch(PDO::FETCH_ASSOC);
-            return ($arr);
             parent::db_drop_connection();
+            return ($arr);
         } catch (Exception $e) {
             throw new Exception("Error user_email_exist in User Model:" . $e->getMessage());
         }
@@ -352,7 +352,7 @@ class User extends Model {
             if ($notification_active == 1) {
                 parent::db_connect();
                 $sql = "UPDATE `users`
-                        SET `notification_active`='0'
+                        SET `notification_active`= 0
                         WHERE `user_id`=?";
                 $this->stmt = $this->pdo->prepare($sql);
                 $this->stmt->execute(array($user_id));
@@ -361,7 +361,7 @@ class User extends Model {
             } else {
                 parent::db_connect();
                 $sql = "UPDATE `users`
-                        SET `notification_active`='1'
+                        SET `notification_active`= 1
                         WHERE `user_id`=?";
                 $this->stmt = $this->pdo->prepare($sql);
                 $this->stmt->execute(array($user_id));
