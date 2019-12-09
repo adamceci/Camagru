@@ -12,6 +12,7 @@ require_once("controllers/Routes.class.php");
 require_once("assets/utils_functions/input_verification.php");
 
 try {
+    $_SESSION["for_comm_mail"] = substr($_SERVER['PHP_SELF'], 0, strlen($_SERVER['PHP_SELF']) - 10);
     $post = new Post;
     $post->first_connect();
 }

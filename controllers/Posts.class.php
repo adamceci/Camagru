@@ -295,7 +295,8 @@ class PostsController extends Controller implements Comments, Likes {
             $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
             $headers .= 'From: '.$from. "\r\n";
 			$subject = "Someone commented on your post";
-            $link = "http://localhost:8080/camagru_mvc/comments&post_img=". $post_img . "&";
+			$link = "http://localhost:8080" . $_SESSION["for_comm_mail"] . "/comments&post_img=" . $post_img . "&";
+			// $link = "http://localhost:8080/camagru_mvc/comments&post_img=". $post_img . "&";
             $message = '<h1>Someone commented your post!</h1>
                         <img src="'.$post_img . '"/>
                 <a href="' . $link . '"> localhost:8080/camagru/verif </a>';
