@@ -90,7 +90,7 @@ class Like extends Model {
             parent::db_connect();
             $sql = "INSERT 
                     INTO `likes` (`user_id`, `post_id`, `active`) 
-                    VALUES (?,?,'1')";
+                    VALUES (?, ?, '1')";
             $this->stmt = $this->pdo->prepare($sql);
             if ($this->stmt->execute(array($user_id, $post_id)) == FALSE) {
                 throw new Exception("Error, couldn't insert into comments in create_like");

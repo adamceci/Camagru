@@ -2,7 +2,8 @@
 
 require_once("database.php");
 
-$db = new PDO("mysql:host=localhost", $user, $password);
+// $db = new PDO("mysql:host=localhost", $user, $password);
+$db = new PDO("mysql:host=localhost", "root", "aceciora");
 $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 // Database creation

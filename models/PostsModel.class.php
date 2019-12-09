@@ -4,13 +4,25 @@ require_once("Model.class.php");
 
 class Post extends Model {
 
+    public function first_connect() {
+        try {
+            parent::db_connect();
+        }
+        catch (Exception $e) {
+            throw new Exception("whatsup");
+        }
+        
+    }
+
     // get number of posts
     public function get_nb_pages() {
         try {
             parent::db_connect();
             $sql = "SELECT count(*) FROM posts WHERE posted = 1";
-            $nb_posts = $this->pdo->query($sql)->fetchAll();
+            $this->stmt = $this->pdo->query($sql);
+            $nb_posts = $this->stmt->fetchAll();
             $nb_posts = (int)$nb_posts[0]["count(*)"];
+            parent::db_drop_connection();
             return (ceil($nb_posts / 6));
         }
         catch (Exception $e) {

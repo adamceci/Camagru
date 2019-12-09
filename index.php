@@ -1,6 +1,7 @@
 <?php
 
 session_start();
+require_once("models/PostsModel.class.php");
 require_once("assets/macros/errors.php");
 require_once("controllers/Controller.class.php");
 require_once("controllers/Comments.interface.php");
@@ -9,6 +10,15 @@ require_once("controllers/Users.class.php");
 require_once("controllers/Posts.class.php");
 require_once("controllers/Routes.class.php");
 require_once("assets/utils_functions/input_verification.php");
+
+try {
+    $post = new Post;
+    $post->first_connect();
+}
+catch (Exception $e) {
+    echo ("click here to create the database : <a href='setup'>setup the database</a>");
+    unset($_SESSION["errors"]);
+}
 
 if (!isset($_SESSION["current_page"]))
     $_SESSION["current_page"] = 1;
